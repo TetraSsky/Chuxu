@@ -9,6 +9,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.example.chuxu.DatabaseManager
 import com.example.chuxu.R
 import com.example.chuxu.controller.UserController
 import com.example.chuxu.UIUtil
@@ -28,13 +29,11 @@ class MainActivity : AppCompatActivity() {
         // Masquer la barre de navigation et la barre de statut
         UIUtil.toggleSystemUI(this)
 
-        //Initialisation du bouton d'Inscription
-        val createAccountButton = findViewById<Button>(R.id.Inscrip)
-
         // Initialisation des champs de texte et du bouton de connexion
         emailEditText = findViewById(R.id.Email)
         passwordEditText = findViewById(R.id.PasswordVerif)
         val connectButton = findViewById<Button>(R.id.Connect)
+        val createAccountButton = findViewById<Button>(R.id.Inscrip)
         val sharedPref = getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)
 
         // Ajouter un écouteur de clic sur le bouton "Créer un compte"
@@ -61,13 +60,23 @@ class MainActivity : AppCompatActivity() {
                         val intent = Intent(this@MainActivity, Activity2::class.java)
                         startActivity(intent)
 
+                        // Fonction pour récupérer l'ID de l'utilisateur qui se connecte (OBLIGATOIRE)
+                        val connection = DatabaseManager.getConnection()
+                        val userID = UserController.getUserID(email)
+
                         // Enregistrement de l'état de connexion et du nickname de l'utilisateur
                         val sharedPref = getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)
                         val editor = sharedPref.edit()
                         editor.putBoolean("isUserLoggedIn", true)
                         editor.putString("userEmail", email)
                         editor.putString("userNickname", nickname)
+                        if (userID != null) {
+                            editor.putInt("userID", userID)
+                        }
                         editor.apply()
+
+                        Toast.makeText(this@MainActivity, "User ID: $userID", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@MainActivity, "Email: $email", Toast.LENGTH_LONG).show()
                     } else {
                         // Affichage d'un message d'erreur si les identifiants sont incorrects
                         Toast.makeText(this@MainActivity, "Identifiants incorrects. Veuillez réessayer.", Toast.LENGTH_LONG).show()

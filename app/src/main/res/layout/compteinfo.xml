@@ -85,7 +85,7 @@
                     android:backgroundTint="#252525"
                     android:fontFamily="@font/press_start_2p"
                     android:gravity="center"
-                    android:text="Changer"
+                    android:text="Modifier"
                     android:textColor="#FFFFFF"
                     app:layout_constraintBottom_toTopOf="@+id/textView7"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -106,14 +106,14 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <Button
-                    android:id="@+id/NouvPseudo"
+                    android:id="@+id/NouvNickname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:backgroundTint="#252525"
                     android:fontFamily="@font/press_start_2p"
                     android:gravity="center"
-                    android:text="Confirmer"
+                    android:text="Changer"
                     android:textColor="#FFFFFF"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -143,7 +143,7 @@
                     android:fontFamily="@font/dotgothic16"
                     android:inputType="text"
                     android:textColor="#FFFFFF"
-                    app:layout_constraintBottom_toTopOf="@+id/NouvPseudo"
+                    app:layout_constraintBottom_toTopOf="@+id/NouvNickname"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
@@ -183,7 +183,7 @@
                     android:backgroundTint="#252525"
                     android:fontFamily="@font/press_start_2p"
                     android:gravity="center"
-                    android:text="Confirmer"
+                    android:text="Changer"
                     android:textColor="#FFFFFF"
                     app:layout_constraintBottom_toTopOf="@+id/textView6"
                     app:layout_constraintEnd_toEndOf="parent"

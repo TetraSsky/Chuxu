@@ -137,11 +137,16 @@ class Activity3 : AppCompatActivity() {
                 val intent = Intent(this@Activity3, Activity2::class.java)
                 startActivity(intent)
 
+                // Fonction pour récupérer l'ID de l'utilisateur qui se connecte (OBLIGATOIRE)
+                val userID = UserController.getUserID(emailEditText.text.toString().trim())
+
                 // Enregistrement de l'état de connexion
                 val sharedPref = getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)
                 val editor = sharedPref.edit()
                 editor.putBoolean("isUserLoggedIn", true)
+                editor.putString("userEmail", emailEditText.text.toString().trim())
                 editor.putString("userNickname", nicknameEditText.text.toString().trim())
+
                 editor.apply()
             } else {
                 Toast.makeText(applicationContext, "Erreur lors de l'inscription", Toast.LENGTH_LONG).show()
