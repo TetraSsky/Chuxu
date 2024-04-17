@@ -52,33 +52,31 @@ class MainActivity : AppCompatActivity() {
             if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Veuillez saisir votre email et votre mot de passe.", Toast.LENGTH_LONG).show()
             } else {
-                // Exécution de la tâche de connexion dans une coroutine
+                // Exécution de la tâche de connexion dans une coroutine (Pour éviter de l'exécuter dans l'application, ce qui est INTERDIT)
                 CoroutineScope(Dispatchers.Main).launch {
                     val (passwordMatch, nickname) = UserController.loginUser(email, password)
                     if (passwordMatch) {
-                        // Redirection vers la page suivante si l'utilisateur est connecté avec succès
-                        val intent = Intent(this@MainActivity, Activity2::class.java)
-                        startActivity(intent)
 
-                        // Fonction pour récupérer l'ID de l'utilisateur qui se connecte (OBLIGATOIRE)
-                        val connection = DatabaseManager.getConnection()
+                        // Récupération de l'ID utilisateur
                         val userID = UserController.getUserID(email)
 
-                        // Enregistrement de l'état de connexion et du nickname de l'utilisateur
-                        val sharedPref = getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)
-                        val editor = sharedPref.edit()
-                        editor.putBoolean("isUserLoggedIn", true)
-                        editor.putString("userEmail", email)
-                        editor.putString("userNickname", nickname)
                         if (userID != null) {
+                            val sharedPref = getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)
+                            val editor = sharedPref.edit()
+                            editor.putBoolean("isUserLoggedIn", true)
+                            editor.putString("userEmail", email)
+                            editor.putString("userNickname", nickname)
                             editor.putInt("userID", userID)
-                        }
-                        editor.apply()
+                            editor.apply()
 
-                        Toast.makeText(this@MainActivity, "User ID: $userID", Toast.LENGTH_LONG).show()
-                        Toast.makeText(this@MainActivity, "Email: $email", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@MainActivity, "UserID: $userID", Toast.LENGTH_LONG).show()
+
+                            val intent = Intent(this@MainActivity, Activity2::class.java)
+                            startActivity(intent)
+                        } else {
+                            Toast.makeText(this@MainActivity, "Une erreur est survenue.", Toast.LENGTH_LONG).show()
+                        }
                     } else {
-                        // Affichage d'un message d'erreur si les identifiants sont incorrects
                         Toast.makeText(this@MainActivity, "Identifiants incorrects. Veuillez réessayer.", Toast.LENGTH_LONG).show()
                     }
                 }
