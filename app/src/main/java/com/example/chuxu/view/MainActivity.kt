@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
                         // Récupération de l'ID utilisateur
                         val userID = UserController.getUserID(email)
 
-                        if (userID != null) {
+                        if (userID != 0) {
                             val sharedPref = getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)
                             val editor = sharedPref.edit()
                             editor.putBoolean("isUserLoggedIn", true)
@@ -68,8 +68,6 @@ class MainActivity : AppCompatActivity() {
                             editor.putString("userNickname", nickname)
                             editor.putInt("userID", userID)
                             editor.apply()
-
-                            Toast.makeText(this@MainActivity, "UserID: $userID", Toast.LENGTH_LONG).show()
 
                             val intent = Intent(this@MainActivity, Activity2::class.java)
                             startActivity(intent)

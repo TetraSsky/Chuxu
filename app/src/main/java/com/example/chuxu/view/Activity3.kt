@@ -16,6 +16,10 @@ import java.util.regex.Pattern
 import kotlin.experimental.and
 import com.example.chuxu.UIUtil
 import com.example.chuxu.controller.UserController
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class Activity3 : AppCompatActivity() {
     private lateinit var emailEditText: EditText
@@ -133,21 +137,29 @@ class Activity3 : AppCompatActivity() {
 
         override fun onPostExecute(result: Boolean) {
             if (result) {
-                // Redirection vers la page suivante si l'utilisateur est connecté avec succès
-                val intent = Intent(this@Activity3, Activity2::class.java)
-                startActivity(intent)
+                CoroutineScope(Dispatchers.Main).launch {
+                    val email = emailEditText.text.toString().trim()
+                    val userID = withContext(Dispatchers.IO) {
+                        UserController.getUserID(email)
+                    }
 
-                // Fonction pour récupérer l'ID de l'utilisateur qui se connecte (OBLIGATOIRE)
-                val userID = UserController.getUserID(emailEditText.text.toString().trim())
+                    if (userID != 0) {
+                        // Redirection vers la page suivante si l'utilisateur est connecté avec succès
+                        val intent = Intent(this@Activity3, Activity2::class.java)
+                        startActivity(intent)
 
-                // Enregistrement de l'état de connexion
-                val sharedPref = getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)
-                val editor = sharedPref.edit()
-                editor.putBoolean("isUserLoggedIn", true)
-                editor.putString("userEmail", emailEditText.text.toString().trim())
-                editor.putString("userNickname", nicknameEditText.text.toString().trim())
-
-                editor.apply()
+                        // Enregistrement de l'état de connexion
+                        val sharedPref = getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)
+                        val editor = sharedPref.edit()
+                        editor.putBoolean("isUserLoggedIn", true)
+                        editor.putString("userEmail", email)
+                        editor.putString("userNickname", nicknameEditText.text.toString().trim())
+                        editor.putInt("userID", userID)
+                        editor.apply()
+                    } else {
+                        Toast.makeText(this@Activity3, "Une erreur est survenue.", Toast.LENGTH_LONG).show()
+                    }
+                }
             } else {
                 Toast.makeText(applicationContext, "Erreur lors de l'inscription", Toast.LENGTH_LONG).show()
             }

@@ -1,16 +1,13 @@
 package com.example.chuxu.controller
 
-import android.util.Log
 import com.example.chuxu.DatabaseManager
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
-import java.sql.Connection
 import java.sql.SQLException
 import kotlin.experimental.and
+import kotlinx.coroutines.*
 
 object UserController {
 
@@ -66,25 +63,17 @@ object UserController {
     }
 
     // Fonction pour récupérer l'ID de l'utilisateur connecté
-    fun getUserID(email: String): Int? {
-        var userID: Int? = null
-        CoroutineScope(Dispatchers.IO).launch {
-            var connection: Connection? = null
+    suspend fun getUserID(email: String): Int {
+        return withContext(Dispatchers.IO) {
+            var userID = 0
             try {
-                connection = DatabaseManager.getConnection()
+                val connection = DatabaseManager.getConnection()
                 if (connection != null) {
                     val query = "SELECT UtilisateurID FROM Utilisateur WHERE Email=?"
                     println("Query: $query, Email: $email")
                     val statement = connection.prepareStatement(query)
                     statement.setString(1, email)
-
-                    // Log avant l'exécution de la requête SQL
-                    Log.d("getUserID", "Exécution de la requête SQL")
-
                     val resultSet = statement.executeQuery()
-
-                    // Log après l'exécution de la requête SQL
-                    Log.d("getUserID", "Requête SQL exécutée")
 
                     if (resultSet.next()) {
                         userID = resultSet.getInt("UtilisateurID")
@@ -93,14 +82,10 @@ object UserController {
                 }
             } catch (e: SQLException) {
                 e.printStackTrace()
-            } finally {
-                connection?.close()
             }
+            userID
         }
-        return userID
     }
-
-
 
     // Fonction pour modifier l'e-mail de l'utilisateur
     fun newUserEmail(userID: Int, email: String): Boolean {
