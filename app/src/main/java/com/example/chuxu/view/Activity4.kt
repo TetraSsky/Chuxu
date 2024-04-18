@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -52,6 +53,9 @@ class Activity4 : AppCompatActivity() {
         val NouvEmailButton = findViewById<Button>(R.id.NouvEmail)
         val NouvMDPButton = findViewById<Button>(R.id.NouvMDP)
         val NouvNicknameButton = findViewById<Button>(R.id.NouvNickname)
+        val DeleteAccountButton = findViewById<Button>(R.id.DeleteAccount)
+        val sharedPref = getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)
+        val userID = sharedPref.getInt("userID", 0)
 
         // Définition de l'action à effectuer lors du clic sur le bouton "NouvEmail"
         NouvEmailButton.setOnClickListener {
@@ -66,8 +70,6 @@ class Activity4 : AppCompatActivity() {
             } else {
                 CoroutineScope(Dispatchers.Main).launch {
                     val nouvEmail = emailEditText.text.toString().trim()
-                    val sharedPref = getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)
-                    val userID = sharedPref.getInt("userID", 0)
                     val success = UserController.newUserEmail(nouvEmail, userID)
 
                     if (success) {
@@ -104,8 +106,6 @@ class Activity4 : AppCompatActivity() {
             } else {
                 CoroutineScope(Dispatchers.Main).launch {
                     val nouvPassword = UserController.encryptPassword(password)
-                    val sharedPref = getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)
-                    val userID = sharedPref.getInt("userID", 0)
                     val success = UserController.newUserPassword(nouvPassword, userID)
 
                     if (success) {
@@ -117,6 +117,7 @@ class Activity4 : AppCompatActivity() {
 
                         Toast.makeText(this@Activity4,"Mot de passe modifié avec succès !", Toast.LENGTH_LONG).show()
 
+                        // Finish après la redirection pour forcer l'actualisation
                         val intent = Intent(this@Activity4, MainActivity::class.java)
                         startActivity(intent)
                         finish()
@@ -140,8 +141,6 @@ class Activity4 : AppCompatActivity() {
             } else {
                 CoroutineScope(Dispatchers.Main).launch {
                     val nouvNickname = nicknameEditText.text.toString().trim()
-                    val sharedPref = getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)
-                    val userID = sharedPref.getInt("userID", 0)
                     val success = UserController.newUserNickname(nouvNickname, userID)
 
                     if (success) {
@@ -165,6 +164,41 @@ class Activity4 : AppCompatActivity() {
                     }
                 }
             }
+        }
+
+        DeleteAccountButton.setOnClickListener {
+            // Création d'une boîte de dialogue de confirmation
+            AlertDialog.Builder(this)
+                .setTitle("Confirmation")
+                .setMessage("Êtes-vous sûr de vouloir supprimer votre compte ?")
+                .setPositiveButton("Oui") { _, _ ->
+                    // Exécuter la fonction deleteUserAccount lorsque l'utilisateur clique sur "Oui"
+                    CoroutineScope(Dispatchers.Main).launch {
+                        val success = UserController.deleteUserAccount(userID)
+                        if (success) {
+                            // Fermer la connexion à la base de données
+                            DatabaseManager.closeConnection()
+
+                            // Mettre à jour la session de l'utilisateur pour indiquer qu'il n'est plus connecté
+                            val editor = sharedPref.edit()
+                            editor.putBoolean("isUserLoggedIn", false)
+                            editor.apply()
+
+                            Toast.makeText(this@Activity4, "Votre compte a bien été effacé !", Toast.LENGTH_LONG).show()
+
+                            // Rediriger l'utilisateur vers l'écran de connexion (MainActivity)
+                            val intent = Intent(this@Activity4, MainActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            Toast.makeText(this@Activity4, "Une erreur est survenue.", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }
+                .setNegativeButton("Non") { _, _ ->
+                    // L'utilisateur a annulé l'action
+                }
+                .show()
         }
     }
 

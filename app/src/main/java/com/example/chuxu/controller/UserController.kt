@@ -225,8 +225,7 @@ object UserController {
                 // Si l'email et le pseudo sont disponibles, enregistrer l'utilisateur dans la base de données
                 if (isEmailAvailable && isNicknameAvailable) {
                     val statement = connection.createStatement()
-                    val query =
-                        "INSERT INTO Utilisateur (Email, Password, Nickname) VALUES ('$email', '$password', '$nickname')"
+                    val query = "INSERT INTO Utilisateur (Email, Password, Nickname) VALUES ('$email', '$password', '$nickname')"
                     statement.executeUpdate(query)
                     statement.close()
                 }
@@ -237,5 +236,29 @@ object UserController {
             connection?.close()
         }
         return isEmailAvailable && isNicknameAvailable
+    }
+
+    // Fonction pour supprimer un utilisateur (Définitivement, y compris ses avis)
+    suspend fun deleteUserAccount(userID: Int): Boolean {
+        return withContext(Dispatchers.IO) {
+            var connection = DatabaseManager.getConnection()
+            try {
+                if (connection != null) {
+                    val deleteAccountQuery = "DELETE FROM Utilisateur WHERE UtilisateurID = ?"
+                    val deleteAccountStatement = connection.prepareStatement(deleteAccountQuery)
+                    deleteAccountStatement.setInt(1, userID)
+                    val isAccountDeleted = deleteAccountStatement.executeUpdate()
+                    if (isAccountDeleted > 0) {
+                        return@withContext true
+                    }
+                    deleteAccountStatement.close()
+                }
+            } catch (e: SQLException) {
+                e.printStackTrace()
+            } finally {
+                connection?.close()
+            }
+            false
+        }
     }
 }
