@@ -70,7 +70,6 @@ object UserController {
                 val connection = DatabaseManager.getConnection()
                 if (connection != null) {
                     val query = "SELECT UtilisateurID FROM Utilisateur WHERE Email=?"
-                    println("Query: $query, Email: $email")
                     val statement = connection.prepareStatement(query)
                     statement.setString(1, email)
                     val resultSet = statement.executeQuery()
@@ -87,8 +86,32 @@ object UserController {
         }
     }
 
+    //Fonction pour récupérer de nickname de l'utilisateur connecté
+    suspend fun getUserNickname(userID: Int): String {
+        return withContext(Dispatchers.IO) {
+            var userNickname = ""
+            try {
+                val connection = DatabaseManager.getConnection()
+                if (connection != null) {
+                    val query = "SELECT Nickname FROM Utilisateur WHERE UtilisateurID=?"
+                    val statement = connection.prepareStatement(query)
+                    statement.setInt(1, userID)
+                    val resultSet = statement.executeQuery()
+
+                    if (resultSet.next()) {
+                        userNickname = resultSet.getString("Nickname")
+                    }
+                    statement.close()
+                }
+            } catch (e: SQLException) {
+                e.printStackTrace()
+            }
+            userNickname
+        }
+    }
+
     // Fonction pour modifier l'e-mail de l'utilisateur
-    suspend fun newUserEmail(userID: Int, email: String): Boolean {
+    suspend fun newUserEmail(email: String, userID: Int): Boolean {
         return withContext(Dispatchers.IO) {
             var connection = DatabaseManager.getConnection()
             try {
@@ -127,17 +150,15 @@ object UserController {
             var connection = DatabaseManager.getConnection()
             try {
                 if (connection != null) {
-                    val passwordQuery = "UPDATE Utilisateur SET Password=? WHERE UtilisateurID=?"
-                    val passwordCheckStatement = connection.prepareStatement(passwordQuery)
-                    passwordCheckStatement.setString(1, password)
-                    passwordCheckStatement.setInt(2, userID)
-                    val passwordCheckResult = passwordCheckStatement.executeQuery()
+                    val updatePasswordQuery = "UPDATE Utilisateur SET Password = ? WHERE UtilisateurID = ?"
+                    val updatePasswordStatement = connection.prepareStatement(updatePasswordQuery)
+                    updatePasswordStatement.setString(1, password)
+                    updatePasswordStatement.setInt(2, userID)
+                    val isPasswordChanged = updatePasswordStatement.executeUpdate()
+                    updatePasswordStatement.close()
 
-                    if (passwordCheckResult.next()) {
-                        val count = passwordCheckResult.getInt(1)
-                        val isPasswordChanged = count == 0
-
-                        return@withContext isPasswordChanged
+                    if (isPasswordChanged != 0) {
+                        return@withContext true
                     }
                 }
             } catch (e: SQLException) {
@@ -153,17 +174,15 @@ object UserController {
             var connection = DatabaseManager.getConnection()
             try {
                 if (connection != null) {
-                    val nicknameQuery = "UPDATE Utilisateur SET Nickname=? WHERE UtilisateurID=?"
-                    val NicknameCheckStatement = connection.prepareStatement(nicknameQuery)
-                    NicknameCheckStatement.setString(1, nickname)
-                    NicknameCheckStatement.setInt(2, userID)
-                    val nicknameCheckResult = NicknameCheckStatement.executeQuery()
+                    val updateNicknameQuery = "UPDATE Utilisateur SET Nickname = ? WHERE UtilisateurID = ?"
+                    val updateNicknameStatement = connection.prepareStatement(updateNicknameQuery)
+                    updateNicknameStatement.setString(1, nickname)
+                    updateNicknameStatement.setInt(2, userID)
+                    val isNicknameChanged = updateNicknameStatement.executeUpdate()
+                    updateNicknameStatement.close()
 
-                    if (nicknameCheckResult.next()) {
-                        val count = nicknameCheckResult.getInt(1)
-                        val isNicknameChanged = count == 0
-
-                        return@withContext isNicknameChanged
+                    if (isNicknameChanged != 0) {
+                        return@withContext true
                     }
                 }
             } catch (e: SQLException) {

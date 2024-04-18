@@ -53,13 +53,12 @@ class Activity4 : AppCompatActivity() {
         val NouvMDPButton = findViewById<Button>(R.id.NouvMDP)
         val NouvNicknameButton = findViewById<Button>(R.id.NouvNickname)
 
-        val email = emailEditText.text.toString().trim()
-        val password = passwordEditText.text.toString()
-        val passwordVerif = passwordVerifEditText.text.toString()
-        val nickname = nicknameEditText.text.toString().trim()
-
         // Définition de l'action à effectuer lors du clic sur le bouton "NouvEmail"
         NouvEmailButton.setOnClickListener {
+
+            //Remplir la valeur avant d'effectuer quoi que ce soit
+            val email = emailEditText.text.toString().trim()
+
             if (email.isEmpty()) {
                 Toast.makeText(this, "Veuillez remplir le champ !", Toast.LENGTH_SHORT).show()
             } else if (!isEmailValid(email)) {
@@ -69,7 +68,7 @@ class Activity4 : AppCompatActivity() {
                     val nouvEmail = emailEditText.text.toString().trim()
                     val sharedPref = getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)
                     val userID = sharedPref.getInt("userID", 0)
-                    val success = UserController.newUserEmail(userID, nouvEmail)
+                    val success = UserController.newUserEmail(nouvEmail, userID)
 
                     if (success) {
                         DatabaseManager.closeConnection()
@@ -91,6 +90,11 @@ class Activity4 : AppCompatActivity() {
 
         // Définition de l'action à effectuer lors du clic sur le bouton "NouvMDP"
         NouvMDPButton.setOnClickListener {
+
+            // Remplir les valeurs avant d'effectuer quoi que ce soit
+            val password = passwordEditText.text.toString()
+            val passwordVerif = passwordVerifEditText.text.toString()
+
             if (password.isEmpty() || passwordVerif.isEmpty()) {
                 Toast.makeText(this, "Veuillez remplir les champs !", Toast.LENGTH_SHORT).show()
             } else if (!isPasswordValid(password)) {
@@ -125,6 +129,10 @@ class Activity4 : AppCompatActivity() {
 
         // Définition de l'action à effectuer lors du clic sur le bouton "NouvNickname"
         NouvNicknameButton.setOnClickListener {
+
+            //Repmlir la valeur avant d'effectuer quoi que ce soit
+            val nickname = nicknameEditText.text.toString().trim()
+
             if (nickname.isEmpty()) {
                 Toast.makeText(this, "Veuillez remplir le champ !", Toast.LENGTH_SHORT).show()
             } else if (!isNicknameValid(nickname)) {
@@ -137,19 +145,23 @@ class Activity4 : AppCompatActivity() {
                     val success = UserController.newUserNickname(nouvNickname, userID)
 
                     if (success) {
-                        DatabaseManager.closeConnection()
+                        // Faire appel à la fonction pour mettre à jour le nickname enregistré
+                        val nickname = UserController.getUserNickname(userID)
+                        if (nickname.isNotEmpty()) {
+                            val editor = sharedPref.edit()
+                            editor.putString("userNickname", nickname)
+                            editor.apply()
 
-                        val editor = sharedPref.edit()
-                        editor.putBoolean("isUserLoggedIn", false)
-                        editor.apply()
+                            Toast.makeText(this@Activity4, "Pseudo modifié avec succès !", Toast.LENGTH_LONG).show()
 
-                        Toast.makeText(this@Activity4,"Mot de passe modifié avec succès !", Toast.LENGTH_LONG).show()
-
-                        val intent = Intent(this@Activity4, MainActivity::class.java)
-                        startActivity(intent)
-                        finish()
+                            val intent = Intent(this@Activity4, Activity2::class.java)
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            Toast.makeText(this@Activity4, "Veuillez vous reconnecter.", Toast.LENGTH_LONG).show()
+                        }
                     } else {
-                        Toast.makeText(this@Activity4, "Échec de la modification du mot de passe.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@Activity4, "Échec de la modification du pseudo.", Toast.LENGTH_LONG).show()
                     }
                 }
             }
