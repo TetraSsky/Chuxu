@@ -42,7 +42,7 @@ object UserController {
     }
 
     // Fonction pour crypter le mot de passe
-    private fun encryptPassword(password: String): String {
+    fun encryptPassword(password: String): String {
         val md: MessageDigest
         try {
             md = MessageDigest.getInstance("SHA-256")
@@ -88,36 +88,89 @@ object UserController {
     }
 
     // Fonction pour modifier l'e-mail de l'utilisateur
-    fun newUserEmail(userID: Int, email: String): Boolean {
-        var connection = DatabaseManager.getConnection()
-        try {
-            if (connection != null) {
-                val emailCheckQuery = "SELECT COUNT(*) FROM Utilisateur WHERE Email = ? AND UtilisateurID != ?"
-                val emailCheckStatement = connection.prepareStatement(emailCheckQuery)
-                emailCheckStatement.setString(1, email)
-                emailCheckStatement.setInt(2, userID)
-                val emailCheckResult = emailCheckStatement.executeQuery()
+    suspend fun newUserEmail(userID: Int, email: String): Boolean {
+        return withContext(Dispatchers.IO) {
+            var connection = DatabaseManager.getConnection()
+            try {
+                if (connection != null) {
+                    val emailCheckQuery = "SELECT COUNT(*) FROM Utilisateur WHERE Email = ? AND UtilisateurID != ?"
+                    val emailCheckStatement = connection.prepareStatement(emailCheckQuery)
+                    emailCheckStatement.setString(1, email)
+                    emailCheckStatement.setInt(2, userID)
+                    val emailCheckResult = emailCheckStatement.executeQuery()
 
-                if (emailCheckResult.next()) {
-                    val count = emailCheckResult.getInt(1)
-                    val isEmailAvailable = count == 0
+                    if (emailCheckResult.next()) {
+                        val count = emailCheckResult.getInt(1)
+                        val isEmailAvailable = count == 0
 
-                    if (isEmailAvailable) {
-                        val updateEmailQuery =
-                            "UPDATE Utilisateur SET Email = ? WHERE UtilisateurID = ?"
-                        val updateEmailStatement = connection.prepareStatement(updateEmailQuery)
-                        updateEmailStatement.setString(1, email)
-                        updateEmailStatement.setInt(2, userID)
-                        updateEmailStatement.executeUpdate()
-                        updateEmailStatement.close()
+                        if (isEmailAvailable) {
+                            val updateEmailQuery = "UPDATE Utilisateur SET Email = ? WHERE UtilisateurID = ?"
+                            val updateEmailStatement = connection.prepareStatement(updateEmailQuery)
+                            updateEmailStatement.setString(1, email)
+                            updateEmailStatement.setInt(2, userID)
+                            updateEmailStatement.executeUpdate()
+                            updateEmailStatement.close()
+                        }
+                        return@withContext isEmailAvailable
                     }
-                    return isEmailAvailable
                 }
+            } catch (e: SQLException) {
+                e.printStackTrace()
             }
-        } catch (e: SQLException) {
-            e.printStackTrace()
+            false
         }
-        return false
+    }
+
+    // Fonction pour modifier le mot de passe
+    suspend fun newUserPassword(password: String, userID: Int): Boolean {
+        return withContext(Dispatchers.IO) {
+            var connection = DatabaseManager.getConnection()
+            try {
+                if (connection != null) {
+                    val passwordQuery = "UPDATE Utilisateur SET Password=? WHERE UtilisateurID=?"
+                    val passwordCheckStatement = connection.prepareStatement(passwordQuery)
+                    passwordCheckStatement.setString(1, password)
+                    passwordCheckStatement.setInt(2, userID)
+                    val passwordCheckResult = passwordCheckStatement.executeQuery()
+
+                    if (passwordCheckResult.next()) {
+                        val count = passwordCheckResult.getInt(1)
+                        val isPasswordChanged = count == 0
+
+                        return@withContext isPasswordChanged
+                    }
+                }
+            } catch (e: SQLException) {
+                e.printStackTrace()
+            }
+            false
+        }
+    }
+
+    // Fonction pour modifier le pseudo
+    suspend fun newUserNickname(nickname: String, userID: Int): Boolean {
+        return withContext(Dispatchers.IO) {
+            var connection = DatabaseManager.getConnection()
+            try {
+                if (connection != null) {
+                    val nicknameQuery = "UPDATE Utilisateur SET Nickname=? WHERE UtilisateurID=?"
+                    val NicknameCheckStatement = connection.prepareStatement(nicknameQuery)
+                    NicknameCheckStatement.setString(1, nickname)
+                    NicknameCheckStatement.setInt(2, userID)
+                    val nicknameCheckResult = NicknameCheckStatement.executeQuery()
+
+                    if (nicknameCheckResult.next()) {
+                        val count = nicknameCheckResult.getInt(1)
+                        val isNicknameChanged = count == 0
+
+                        return@withContext isNicknameChanged
+                    }
+                }
+            } catch (e: SQLException) {
+                e.printStackTrace()
+            }
+            false
+        }
     }
 
     // Fonction pour enregistrer un nouvel utilisateur || Inscription

@@ -26,7 +26,6 @@ class Activity3 : AppCompatActivity() {
     private lateinit var passwordEditText: EditText
     private lateinit var passwordVerifEditText: EditText
     private lateinit var nicknameEditText: EditText
-
     private val inappropriateNicknames = listOf("negro", "négro", "nègre")
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,41 +50,29 @@ class Activity3 : AppCompatActivity() {
             val nickname = nicknameEditText.text.toString().trim()
 
             if (email.isEmpty() || password.isEmpty() || passwordVerif.isEmpty() || nickname.isEmpty()) {
-                Toast.makeText(this, "Veuillez remplir tous les champs !", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(this, "Veuillez remplir tous les champs !", Toast.LENGTH_SHORT).show()
             } else if (!isEmailValid(email)) {
                 Toast.makeText(this, "L'email en entrée est invalide !", Toast.LENGTH_SHORT).show()
             } else if (!isPasswordValid(password)) {
-                Toast.makeText(
-                    this,
-                    "Mot de passe invalide ou trop peu sécurisé.",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(this, "Mot de passe invalide ou trop peu sécurisé.", Toast.LENGTH_SHORT).show()
             } else if (password != passwordVerif) {
-                Toast.makeText(this, "Les mots de passe ne correspondent pas", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(this, "Les mots de passe ne correspondent pas.", Toast.LENGTH_SHORT).show()
             } else if (!isNicknameValid(nickname)) {
-                Toast.makeText(
-                    this,
-                    "Pseudo invalide.",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(this, "Pseudo invalide.", Toast.LENGTH_SHORT).show()
             } else {
-                val encryptedPassword = encryptPassword(password)
+                val encryptedPassword = UserController.encryptPassword(password)
                 RegisterUserTask().execute(email, encryptedPassword, nickname)
             }
         }
     }
 
     private fun isEmailValid(email: String): Boolean {
-        val emailPattern =
-            Pattern.compile("^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,3})+\$")
+        val emailPattern = Pattern.compile("^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,3})+\$")
         return emailPattern.matcher(email).matches()
     }
 
     private fun isPasswordValid(password: String): Boolean {
-        val passwordPattern =
-            Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@!?_%$|\\\\]).{8,}$")
+        val passwordPattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@!?_%$|\\\\]).{8,}$")
         return passwordPattern.matcher(password).matches()
     }
 
@@ -104,26 +91,6 @@ class Activity3 : AppCompatActivity() {
         val isLengthValid = nickname.length >= 5
 
         return isNicknameValid && !containsInappropriate && !isNumeric && isLengthValid
-    }
-
-    private fun encryptPassword(password: String): String {
-        val md: MessageDigest
-        try {
-            md = MessageDigest.getInstance("SHA-256")
-            md.update(password.toByteArray())
-
-            val byteData = md.digest()
-            val sb = StringBuilder()
-            for (i in byteData.indices) {
-                sb.append(
-                    ((byteData[i] and 0xff.toByte()) + 0x100).toString(16).substring(1)
-                )
-            }
-            return sb.toString()
-        } catch (e: NoSuchAlgorithmException) {
-            e.printStackTrace()
-        }
-        return ""
     }
 
     inner class RegisterUserTask : AsyncTask<String, Void, Boolean>() {
