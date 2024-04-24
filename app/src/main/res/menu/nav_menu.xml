@@ -1,9 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/nav_item1"
-        android:title="Item 1" />
-    <item
-        android:id="@+id/nav_item2"
-        android:title="Item 2" />
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Menu">
+        <menu>
+            <item
+            android:id="@+id/Menu"
+            android:title="Menu"
+            android:icon="@drawable/baseline_home_24"/>
+        </menu>
+    </item>
+    <item android:title="Profil">
+        <menu>
+            <item
+                android:id="@+id/Compte"
+                android:title="Mon Compte"
+                android:icon="@drawable/baseline_account_circle_24"/>
+            <item
+                android:id="@+id/Deconnect"
+                android:title="Se Déconnecter"
+                android:icon="@drawable/baseline_logout_24"/>
+        </menu>
+    </item>
 </menu>

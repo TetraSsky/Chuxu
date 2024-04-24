@@ -28,8 +28,8 @@
 
         <!-- Liste d'activités ici | Pour éviter des crashs  -->
         <activity android:name=".view.Activity2"
-        android:screenOrientation="portrait"
-        android:theme="@style/AppTheme.FullScreen" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FullScreen"/>
         <activity android:name=".view.Activity3"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
