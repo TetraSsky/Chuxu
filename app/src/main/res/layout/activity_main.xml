@@ -24,6 +24,7 @@
                 android:id="@+id/MenuHaut"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:layout_marginTop="56dp"
                 android:background="#B3000000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -65,6 +66,7 @@
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/nav_menu"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true" />
+        android:fitsSystemWindows="true"
+        android:background="#B3000000"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

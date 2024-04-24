@@ -5,12 +5,11 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_marginTop="16dp"
-    android:layout_marginEnd="16dp"
     android:layout_marginStart="16dp"
     android:background="#B3000000">
 
     <ImageView
-        android:layout_width="50dp"
-        android:layout_height="30dp"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
         android:background="@drawable/chuxulogo0"/>
 </LinearLayout>
