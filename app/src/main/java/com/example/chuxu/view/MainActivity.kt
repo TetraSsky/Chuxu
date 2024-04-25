@@ -3,16 +3,13 @@ package com.example.chuxu.view
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import com.example.chuxu.DatabaseManager
 import com.example.chuxu.R
 import com.example.chuxu.controller.UserController
-import com.example.chuxu.UIUtil
 import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
@@ -26,25 +23,30 @@ class MainActivity : AppCompatActivity() {
 
         // Activer le mode "Edge-to-Edge" pour étendre le contenu sur les bords de l'écran
         enableEdgeToEdge()
-        // Masquer la barre de navigation et la barre de statut
-        UIUtil.toggleSystemUI(this)
 
         // Initialisation des champs de texte et du bouton de connexion
         emailEditText = findViewById(R.id.Email)
         passwordEditText = findViewById(R.id.PasswordVerif)
         val connectButton = findViewById<Button>(R.id.Connect)
         val createAccountButton = findViewById<Button>(R.id.Inscrip)
-        val sharedPref = getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)
 
         // Ajouter un écouteur de clic sur le bouton "Créer un compte"
         createAccountButton.setOnClickListener {
             // Rediriger l'utilisateur vers Activity3
             val intent = Intent(this, Activity3::class.java)
             startActivity(intent)
+            finish()
         }
+
+        // Activer le bouton de connexion (Obligatoire si l'utilisateur s'est déconnecté car mis en false plus bas)
+        connectButton.isEnabled = true
 
         // Définition de l'action à effectuer lors du clic sur le bouton de connexion
         connectButton.setOnClickListener {
+
+            //Désactiver le bouton pour éviter les spams (Cela peut créer du lag)
+            connectButton.isEnabled = false
+
             val email = emailEditText.text.toString().trim()
             val password = passwordEditText.text.toString().trim()
 
@@ -71,6 +73,7 @@ class MainActivity : AppCompatActivity() {
 
                             val intent = Intent(this@MainActivity, Activity2::class.java)
                             startActivity(intent)
+                            finish()
                         } else {
                             Toast.makeText(this@MainActivity, "Une erreur est survenue.", Toast.LENGTH_LONG).show()
                         }
@@ -82,6 +85,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Vérification de l'état de connexion au démarrage de l'activité
+        val sharedPref = getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)
         val isUserLoggedIn = sharedPref.getBoolean("isUserLoggedIn", false)
         if (isUserLoggedIn) {
             // Redirection vers la page suivante si l'utilisateur est déjà connecté

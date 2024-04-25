@@ -9,7 +9,8 @@ import java.sql.SQLException
 import kotlin.experimental.and
 import kotlinx.coroutines.*
 
-object UserController {
+object
+UserController {
 
     // Fonction pour connecter l'utilisateur
     suspend fun loginUser(email: String, password: String): Pair<Boolean, String> {

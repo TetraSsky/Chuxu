@@ -19,7 +19,7 @@
             android:name=".view.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen">
+            android:theme="@style/ConnexionTheme.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -32,8 +32,11 @@
             android:theme="@style/AppTheme.FullScreen"/>
         <activity android:name=".view.Activity3"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen" />
+            android:theme="@style/ConnexionTheme.FullScreen" />
         <activity android:name=".view.Activity4"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FullScreen" />
+        <activity android:name=".view.Activity5"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
 

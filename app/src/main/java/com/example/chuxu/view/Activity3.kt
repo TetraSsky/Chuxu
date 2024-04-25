@@ -4,18 +4,19 @@ import android.content.Context
 import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
+import com.example.chuxu.DatabaseManager
 import com.example.chuxu.R
-import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
 import java.util.regex.Pattern
-import kotlin.experimental.and
-import com.example.chuxu.UIUtil
 import com.example.chuxu.controller.UserController
+import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -32,11 +33,6 @@ class Activity3 : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.inscription)
 
-        // Activer le mode "Edge-to-Edge" pour étendre le contenu sur les bords de l'écran
-        enableEdgeToEdge()
-        // Masquer la barre de navigation et la barre de statut
-        UIUtil.toggleSystemUI(this)
-
         emailEditText = findViewById(R.id.Email)
         passwordEditText = findViewById(R.id.Password)
         passwordVerifEditText = findViewById(R.id.PasswordVerif)
@@ -50,13 +46,19 @@ class Activity3 : AppCompatActivity() {
             val nickname = nicknameEditText.text.toString().trim()
 
             if (email.isEmpty() || password.isEmpty() || passwordVerif.isEmpty() || nickname.isEmpty()) {
-                Toast.makeText(this, "Veuillez remplir tous les champs !", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Veuillez remplir tous les champs !", Toast.LENGTH_SHORT)
+                    .show()
             } else if (!isEmailValid(email)) {
                 Toast.makeText(this, "L'email en entrée est invalide !", Toast.LENGTH_SHORT).show()
             } else if (!isPasswordValid(password)) {
-                Toast.makeText(this, "Mot de passe invalide ou trop peu sécurisé.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "Mot de passe invalide ou trop peu sécurisé.",
+                    Toast.LENGTH_SHORT
+                ).show()
             } else if (password != passwordVerif) {
-                Toast.makeText(this, "Les mots de passe ne correspondent pas.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Les mots de passe ne correspondent pas.", Toast.LENGTH_SHORT)
+                    .show()
             } else if (!isNicknameValid(nickname)) {
                 Toast.makeText(this, "Pseudo invalide.", Toast.LENGTH_SHORT).show()
             } else {
@@ -64,6 +66,10 @@ class Activity3 : AppCompatActivity() {
                 RegisterUserTask().execute(email, encryptedPassword, nickname)
             }
         }
+
+        // Activer le mode "Edge-to-Edge" pour étendre le contenu sur les bords de l'écran
+        enableEdgeToEdge()
+
     }
 
     private fun isEmailValid(email: String): Boolean {
