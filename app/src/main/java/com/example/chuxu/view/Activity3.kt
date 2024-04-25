@@ -46,19 +46,13 @@ class Activity3 : AppCompatActivity() {
             val nickname = nicknameEditText.text.toString().trim()
 
             if (email.isEmpty() || password.isEmpty() || passwordVerif.isEmpty() || nickname.isEmpty()) {
-                Toast.makeText(this, "Veuillez remplir tous les champs !", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(this, "Veuillez remplir tous les champs !", Toast.LENGTH_SHORT).show()
             } else if (!isEmailValid(email)) {
                 Toast.makeText(this, "L'email en entrée est invalide !", Toast.LENGTH_SHORT).show()
             } else if (!isPasswordValid(password)) {
-                Toast.makeText(
-                    this,
-                    "Mot de passe invalide ou trop peu sécurisé.",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(this,"Mot de passe invalide ou trop peu sécurisé.", Toast.LENGTH_SHORT).show()
             } else if (password != passwordVerif) {
-                Toast.makeText(this, "Les mots de passe ne correspondent pas.", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(this, "Les mots de passe ne correspondent pas.", Toast.LENGTH_SHORT).show()
             } else if (!isNicknameValid(nickname)) {
                 Toast.makeText(this, "Pseudo invalide.", Toast.LENGTH_SHORT).show()
             } else {
