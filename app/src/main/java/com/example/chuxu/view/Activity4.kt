@@ -193,6 +193,8 @@ class Activity4 : AppCompatActivity() {
                 .show()
         }
 
+
+
         // Valeurs nécessaires à la navigation
         val drawerLayout : DrawerLayout = findViewById(R.id.MenuBurger)
         val navView : NavigationView = findViewById(R.id.nav_view)

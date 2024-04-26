@@ -2,8 +2,4 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="proneblack">#8B000000</color>
-    <color name="semiblack">#B3000000</color>
-    <color name="loading">#CD000000</color>
-    <color name="navbar">#D8000000</color>
 </resources>

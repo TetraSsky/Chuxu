@@ -5,8 +5,6 @@ import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -30,7 +28,6 @@ class Activity3 : AppCompatActivity() {
     private lateinit var passwordVerifEditText: EditText
     private lateinit var nicknameEditText: EditText
     private val inappropriateNicknames = listOf("negro", "négro", "nègre")
-    private lateinit var connectloadingView: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +56,6 @@ class Activity3 : AppCompatActivity() {
             } else if (!isNicknameValid(nickname)) {
                 Toast.makeText(this, "Pseudo invalide.", Toast.LENGTH_SHORT).show()
             } else {
-                showLoadingView()
                 val encryptedPassword = UserController.encryptPassword(password)
                 RegisterUserTask().execute(email, encryptedPassword, nickname)
             }
@@ -120,8 +116,6 @@ class Activity3 : AppCompatActivity() {
                         startActivity(intent)
                         finish()
 
-                        hideLoadingView()
-
                         // Enregistrement de l'état de connexion
                         val sharedPref = getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)
                         val editor = sharedPref.edit()
@@ -131,23 +125,12 @@ class Activity3 : AppCompatActivity() {
                         editor.putInt("userID", userID)
                         editor.apply()
                     } else {
-                        hideLoadingView()
                         Toast.makeText(this@Activity3, "Une erreur est survenue.", Toast.LENGTH_LONG).show()
                     }
                 }
             } else {
-                hideLoadingView()
                 Toast.makeText(applicationContext, "Erreur lors de l'inscription", Toast.LENGTH_LONG).show()
             }
         }
-    }
-
-    private fun showLoadingView() {
-        connectloadingView = layoutInflater.inflate(R.layout.connect_loading_screen, findViewById(android.R.id.content), false)
-        (findViewById<ViewGroup>(android.R.id.content)).addView(connectloadingView)
-    }
-
-    private fun hideLoadingView() {
-        (findViewById<ViewGroup>(android.R.id.content)).removeView(connectloadingView)
     }
 }

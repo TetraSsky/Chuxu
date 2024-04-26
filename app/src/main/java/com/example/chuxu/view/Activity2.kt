@@ -35,7 +35,6 @@ class Activity2 : AppCompatActivity() {
             // Rediriger l'utilisateur vers Activity5
             val intent = Intent(this, Activity5::class.java)
             startActivity(intent)
-            finish()
         }
 
         // Activer le mode "Edge-to-Edge" pour étendre le contenu sur les bords de l'écran
