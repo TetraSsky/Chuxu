@@ -35,7 +35,6 @@ class MainActivity : AppCompatActivity() {
             // Rediriger l'utilisateur vers Activity3
             val intent = Intent(this, Activity3::class.java)
             startActivity(intent)
-            finish()
         }
 
         // Activer le bouton de connexion (Obligatoire si l'utilisateur s'est déconnecté car mis en false plus bas)

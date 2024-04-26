@@ -114,6 +114,7 @@ class Activity3 : AppCompatActivity() {
                         // Redirection vers la page suivante si l'utilisateur est connecté avec succès
                         val intent = Intent(this@Activity3, Activity2::class.java)
                         startActivity(intent)
+                        finish()
 
                         // Enregistrement de l'état de connexion
                         val sharedPref = getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)
