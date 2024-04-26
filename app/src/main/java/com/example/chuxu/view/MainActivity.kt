@@ -53,6 +53,7 @@ class MainActivity : AppCompatActivity() {
             // Vérification si les champs email et password ne sont pas vides
             if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Veuillez saisir votre email et votre mot de passe.", Toast.LENGTH_LONG).show()
+                connectButton.isEnabled = true
             } else {
                 // Exécution de la tâche de connexion dans une coroutine (Pour éviter de l'exécuter dans l'application, ce qui est INTERDIT)
                 CoroutineScope(Dispatchers.Main).launch {
@@ -76,9 +77,11 @@ class MainActivity : AppCompatActivity() {
                             finish()
                         } else {
                             Toast.makeText(this@MainActivity, "Une erreur est survenue.", Toast.LENGTH_LONG).show()
+                            connectButton.isEnabled = true
                         }
                     } else {
                         Toast.makeText(this@MainActivity, "Identifiants incorrects. Veuillez réessayer.", Toast.LENGTH_LONG).show()
+                        connectButton.isEnabled = true
                     }
                 }
             }
