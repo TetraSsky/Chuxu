@@ -142,11 +142,13 @@ class Activity3 : AppCompatActivity() {
         }
     }
 
+    // Fonction pour inflate la page actuelle et rajouter un chargement
     private fun showLoadingView() {
         connectloadingView = layoutInflater.inflate(R.layout.connect_loading_screen, findViewById(android.R.id.content), false)
         (findViewById<ViewGroup>(android.R.id.content)).addView(connectloadingView)
     }
 
+    // Fonction pour cacher la page de chargement
     private fun hideLoadingView() {
         (findViewById<ViewGroup>(android.R.id.content)).removeView(connectloadingView)
     }

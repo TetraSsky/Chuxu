@@ -37,9 +37,6 @@ class Activity5 : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.recherche)
 
-        // Activer le mode "Edge-to-Edge" pour étendre le contenu sur les bords de l'écran
-        enableEdgeToEdge()
-
         // Initialiser le RecyclerView et l'Adapter
         recyclerView = findViewById(R.id.myRecyclerView)
         adapter = GameViewModelAdapter()
@@ -54,6 +51,9 @@ class Activity5 : AppCompatActivity() {
         // Afficher par défault pour ne pas faire vide
         defaultview = layoutInflater.inflate(R.layout.default_research_screen, findViewById(android.R.id.content), false)
         (findViewById<ViewGroup>(android.R.id.content)).addView(defaultview)
+
+        // Activer le mode "Edge-to-Edge" pour étendre le contenu sur les bords de l'écran
+        enableEdgeToEdge()
 
         // Initialisation de la barre de navigation + dependances
         toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
@@ -94,6 +94,7 @@ class Activity5 : AppCompatActivity() {
         }
     }
 
+    // Fonction pour toggle le menu burger (Ouverture/Fermeture)
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (toggle.onOptionsItemSelected(item)) {
             return true
@@ -101,6 +102,7 @@ class Activity5 : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    // Fonction pour inflate l'ActionBar avec celle de recherche
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.search_menu, menu)
         val searchItem = menu.findItem(R.id.action_search)

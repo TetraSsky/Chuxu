@@ -1,5 +1,11 @@
 package com.example.chuxu.view;
 
+/*
+Cette classe représente un modèle de données pour UN jeu spécifique
+- Contient des chaînes de caractères pour le nom du jeu, le type, le prix, la description et l'URL de l'image
+- Encapsule les données d'un jeu. Chaque instance de GameViewModel représente UN JEU INDIVIDUEL
+ */
+
 public class GameViewModel {
     String gameNameTextView;
     String gameTypeTextView;

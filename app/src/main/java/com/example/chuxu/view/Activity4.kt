@@ -232,6 +232,7 @@ class Activity4 : AppCompatActivity() {
         }
     }
 
+    // Fonction pour toggle le menu burger (Ouverture/Fermeture)
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (toggle.onOptionsItemSelected(item)) {
             return true
@@ -239,16 +240,19 @@ class Activity4 : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    // Fonction pour définir si l'email est valide grâce aux REGEX
     private fun isEmailValid(email: String): Boolean {
         val emailPattern = Pattern.compile("^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,3})+\$")
         return emailPattern.matcher(email).matches()
     }
 
+    // Fonction pour définir si le mot de passe est valide grâce aux PATTERN
     private fun isPasswordValid(password: String): Boolean {
         val passwordPattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@!?_%$|\\\\]).{8,}$")
         return passwordPattern.matcher(password).matches()
     }
 
+    // Fonction pour définir si le pseudonyme est valide
     private fun isNicknameValid(nickname: String): Boolean {
         // Vérifier si le pseudonyme contient uniquement des caractères alphanumériques ou des caractères spéciaux
         val nicknamePattern = Pattern.compile("^[a-zA-Z0-9!?@_-]+$")

@@ -43,16 +43,14 @@ class MainActivity : AppCompatActivity() {
         // Activer le bouton de connexion (Obligatoire si l'utilisateur s'est déconnecté car mis en false plus bas)
         connectButton.isEnabled = true
 
-        // Définition de l'action à effectuer lors du clic sur le bouton de connexion
         connectButton.setOnClickListener {
-
             //Désactiver le bouton pour éviter les spams (Cela peut créer du lag)
             connectButton.isEnabled = false
 
             val email = emailEditText.text.toString().trim()
             val password = passwordEditText.text.toString().trim()
 
-            // Vérification si les champs email et password ne sont pas vides
+            // Si les champs email et password ne sont pas vides
             if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Veuillez saisir votre email et votre mot de passe.", Toast.LENGTH_LONG).show()
                 connectButton.isEnabled = true
@@ -105,11 +103,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // Fonction pour inflate la page actuelle et rajouter un chargement
     private fun showLoadingView() {
         connectloadingView = layoutInflater.inflate(R.layout.connect_loading_screen, findViewById(android.R.id.content), false)
         (findViewById<ViewGroup>(android.R.id.content)).addView(connectloadingView)
     }
 
+    // Fonction pour cacher la page de chargement
     private fun hideLoadingView() {
         (findViewById<ViewGroup>(android.R.id.content)).removeView(connectloadingView)
     }
