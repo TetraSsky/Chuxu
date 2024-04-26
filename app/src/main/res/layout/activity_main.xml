@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="56dp"
-                android:background="#B3000000"
+                android:background="@color/proneblack"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -49,11 +49,11 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="355dp"
                 android:layout_height="530dp"
-                android:background="#B3000000"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/MenuHaut">
+                app:layout_constraintTop_toBottomOf="@+id/MenuHaut"
+                android:background="@color/proneblack">
 
                 <ImageView
                     android:id="@+id/imageView2"
@@ -131,6 +131,6 @@
         app:menu="@menu/nav_menu"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        android:background="#B3000000"/>
+        android:background="@color/navbar"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

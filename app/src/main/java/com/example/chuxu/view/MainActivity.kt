@@ -3,6 +3,8 @@ package com.example.chuxu.view
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -16,6 +18,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var emailEditText: EditText
     private lateinit var passwordEditText: EditText
+    private lateinit var connectloadingView: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +59,7 @@ class MainActivity : AppCompatActivity() {
             } else {
                 // Exécution de la tâche de connexion dans une coroutine (Pour éviter de l'exécuter dans l'application, ce qui est INTERDIT)
                 CoroutineScope(Dispatchers.Main).launch {
+                    showLoadingView()
                     val (passwordMatch, nickname) = UserController.loginUser(email, password)
                     if (passwordMatch) {
 
@@ -71,14 +75,18 @@ class MainActivity : AppCompatActivity() {
                             editor.putInt("userID", userID)
                             editor.apply()
 
+                            hideLoadingView()
+
                             val intent = Intent(this@MainActivity, Activity2::class.java)
                             startActivity(intent)
                             finish()
                         } else {
+                            hideLoadingView()
                             Toast.makeText(this@MainActivity, "Une erreur est survenue.", Toast.LENGTH_LONG).show()
                             connectButton.isEnabled = true
                         }
                     } else {
+                        hideLoadingView()
                         Toast.makeText(this@MainActivity, "Identifiants incorrects. Veuillez réessayer.", Toast.LENGTH_LONG).show()
                         connectButton.isEnabled = true
                     }
@@ -95,5 +103,14 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+    }
+
+    private fun showLoadingView() {
+        connectloadingView = layoutInflater.inflate(R.layout.connect_loading_screen, findViewById(android.R.id.content), false)
+        (findViewById<ViewGroup>(android.R.id.content)).addView(connectloadingView)
+    }
+
+    private fun hideLoadingView() {
+        (findViewById<ViewGroup>(android.R.id.content)).removeView(connectloadingView)
     }
 }
