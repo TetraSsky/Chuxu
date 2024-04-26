@@ -45,20 +45,14 @@ class Activity5 : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.search_menu, menu)
-
-        // Get the search menu item
         val searchItem = menu.findItem(R.id.action_search)
-
-        // Get the search widget from the menu item
         val searchView = searchItem.actionView as SearchView
-
-        // Set the search hint text in the search widget
         searchView.queryHint = "Rechercher un jeu..."
 
-        // Set a text listener for the search widget
+        // Définition de l'action à effectuer lors du clic sur la barre de recherche
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                // Execute search when user submits a search query
+                // Executer une recherche avec l'entrée de l'utilisateur
                 query?.let {
                     performSearch(query)
                 }
@@ -66,7 +60,6 @@ class Activity5 : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                // Action to perform when search text changes
                 return true
             }
         })
@@ -80,20 +73,19 @@ class Activity5 : AppCompatActivity() {
             if (games.isNotEmpty()) {
                 displayGameDetails(games.first())
             } else {
-                // Handle case when no game found
+                // Si aucun jeu n'a été trouvé
                 Toast.makeText(this@Activity5, "Aucun jeu trouvé", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     private fun displayGameDetails(game: GameData) {
-        // Set game details to views
+        // Définir les vues (A changer --> Utiliser un template)
         gameNameTextView.text = game.name
         gameTypeTextView.text = game.type
         gamePrixTextView.text = game.priceOverview?.price ?: "N/A"
         gameDescTextView.text = game.description
-
-        // Load game image using Picasso library
+        // Pour charger l'image du jeu
         Picasso.get().load(game.headerImage).into(gameImgImageView)
     }
 }
