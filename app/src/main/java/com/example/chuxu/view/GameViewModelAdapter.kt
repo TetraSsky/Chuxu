@@ -9,6 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.chuxu.R
 import com.squareup.picasso.Picasso
 
+/*
+Cette classe est un Adapter pour le RecyclerView.
+Lie les données de la liste (donc ici, une liste de GameViewModel) avec les vues dans chaque élément de la liste
+- Crée les vues pour chaque élément de la liste et les remplit avec les données appropriées en utilisant les instances de GameViewModel
+- Gère la création des vues (onCreateViewHolder), le remplissage (onBindViewHolder) et le calcul total d'éléments (getItemCount)
+ */
+
 class GameViewModelAdapter : RecyclerView.Adapter<GameViewModelAdapter.GameViewHolder>() {
 
     private var gameViewModels: List<GameViewModel> = ArrayList()

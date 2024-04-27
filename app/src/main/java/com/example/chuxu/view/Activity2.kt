@@ -80,6 +80,7 @@ class Activity2 : AppCompatActivity() {
         }
     }
 
+    // Fonction pour toggle le menu burger (Ouverture/Fermeture)
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (toggle.onOptionsItemSelected(item)) {
             return true
