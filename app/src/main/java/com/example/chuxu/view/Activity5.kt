@@ -31,6 +31,7 @@ class Activity5 : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: GameViewModelAdapter
     private lateinit var loadingView: View
+    private lateinit var longloadingView: View
     private lateinit var defaultview: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -137,6 +138,15 @@ class Activity5 : AppCompatActivity() {
         (findViewById<ViewGroup>(android.R.id.content)).removeView(loadingView)
     }
 
+    private fun showLongLoadingView() {
+        longloadingView = layoutInflater.inflate(R.layout.long_loading_screen, findViewById(android.R.id.content), false)
+        (findViewById<ViewGroup>(android.R.id.content)).addView(longloadingView)
+    }
+
+    private fun hideLongLoadingView() {
+        (findViewById<ViewGroup>(android.R.id.content)).removeView(longloadingView)
+    }
+
     private fun destroyDefaultView() {
         (findViewById<ViewGroup>(android.R.id.content)).removeView(defaultview)
     }
@@ -144,8 +154,10 @@ class Activity5 : AppCompatActivity() {
     private fun performSearch(query: String) {
         CoroutineScope(Dispatchers.Main).launch {
             destroyDefaultView()
+            val startTime = System.currentTimeMillis()
             showLoadingView()
             val games = SteamAPIManager.searchGames(query)
+            val elapsedTime = System.currentTimeMillis() - startTime
             val gameViewModels = ArrayList<GameViewModel>()
             for (game in games) {
                 gameViewModels.add(
@@ -158,6 +170,12 @@ class Activity5 : AppCompatActivity() {
                     )
                 )
             }
+            if (elapsedTime >= 60000) { // Si le temps écoulé est supérieur ou égal à une minute, afficher chargement long
+                showLongLoadingView()
+            } else {
+                hideLongLoadingView()
+            }
+            hideLongLoadingView()
             hideLoadingView()
             adapter.setData(gameViewModels)
         }
