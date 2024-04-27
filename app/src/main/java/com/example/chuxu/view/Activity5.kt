@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -17,10 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.chuxu.DatabaseManager
 import com.example.chuxu.R
-import com.example.chuxu.GameData
 import com.example.chuxu.SteamAPIManager
 import com.google.android.material.navigation.NavigationView
-import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -30,28 +29,30 @@ class Activity5 : AppCompatActivity() {
     private lateinit var toggle : ActionBarDrawerToggle
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: GameViewModelAdapter
+    private var isShowingLoadingView = false
     private lateinit var loadingView: View
-    private lateinit var longloadingView: View
+    private lateinit var loadingTextView1: TextView
+    private lateinit var loadingTextView2: TextView
     private lateinit var defaultview: View
+    private lateinit var rootView: ViewGroup
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.recherche)
 
-        // Initialiser le RecyclerView et l'Adapter
+        // Initialiser les valeurs nécessaires (Navigation + Page)
         recyclerView = findViewById(R.id.myRecyclerView)
         adapter = GameViewModelAdapter()
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
-
-        // Valeurs nécessaires à la navigation
+        rootView = findViewById(R.id.root_layout)
         val drawerLayout : DrawerLayout = findViewById(R.id.MenuBurger)
         val navView : NavigationView = findViewById(R.id.nav_view)
         val sharedPref = getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)
 
-        // Afficher par défault pour ne pas faire vide
-        defaultview = layoutInflater.inflate(R.layout.default_research_screen, findViewById(android.R.id.content), false)
-        (findViewById<ViewGroup>(android.R.id.content)).addView(defaultview)
+        // Afficher par défault pour ne pas faire vide et afficher dans le ROOT pour éviter la superposition
+        defaultview = layoutInflater.inflate(R.layout.default_research_screen, null)
+        rootView.addView(defaultview)
 
         // Activer le mode "Edge-to-Edge" pour étendre le contenu sur les bords de l'écran
         enableEdgeToEdge()
@@ -125,39 +126,45 @@ class Activity5 : AppCompatActivity() {
                 return true
             }
         })
-
         return true
     }
 
-    private fun showLoadingView() {
-        loadingView = layoutInflater.inflate(R.layout.loading_screen, findViewById(android.R.id.content), false)
-        (findViewById<ViewGroup>(android.R.id.content)).addView(loadingView)
+    private fun showLoadingView(text1: String, text2: String) {
+        // Rajouter une vérification (Pour éviter plusieurs loading screen en même temps)
+        if (!isShowingLoadingView) {
+            isShowingLoadingView = true
+            loadingView = layoutInflater.inflate(R.layout.loading_screen, null)
+            loadingTextView1 = loadingView.findViewById(R.id.loadingtextView1)
+            loadingTextView2 = loadingView.findViewById(R.id.loadingtextView2)
+            loadingTextView1.text = text1
+            loadingTextView2.text = text2
+            rootView.addView(loadingView)
+        } else {
+            // Mettre à jour le texte de l'écran de chargement existant
+            updateLoadingView(text1, text2)
+        }
+    }
+
+    private fun updateLoadingView(text1: String, text2: String) {
+        loadingTextView1.text = text1
+        loadingTextView2.text = text2
     }
 
     private fun hideLoadingView() {
-        (findViewById<ViewGroup>(android.R.id.content)).removeView(loadingView)
-    }
-
-    private fun showLongLoadingView() {
-        longloadingView = layoutInflater.inflate(R.layout.long_loading_screen, findViewById(android.R.id.content), false)
-        (findViewById<ViewGroup>(android.R.id.content)).addView(longloadingView)
-    }
-
-    private fun hideLongLoadingView() {
-        (findViewById<ViewGroup>(android.R.id.content)).removeView(longloadingView)
+        isShowingLoadingView = false
+        rootView.removeView(loadingView)
     }
 
     private fun destroyDefaultView() {
-        (findViewById<ViewGroup>(android.R.id.content)).removeView(defaultview)
+        val rootView = findViewById<ViewGroup>(R.id.root_layout)
+        rootView.removeView(defaultview)
     }
 
     private fun performSearch(query: String) {
         CoroutineScope(Dispatchers.Main).launch {
             destroyDefaultView()
-            val startTime = System.currentTimeMillis()
-            showLoadingView()
+            showLoadingView("Recherche en cours...", "Veuillez patienter...")
             val games = SteamAPIManager.searchGames(query)
-            val elapsedTime = System.currentTimeMillis() - startTime
             val gameViewModels = ArrayList<GameViewModel>()
             for (game in games) {
                 gameViewModels.add(
@@ -170,12 +177,6 @@ class Activity5 : AppCompatActivity() {
                     )
                 )
             }
-            if (elapsedTime >= 60000) { // Si le temps écoulé est supérieur ou égal à une minute, afficher chargement long
-                showLongLoadingView()
-            } else {
-                hideLongLoadingView()
-            }
-            hideLongLoadingView()
             hideLoadingView()
             adapter.setData(gameViewModels)
         }
