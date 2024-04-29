@@ -1,7 +1,10 @@
 package com.example.chuxu
 
+import com.example.chuxu.SteamAPIManager.RateLimitInterceptor.REQUEST_INTERVAL
+import com.example.chuxu.SteamAPIManager.RateLimitInterceptor.REQUEST_LIMIT
 import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -9,6 +12,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
+import java.lang.System.currentTimeMillis
 import java.util.concurrent.TimeUnit
 
 interface SteamService {
@@ -80,8 +84,8 @@ object SteamAPIManager {
      * Cet intercepteur garantit que le nombre de requêtes ne dépasse pas la limite spécifiée.
      */
     object RateLimitInterceptor : Interceptor {
-        private const val REQUEST_LIMIT = 200 // Limite de requêtes par minute
-        private const val REQUEST_INTERVAL = 60000L // Intervalle entre les requêtes en millisecondes
+        const val REQUEST_LIMIT = 200 // Limite de requêtes par minute
+        const val REQUEST_INTERVAL = 120000L // Intervalle entre les requêtes en millisecondes
 
         private val requestQueue = mutableListOf<Long>()
 
@@ -118,9 +122,12 @@ object SteamAPIManager {
 
                 response.appList.apps.forEach { app ->
                     if (app.name.contains(query, ignoreCase = true)) {
+                        println("Searching for game with appId: ${app.appId}")
+                        delay(500)
                         // Obtenir les détails du jeu
                         val detailsResponse = steamService.getAppDetails(app.appId)
                         val details = detailsResponse[app.appId.toString()]?.data
+                        println("Scrapped data: $details")
                         details?.let {
                             games.add(it)
                         }

@@ -41,11 +41,11 @@ class Activity5 : AppCompatActivity() {
         setContentView(R.layout.recherche)
 
         // Initialiser les valeurs nécessaires (Navigation + Page)
+        rootView = findViewById(R.id.root_layout)
         recyclerView = findViewById(R.id.myRecyclerView)
         adapter = GameViewModelAdapter()
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
-        rootView = findViewById(R.id.root_layout)
         val drawerLayout : DrawerLayout = findViewById(R.id.MenuBurger)
         val navView : NavigationView = findViewById(R.id.nav_view)
         val sharedPref = getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)

@@ -48,7 +48,6 @@ class Activity3 : AppCompatActivity() {
     private lateinit var loadingView: View
     private lateinit var loadingTextView1: TextView
     private lateinit var loadingTextView2: TextView
-    private lateinit var rootView: ViewGroup
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -164,25 +163,26 @@ class Activity3 : AppCompatActivity() {
         // Rajouter une vérification (Pour éviter plusieurs loading screen en même temps)
         if (!isShowingLoadingView) {
             isShowingLoadingView = true
-            loadingView = layoutInflater.inflate(R.layout.loading_screen, null)
+            loadingView = layoutInflater.inflate(R.layout.loading_screen, findViewById(android.R.id.content), false)
             loadingTextView1 = loadingView.findViewById(R.id.loadingtextView1)
             loadingTextView2 = loadingView.findViewById(R.id.loadingtextView2)
             loadingTextView1.text = text1
             loadingTextView2.text = text2
-            rootView.addView(loadingView)
+            (findViewById<ViewGroup>(android.R.id.content)).addView(loadingView)
         } else {
             // Mettre à jour le texte de l'écran de chargement existant
             updateLoadingView(text1, text2)
         }
     }
 
+    // Fonction pour cacher la page de chargement
+    private fun hideLoadingView() {
+        isShowingLoadingView = false
+        (findViewById<ViewGroup>(android.R.id.content)).removeView(loadingView)
+    }
+
     private fun updateLoadingView(text1: String, text2: String) {
         loadingTextView1.text = text1
         loadingTextView2.text = text2
-    }
-
-    private fun hideLoadingView() {
-        isShowingLoadingView = false
-        rootView.removeView(loadingView)
     }
 }
