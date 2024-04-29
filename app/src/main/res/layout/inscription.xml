@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -31,9 +32,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/fragmentContainer2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="68dp"
+            android:layout_width="301dp"
+            android:layout_height="382dp"
+            android:layout_marginBottom="24dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.496"
@@ -57,7 +58,7 @@
                 android:id="@+id/Nickname"
                 android:layout_width="212dp"
                 android:layout_height="30dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="16dp"
                 android:background="#B3393838"
                 android:ems="10"
                 android:fontFamily="@font/dotgothic16"
@@ -124,7 +125,7 @@
                 android:id="@+id/Inscrip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="16dp"
                 android:backgroundTint="#252525"
                 android:fontFamily="@font/press_start_2p"
                 android:gravity="center"
@@ -161,7 +162,9 @@
                 app:layout_constraintBottom_toTopOf="@+id/textView5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
