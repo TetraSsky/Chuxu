@@ -20,6 +20,7 @@ import com.example.chuxu.controller.UserController
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.regex.Pattern
 
@@ -62,15 +63,22 @@ class Activity4 : AppCompatActivity() {
         val sharedPref = getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)
         val userID = sharedPref.getInt("userID", 0)
 
+        NouvEmailButton.isEnabled = true
         NouvEmailButton.setOnClickListener {
-            val email = emailEditText.text.toString().trim()
+            NouvEmailButton.isEnabled = false
+            CoroutineScope(Dispatchers.Main).launch {
+                val email = emailEditText.text.toString().trim()
 
-            if (email.isEmpty()) {
-                Toast.makeText(this, "Veuillez remplir le champ !", Toast.LENGTH_SHORT).show()
-            } else if (!isEmailValid(email)) {
-                Toast.makeText(this, "L'email en entrée est invalide !", Toast.LENGTH_SHORT).show()
-            } else {
-                CoroutineScope(Dispatchers.Main).launch {
+                if (email.isEmpty()) {
+                    Toast.makeText(this@Activity4, "Veuillez remplir le champ !", Toast.LENGTH_SHORT).show()
+                    delay(4000)
+                    NouvEmailButton.isEnabled = true
+                } else if (!isEmailValid(email)) {
+                    Toast.makeText(this@Activity4, "L'email en entrée est invalide !", Toast.LENGTH_SHORT).show()
+                    delay(4000)
+                    NouvEmailButton.isEnabled = true
+                } else {
+
                     val nouvEmail = emailEditText.text.toString().trim()
                     val success = UserController.newUserEmail(nouvEmail, userID)
 
@@ -86,24 +94,35 @@ class Activity4 : AppCompatActivity() {
                         startActivity(intent)
                         finish()
                     } else {
-                        Toast.makeText(this@Activity4,"Échec de la modification de l'email.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@Activity4, "Échec de la modification de l'email.", Toast.LENGTH_LONG).show()
+                        delay(4000)
+                        NouvEmailButton.isEnabled = true
                     }
                 }
             }
         }
 
+        NouvMDPButton.isEnabled = true
         NouvMDPButton.setOnClickListener {
-            val password = passwordEditText.text.toString()
-            val passwordVerif = passwordVerifEditText.text.toString()
+            NouvMDPButton.isEnabled = false
+            CoroutineScope(Dispatchers.Main).launch {
+                val password = passwordEditText.text.toString()
+                val passwordVerif = passwordVerifEditText.text.toString()
 
-            if (password.isEmpty() || passwordVerif.isEmpty()) {
-                Toast.makeText(this, "Veuillez remplir les champs !", Toast.LENGTH_SHORT).show()
-            } else if (!isPasswordValid(password)) {
-                Toast.makeText(this, "Mot de passe invalide ou trop peu sécurisé.", Toast.LENGTH_SHORT).show()
-            } else if (password != passwordVerif) {
-                Toast.makeText(this, "Les mots de passe ne correspondent pas.", Toast.LENGTH_SHORT).show()
-            } else {
-                CoroutineScope(Dispatchers.Main).launch {
+                if (password.isEmpty() || passwordVerif.isEmpty()) {
+                    Toast.makeText(this@Activity4, "Veuillez remplir les champs !", Toast.LENGTH_SHORT).show()
+                    delay(4000)
+                    NouvMDPButton.isEnabled = true
+                } else if (!isPasswordValid(password)) {
+                    Toast.makeText(this@Activity4, "Mot de passe invalide ou trop peu sécurisé.", Toast.LENGTH_SHORT).show()
+                    delay(4000)
+                    NouvMDPButton.isEnabled = true
+                } else if (password != passwordVerif) {
+                    Toast.makeText(this@Activity4, "Les mots de passe ne correspondent pas.", Toast.LENGTH_SHORT).show()
+                    delay(4000)
+                    NouvMDPButton.isEnabled = true
+                } else {
+
                     val nouvPassword = UserController.encryptPassword(password)
                     val success = UserController.newUserPassword(nouvPassword, userID)
 
@@ -114,27 +133,36 @@ class Activity4 : AppCompatActivity() {
                         editor.putBoolean("isUserLoggedIn", false)
                         editor.apply()
 
-                        Toast.makeText(this@Activity4,"Mot de passe modifié avec succès !", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@Activity4, "Mot de passe modifié avec succès !", Toast.LENGTH_LONG).show()
 
                         val intent = Intent(this@Activity4, MainActivity::class.java)
                         startActivity(intent)
                         finish()
                     } else {
                         Toast.makeText(this@Activity4, "Échec de la modification du mot de passe.", Toast.LENGTH_LONG).show()
+                        delay(4000)
+                        NouvMDPButton.isEnabled = true
                     }
                 }
             }
         }
 
+        NouvNicknameButton.isEnabled = true
         NouvNicknameButton.setOnClickListener {
-            val nickname = nicknameEditText.text.toString().trim()
+            NouvNicknameButton.isEnabled = false
+            CoroutineScope(Dispatchers.Main).launch {
+                val nickname = nicknameEditText.text.toString().trim()
 
-            if (nickname.isEmpty()) {
-                Toast.makeText(this, "Veuillez remplir le champ !", Toast.LENGTH_SHORT).show()
-            } else if (!isNicknameValid(nickname)) {
-                Toast.makeText(this, "Pseudo invalide.", Toast.LENGTH_SHORT).show()
-            } else {
-                CoroutineScope(Dispatchers.Main).launch {
+                if (nickname.isEmpty()) {
+                    Toast.makeText(this@Activity4, "Veuillez remplir le champ !", Toast.LENGTH_SHORT).show()
+                    delay(4000)
+                    NouvNicknameButton.isEnabled = true
+                } else if (!isNicknameValid(nickname)) {
+                    Toast.makeText(this@Activity4, "Pseudo invalide.", Toast.LENGTH_SHORT).show()
+                    delay(4000)
+                    NouvNicknameButton.isEnabled = true
+                } else {
+
                     val nouvNickname = nicknameEditText.text.toString().trim()
                     val success = UserController.newUserNickname(nouvNickname, userID)
 
@@ -151,10 +179,14 @@ class Activity4 : AppCompatActivity() {
                             startActivity(intent)
                             finish()
                         } else {
-                            Toast.makeText(this@Activity4, "Veuillez vous reconnecter.", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@Activity4, "Veuillez vous reconnecter.", Toast.LENGTH_SHORT).show()
+                            delay(4000)
+                            NouvNicknameButton.isEnabled = true
                         }
                     } else {
                         Toast.makeText(this@Activity4, "Échec de la modification du pseudo.", Toast.LENGTH_LONG).show()
+                        delay(4000)
+                        NouvNicknameButton.isEnabled = true
                     }
                 }
             }

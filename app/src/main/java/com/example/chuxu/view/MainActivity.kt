@@ -15,6 +15,7 @@ import com.example.chuxu.R
 import com.example.chuxu.controller.UserController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
@@ -47,17 +48,16 @@ class MainActivity : AppCompatActivity() {
 
         connectButton.isEnabled = true
         connectButton.setOnClickListener {
-
             connectButton.isEnabled = false
+            CoroutineScope(Dispatchers.Main).launch {
+                val email = emailEditText.text.toString().trim()
+                val password = passwordEditText.text.toString().trim()
 
-            val email = emailEditText.text.toString().trim()
-            val password = passwordEditText.text.toString().trim()
-
-            if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Veuillez saisir votre email et votre mot de passe.", Toast.LENGTH_LONG).show()
-                connectButton.isEnabled = true
-            } else {
-                CoroutineScope(Dispatchers.Main).launch {
+                if (email.isEmpty() || password.isEmpty()) {
+                    Toast.makeText(this@MainActivity, "Veuillez saisir votre email et votre mot de passe.", Toast.LENGTH_LONG).show()
+                    delay(4000)
+                    connectButton.isEnabled = true
+                } else {
                     showLoadingView("Connexion...", "Veuillez patienter...")
                     val (passwordMatch, nickname) = UserController.loginUser(email, password)
                     if (passwordMatch) {
@@ -79,17 +79,15 @@ class MainActivity : AppCompatActivity() {
                             startActivity(intent)
                             finish()
                         } else {
-
                             hideLoadingView()
-
                             Toast.makeText(this@MainActivity, "Une erreur est survenue.", Toast.LENGTH_LONG).show()
+                            delay(4000)
                             connectButton.isEnabled = true
                         }
                     } else {
-
                         hideLoadingView()
-
                         Toast.makeText(this@MainActivity, "Identifiants incorrects. Veuillez réessayer.", Toast.LENGTH_LONG).show()
+                        delay(4000)
                         connectButton.isEnabled = true
                     }
                 }

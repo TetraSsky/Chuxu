@@ -21,6 +21,7 @@ import com.example.chuxu.controller.UserController
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -58,26 +59,40 @@ class Activity3 : AppCompatActivity() {
         nicknameEditText = findViewById(R.id.Nickname)
         val inscripButton = findViewById<Button>(R.id.Inscrip)
 
+        inscripButton.isEnabled = true
         inscripButton.setOnClickListener {
-            val email = emailEditText.text.toString().trim()
-            val password = passwordEditText.text.toString()
-            val passwordVerif = passwordVerifEditText.text.toString()
-            val nickname = nicknameEditText.text.toString().trim()
+            inscripButton.isEnabled = false
+            CoroutineScope(Dispatchers.Main).launch {
+                val email = emailEditText.text.toString().trim()
+                val password = passwordEditText.text.toString()
+                val passwordVerif = passwordVerifEditText.text.toString()
+                val nickname = nicknameEditText.text.toString().trim()
 
-            if (email.isEmpty() || password.isEmpty() || passwordVerif.isEmpty() || nickname.isEmpty()) {
-                Toast.makeText(this, "Veuillez remplir tous les champs !", Toast.LENGTH_SHORT).show()
-            } else if (!isEmailValid(email)) {
-                Toast.makeText(this, "L'email en entrée est invalide !", Toast.LENGTH_SHORT).show()
-            } else if (!isPasswordValid(password)) {
-                Toast.makeText(this,"Mot de passe invalide ou trop peu sécurisé.", Toast.LENGTH_SHORT).show()
-            } else if (password != passwordVerif) {
-                Toast.makeText(this, "Les mots de passe ne correspondent pas.", Toast.LENGTH_SHORT).show()
-            } else if (!isNicknameValid(nickname)) {
-                Toast.makeText(this, "Pseudo invalide.", Toast.LENGTH_SHORT).show()
-            } else {
-                showLoadingView("Connexion...", "Veuillez patienter...")
-                val encryptedPassword = UserController.encryptPassword(password)
-                RegisterUserTask().execute(email, encryptedPassword, nickname)
+                if (email.isEmpty() || password.isEmpty() || passwordVerif.isEmpty() || nickname.isEmpty()) {
+                    Toast.makeText(this@Activity3, "Veuillez remplir tous les champs !", Toast.LENGTH_SHORT).show()
+                    delay(4000)
+                    inscripButton.isEnabled = true
+                } else if (!isEmailValid(email)) {
+                    Toast.makeText(this@Activity3, "L'email en entrée est invalide !", Toast.LENGTH_SHORT).show()
+                    delay(4000)
+                    inscripButton.isEnabled = true
+                } else if (!isPasswordValid(password)) {
+                    Toast.makeText(this@Activity3, "Mot de passe invalide ou trop peu sécurisé.", Toast.LENGTH_SHORT).show()
+                    delay(4000)
+                    inscripButton.isEnabled = true
+                } else if (password != passwordVerif) {
+                    Toast.makeText(this@Activity3, "Les mots de passe ne correspondent pas.", Toast.LENGTH_SHORT).show()
+                    delay(4000)
+                    inscripButton.isEnabled = true
+                } else if (!isNicknameValid(nickname)) {
+                    Toast.makeText(this@Activity3, "Pseudo invalide.", Toast.LENGTH_SHORT).show()
+                    delay(4000)
+                    inscripButton.isEnabled = true
+                } else {
+                    showLoadingView("Inscription...", "Veuillez patienter...")
+                    val encryptedPassword = UserController.encryptPassword(password)
+                    RegisterUserTask().execute(email, encryptedPassword, nickname)
+                }
             }
         }
     }
@@ -139,7 +154,6 @@ class Activity3 : AppCompatActivity() {
                         finish()
                     } else {
                         hideLoadingView()
-
                         Toast.makeText(this@Activity3, "Une erreur est survenue.", Toast.LENGTH_LONG).show()
                     }
                 }
