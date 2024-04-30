@@ -24,6 +24,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+/**
+ * Activité tierciaire de l'application, permet à l'utilisateur d'effectuer des recherches en lien avec l'API de Steam
+ */
 class Activity5 : AppCompatActivity() {
 
     private lateinit var toggle : ActionBarDrawerToggle
@@ -40,7 +43,11 @@ class Activity5 : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.recherche)
 
-        // Initialiser les valeurs nécessaires (Navigation + Page)
+        enableEdgeToEdge()
+
+        defaultview = layoutInflater.inflate(R.layout.default_research_screen, null)
+        rootView.addView(defaultview)
+
         rootView = findViewById(R.id.root_layout)
         recyclerView = findViewById(R.id.myRecyclerView)
         adapter = GameViewModelAdapter()
@@ -50,14 +57,6 @@ class Activity5 : AppCompatActivity() {
         val navView : NavigationView = findViewById(R.id.nav_view)
         val sharedPref = getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)
 
-        // Afficher par défault pour ne pas faire vide et afficher dans le ROOT pour éviter la superposition
-        defaultview = layoutInflater.inflate(R.layout.default_research_screen, null)
-        rootView.addView(defaultview)
-
-        // Activer le mode "Edge-to-Edge" pour étendre le contenu sur les bords de l'écran
-        enableEdgeToEdge()
-
-        // Initialisation de la barre de navigation + dependances
         toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
@@ -66,27 +65,22 @@ class Activity5 : AppCompatActivity() {
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.Menu -> {
-                    // Rediriger l'utilisateur vers l'acceuil
                     val intent = Intent(this, Activity2::class.java)
                     startActivity(intent)
                     finish()
                 }
                 R.id.Compte -> {
-                    // Rediriger l'utilisateur vers son compte
                     val intent = Intent(this, Activity4::class.java)
                     startActivity(intent)
                     finish()
                 }
                 R.id.Deconnect -> {
-                    // Fermer la connexion à la base de données
                     DatabaseManager.closeConnection()
 
-                    // Mettre à jour la session de l'utilisateur pour indiquer qu'il n'est plus connecté
                     val editor = sharedPref.edit()
                     editor.putBoolean("isUserLoggedIn", false)
                     editor.apply()
 
-                    // Rediriger l'utilisateur vers l'écran de connexion (MainActivity)
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                     finish()
@@ -96,7 +90,6 @@ class Activity5 : AppCompatActivity() {
         }
     }
 
-    // Fonction pour toggle le menu burger (Ouverture/Fermeture)
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (toggle.onOptionsItemSelected(item)) {
             return true
@@ -104,14 +97,12 @@ class Activity5 : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    // Fonction pour inflate l'ActionBar avec celle de recherche
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.search_menu, menu)
         val searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as SearchView
         searchView.queryHint = "Rechercher un jeu..."
 
-        // Définition de l'action à effectuer lors du clic sur la barre de recherche
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (!query.isNullOrBlank()) {
@@ -130,7 +121,6 @@ class Activity5 : AppCompatActivity() {
     }
 
     private fun showLoadingView(text1: String, text2: String) {
-        // Rajouter une vérification (Pour éviter plusieurs loading screen en même temps)
         if (!isShowingLoadingView) {
             rootView.removeView(defaultview)
             isShowingLoadingView = true
@@ -141,7 +131,6 @@ class Activity5 : AppCompatActivity() {
             loadingTextView2.text = text2
             rootView.addView(loadingView)
         } else {
-            // Mettre à jour le texte de l'écran de chargement existant
             updateLoadingView(text1, text2)
         }
     }

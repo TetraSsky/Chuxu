@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.chuxu.R
 import com.squareup.picasso.Picasso
 
-/*
-Cette classe est un Adapter pour le RecyclerView.
+/**
+Cette classe est un adaptateur pour le RecyclerView de "recherche.xml"
 Lie les données de la liste (donc ici, une liste de GameViewModel) avec les vues dans chaque élément de la liste
 - Crée les vues pour chaque élément de la liste et les remplit avec les données appropriées en utilisant les instances de GameViewModel
 - Gère la création des vues (onCreateViewHolder), le remplissage (onBindViewHolder) et le calcul total d'éléments (getItemCount)
@@ -40,7 +40,6 @@ class GameViewModelAdapter : RecyclerView.Adapter<GameViewModelAdapter.GameViewH
     }
 
     inner class GameViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        // Déclarer les vues de chaque élément de la liste ici
         private val gameNameTextView: TextView = itemView.findViewById(R.id.gameName)
         private val gameTypeTextView: TextView = itemView.findViewById(R.id.gameType)
         private val gamePrixTextView: TextView = itemView.findViewById(R.id.gamePrix)
@@ -48,7 +47,6 @@ class GameViewModelAdapter : RecyclerView.Adapter<GameViewModelAdapter.GameViewH
         private val gameImgImageView: ImageView = itemView.findViewById(R.id.gameImg)
 
         fun bind(gameViewModel: GameViewModel) {
-            // Mettre à jour les vues avec les données du GameViewModel actuel
             gameNameTextView.text = gameViewModel.getGameNameTextView()
             gameTypeTextView.text = gameViewModel.getGameTypeTextView()
             gamePrixTextView.text = gameViewModel.getGamePrixTextView()

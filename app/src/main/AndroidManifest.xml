@@ -3,8 +3,6 @@
 
     <!-- Permet à l'application de se connecter à Internet, NECESSAIRE pour communiquer avec base de données SQL -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
