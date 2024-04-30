@@ -9,10 +9,18 @@ import java.sql.SQLException
 import kotlin.experimental.and
 import kotlinx.coroutines.*
 
-object
-UserController {
+/**
+ * Contrôleur pour gérer les opérations liées aux utilisateurs.
+ */
+object UserController {
 
-    // Fonction pour connecter l'utilisateur
+    /**
+     * Connecte un utilisateur avec son email et mot de passe.
+     *
+     * @param email L'adresse email de l'utilisateur.
+     * @param password Le mot de passe de l'utilisateur.
+     * @return Une paire indiquant si l'utilisateur est connecté avec succès et son pseudo associé.
+     */
     suspend fun loginUser(email: String, password: String): Pair<Boolean, String> {
         return withContext(Dispatchers.IO) {
             var connection = DatabaseManager.getConnection()
@@ -23,7 +31,6 @@ UserController {
                     statement.setString(1, email)
                     val resultSet = statement.executeQuery()
 
-                    // Vérification si l'utilisateur existe dans la base de données avant de vérifier le mot de passe crypté
                     if (resultSet.next()) {
                         val storedPassword = resultSet.getString("Password")
                         val nickname = resultSet.getString("Nickname")
@@ -42,7 +49,12 @@ UserController {
         }
     }
 
-    // Fonction pour crypter le mot de passe
+    /**
+     * Crypte un mot de passe en utilisant l'algorithme SHA-256.
+     *
+     * @param password Le mot de passe à crypter.
+     * @return Le mot de passe crypté.
+     */
     fun encryptPassword(password: String): String {
         val md: MessageDigest
         try {
@@ -63,7 +75,12 @@ UserController {
         return ""
     }
 
-    // Fonction pour récupérer l'ID de l'utilisateur connecté
+    /**
+     * Récupère l'ID de l'utilisateur associé à l'adresse email donnée.
+     *
+     * @param email L'adresse email de l'utilisateur.
+     * @return L'ID de l'utilisateur.
+     */
     suspend fun getUserID(email: String): Int {
         return withContext(Dispatchers.IO) {
             var userID = 0
@@ -87,7 +104,12 @@ UserController {
         }
     }
 
-    //Fonction pour récupérer de nickname de l'utilisateur connecté
+    /**
+     * Récupère le pseudo de l'utilisateur associé à l'ID donné.
+     *
+     * @param userID L'ID de l'utilisateur.
+     * @return Le pseudo de l'utilisateur.
+     */
     suspend fun getUserNickname(userID: Int): String {
         return withContext(Dispatchers.IO) {
             var userNickname = ""
@@ -111,7 +133,13 @@ UserController {
         }
     }
 
-    // Fonction pour modifier l'e-mail de l'utilisateur
+    /**
+     * Modifie l'adresse email de l'utilisateur.
+     *
+     * @param email La nouvelle adresse email.
+     * @param userID L'ID de l'utilisateur.
+     * @return [true] si l'opération a réussi, [false] sinon.
+     */
     suspend fun newUserEmail(email: String, userID: Int): Boolean {
         return withContext(Dispatchers.IO) {
             var connection = DatabaseManager.getConnection()
@@ -145,7 +173,13 @@ UserController {
         }
     }
 
-    // Fonction pour modifier le mot de passe
+    /**
+     * Modifie le mot de passe de l'utilisateur.
+     *
+     * @param password Le nouveau mot de passe.
+     * @param userID L'ID de l'utilisateur.
+     * @return [true] si l'opération a réussi, [false] sinon.
+     */
     suspend fun newUserPassword(password: String, userID: Int): Boolean {
         return withContext(Dispatchers.IO) {
             var connection = DatabaseManager.getConnection()
@@ -169,7 +203,13 @@ UserController {
         }
     }
 
-    // Fonction pour modifier le pseudo
+    /**
+     * Modifie le pseudo de l'utilisateur.
+     *
+     * @param nickname Le nouveau pseudo.
+     * @param userID L'ID de l'utilisateur.
+     * @return [true] si l'opération a réussi, [false] sinon.
+     */
     suspend fun newUserNickname(nickname: String, userID: Int): Boolean {
         return withContext(Dispatchers.IO) {
             var connection = DatabaseManager.getConnection()
@@ -193,7 +233,14 @@ UserController {
         }
     }
 
-    // Fonction pour enregistrer un nouvel utilisateur || Inscription
+    /**
+     * Enregistre un nouvel utilisateur dans la base de données.
+     *
+     * @param email L'adresse email du nouvel utilisateur.
+     * @param password Le mot de passe du nouvel utilisateur.
+     * @param nickname Le pseudo du nouvel utilisateur.
+     * @return [true] si l'enregistrement a réussi, [false] sinon.
+     */
     fun registerUser(email: String, password: String, nickname: String): Boolean {
         var connection = DatabaseManager.getConnection()
         var isEmailAvailable = false
@@ -201,7 +248,6 @@ UserController {
 
         try {
             if (connection != null) {
-                // Vérifier si l'email est disponible
                 val emailCheckQuery = "SELECT COUNT(*) FROM Utilisateur WHERE Email = ?"
                 val emailCheckStatement = connection.prepareStatement(emailCheckQuery)
                 emailCheckStatement.setString(1, email)
@@ -212,7 +258,6 @@ UserController {
                 }
                 emailCheckStatement.close()
 
-                // Vérifier si le pseudo est disponible
                 val nicknameCheckQuery = "SELECT COUNT(*) FROM Utilisateur WHERE Nickname = ?"
                 val nicknameCheckStatement = connection.prepareStatement(nicknameCheckQuery)
                 nicknameCheckStatement.setString(1, nickname)
@@ -223,7 +268,6 @@ UserController {
                 }
                 nicknameCheckStatement.close()
 
-                // Si l'email et le pseudo sont disponibles, enregistrer l'utilisateur dans la base de données
                 if (isEmailAvailable && isNicknameAvailable) {
                     val statement = connection.createStatement()
                     val query = "INSERT INTO Utilisateur (Email, Password, Nickname) VALUES ('$email', '$password', '$nickname')"
@@ -239,7 +283,12 @@ UserController {
         return isEmailAvailable && isNicknameAvailable
     }
 
-    // Fonction pour supprimer un utilisateur (Définitivement, y compris ses avis)
+    /**
+     * Supprime définitivement le compte d'un utilisateur.
+     *
+     * @param userID L'ID de l'utilisateur à supprimer.
+     * @return [true] si la suppression a réussi, [false] sinon.
+     */
     suspend fun deleteUserAccount(userID: Int): Boolean {
         return withContext(Dispatchers.IO) {
             var connection = DatabaseManager.getConnection()

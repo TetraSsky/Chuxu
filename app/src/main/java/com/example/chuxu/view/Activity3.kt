@@ -12,7 +12,6 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.chuxu.DatabaseManager
@@ -31,16 +30,11 @@ class Activity3 : AppCompatActivity() {
     private lateinit var passwordVerifEditText: EditText
     private lateinit var nicknameEditText: EditText
     private val inappropriateNicknames = listOf(
-        // Français
         "negro", "négro", "nègre", "BlancSuprémaciste", "Raciste", "KKK", "Esclavage", "Aryan", "Nazi", "Hitler", "Fasciste", "Colonialiste", "Ségrégation", "SuprématieBlanche",
         "Violence", "Haine", "Terroriste", "Pornographie", "Porno", "Automutilation", "Suicide",
         "Trump", "Biden", "Macron", "Poutine", "XiJinping", "Erdogan", "KimJongUn", "Assad", "Netanyahu", "Merkel", "Laden", "Al-Qaïda",
-
-        // Anglais
         "WhiteSupremacist", "Racist", "Slavery", "Aryan", "Nazi", "Hitler", "Fascist", "Colonialist", "Segregation", "WhiteSupremacy",
         "Violence", "Hate", "Terrorist", "Pornography", "SelfHarm", "Sex", "Fuck",
-
-        // Espagnol
         "BlancoSupremacista", "Racista", "Esclavitud", "Nazi", "Hitler", "Fascista", "Colonialista", "Segregación",
         "Terrorista", "Pornografía", "Automutilación", "Suicidio",
     )
@@ -52,6 +46,8 @@ class Activity3 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.inscription)
+
+        enableEdgeToEdge()
 
         emailEditText = findViewById(R.id.Email)
         passwordEditText = findViewById(R.id.Password)
@@ -81,10 +77,6 @@ class Activity3 : AppCompatActivity() {
                 RegisterUserTask().execute(email, encryptedPassword, nickname)
             }
         }
-
-        // Activer le mode "Edge-to-Edge" pour étendre le contenu sur les bords de l'écran
-        enableEdgeToEdge()
-
     }
 
     private fun isEmailValid(email: String): Boolean {
@@ -98,16 +90,13 @@ class Activity3 : AppCompatActivity() {
     }
 
     private fun isNicknameValid(nickname: String): Boolean {
-        // Vérifier si le pseudonyme contient uniquement des caractères alphanumériques ou des caractères spéciaux
         val nicknamePattern = Pattern.compile("^[a-zA-Z0-9!?@_-]+$")
         val isNicknameValid = nicknamePattern.matcher(nickname).matches()
 
-        // Vérifier si le pseudonyme ne contient aucun terme inapproprié
         val containsInappropriate = inappropriateNicknames.any { inappropriateNickname ->
             nickname.contains(inappropriateNickname, ignoreCase = true)
         }
 
-        // Vérifier si le pseudonyme ne contient que des chiffres ou est inférieur à 5 caractères
         val isNumeric = nickname.matches("[0-9]+".toRegex())
         val isLengthValid = nickname.length >= 5
 
@@ -132,14 +121,12 @@ class Activity3 : AppCompatActivity() {
                     }
 
                     if (userID != 0) {
-                        // Redirection vers la page suivante si l'utilisateur est connecté avec succès
                         val intent = Intent(this@Activity3, Activity2::class.java)
                         startActivity(intent)
                         finish()
 
                         hideLoadingView()
 
-                        // Enregistrement de l'état de connexion
                         val sharedPref = getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)
                         val editor = sharedPref.edit()
                         editor.putBoolean("isUserLoggedIn", true)
@@ -160,7 +147,6 @@ class Activity3 : AppCompatActivity() {
     }
 
     private fun showLoadingView(text1: String, text2: String) {
-        // Rajouter une vérification (Pour éviter plusieurs loading screen en même temps)
         if (!isShowingLoadingView) {
             isShowingLoadingView = true
             loadingView = layoutInflater.inflate(R.layout.loading_screen, findViewById(android.R.id.content), false)
@@ -170,12 +156,10 @@ class Activity3 : AppCompatActivity() {
             loadingTextView2.text = text2
             (findViewById<ViewGroup>(android.R.id.content)).addView(loadingView)
         } else {
-            // Mettre à jour le texte de l'écran de chargement existant
             updateLoadingView(text1, text2)
         }
     }
 
-    // Fonction pour cacher la page de chargement
     private fun hideLoadingView() {
         isShowingLoadingView = false
         (findViewById<ViewGroup>(android.R.id.content)).removeView(loadingView)

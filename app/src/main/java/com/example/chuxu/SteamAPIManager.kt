@@ -105,7 +105,7 @@ object SteamAPIManager {
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
-        .client(okHttpClient) // Utiliser le client OkHttp configuré avec l'intercepteur
+        .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
