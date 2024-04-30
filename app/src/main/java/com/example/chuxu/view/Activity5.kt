@@ -45,10 +45,10 @@ class Activity5 : AppCompatActivity() {
 
         enableEdgeToEdge()
 
+        rootView = findViewById(R.id.root_layout)
         defaultview = layoutInflater.inflate(R.layout.default_research_screen, null)
         rootView.addView(defaultview)
 
-        rootView = findViewById(R.id.root_layout)
         recyclerView = findViewById(R.id.myRecyclerView)
         adapter = GameViewModelAdapter()
         recyclerView.adapter = adapter

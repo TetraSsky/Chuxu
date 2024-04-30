@@ -1,6 +1,7 @@
 package com.example.chuxu.view
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
@@ -11,6 +12,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.chuxu.DatabaseManager
 import com.example.chuxu.R
@@ -159,10 +161,11 @@ class Activity4 : AppCompatActivity() {
         }
 
         DeleteAccountButton.setOnClickListener {
-            AlertDialog.Builder(this)
-                .setTitle("Confirmation")
-                .setMessage("Êtes-vous sûr de vouloir supprimer votre compte ?")
-                .setPositiveButton("Oui") { _, _ ->
+            val alertDialogBuilder = AlertDialog.Builder(this, R.style.AlertDialogTheme)
+            alertDialogBuilder.apply {
+                setTitle("Confirmation")
+                setMessage("Êtes-vous sûr de vouloir supprimer votre compte ?")
+                setPositiveButton("Oui") { _, _ ->
                     CoroutineScope(Dispatchers.Main).launch {
                         val success = UserController.deleteUserAccount(userID)
                         if (success) {
@@ -182,9 +185,14 @@ class Activity4 : AppCompatActivity() {
                         }
                     }
                 }
-                .setNegativeButton("Non") { _, _ ->
-                }
-                .show()
+                setNegativeButton("Non") { _, _ -> }
+            }
+            val alertDialog = alertDialogBuilder.create()
+
+            alertDialog.show()
+
+            alertDialog.getButton(DialogInterface.BUTTON_POSITIVE)?.setTextColor(ContextCompat.getColor(this, R.color.red))
+            alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE)?.setTextColor(ContextCompat.getColor(this, R.color.white))
         }
 
         toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)

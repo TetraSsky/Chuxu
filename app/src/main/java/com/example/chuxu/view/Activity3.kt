@@ -124,10 +124,6 @@ class Activity3 : AppCompatActivity() {
                     }
 
                     if (userID != 0) {
-                        val intent = Intent(this@Activity3, Activity2::class.java)
-                        startActivity(intent)
-                        finish()
-
                         hideLoadingView()
 
                         val sharedPref = getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)
@@ -137,13 +133,19 @@ class Activity3 : AppCompatActivity() {
                         editor.putString("userNickname", nicknameEditText.text.toString().trim())
                         editor.putInt("userID", userID)
                         editor.apply()
+
+                        val intent = Intent(this@Activity3, Activity2::class.java)
+                        startActivity(intent)
+                        finish()
                     } else {
                         hideLoadingView()
+
                         Toast.makeText(this@Activity3, "Une erreur est survenue.", Toast.LENGTH_LONG).show()
                     }
                 }
             } else {
                 hideLoadingView()
+
                 Toast.makeText(applicationContext, "Erreur lors de l'inscription", Toast.LENGTH_LONG).show()
             }
         }
