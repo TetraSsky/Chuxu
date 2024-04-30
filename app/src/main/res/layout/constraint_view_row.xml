@@ -39,8 +39,8 @@
 
             <ImageView
                 android:id="@+id/gameImg"
-                android:layout_width="300dp"
-                android:layout_height="158dp"
+                android:layout_width="349dp"
+                android:layout_height="205dp"
                 android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toTopOf="@+id/gameType"
                 app:layout_constraintEnd_toEndOf="parent"

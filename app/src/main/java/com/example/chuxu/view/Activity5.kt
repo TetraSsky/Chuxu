@@ -132,6 +132,7 @@ class Activity5 : AppCompatActivity() {
     private fun showLoadingView(text1: String, text2: String) {
         // Rajouter une vérification (Pour éviter plusieurs loading screen en même temps)
         if (!isShowingLoadingView) {
+            rootView.removeView(defaultview)
             isShowingLoadingView = true
             loadingView = layoutInflater.inflate(R.layout.loading_screen, null)
             loadingTextView1 = loadingView.findViewById(R.id.loadingtextView1)
@@ -155,14 +156,8 @@ class Activity5 : AppCompatActivity() {
         rootView.removeView(loadingView)
     }
 
-    private fun destroyDefaultView() {
-        val rootView = findViewById<ViewGroup>(R.id.root_layout)
-        rootView.removeView(defaultview)
-    }
-
     private fun performSearch(query: String) {
         CoroutineScope(Dispatchers.Main).launch {
-            destroyDefaultView()
             showLoadingView("Recherche en cours...", "Veuillez patienter...")
             val games = SteamAPIManager.searchGames(query)
             val gameViewModels = ArrayList<GameViewModel>()

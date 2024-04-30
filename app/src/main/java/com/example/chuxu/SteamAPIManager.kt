@@ -123,7 +123,7 @@ object SteamAPIManager {
                 response.appList.apps.forEach { app ->
                     if (app.name.contains(query, ignoreCase = true)) {
                         println("Searching for game with appId: ${app.appId}")
-                        delay(500)
+                        delay(1000)
                         // Obtenir les détails du jeu
                         val detailsResponse = steamService.getAppDetails(app.appId)
                         val details = detailsResponse[app.appId.toString()]?.data
