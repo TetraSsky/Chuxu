@@ -73,6 +73,7 @@
                     android:gravity="center_vertical"
                     android:text="Bienvenue sur la V1 de Chuxu !"
                     android:textColor="#FFFFFF"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toTopOf="@+id/textView8"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -86,8 +87,9 @@
                     android:layout_marginBottom="60dp"
                     android:fontFamily="@font/dotgothic16"
                     android:gravity="center"
-                    android:text="Merci de rapporter les bugs que vous trouvez à l'adresse suivante : simonin974@gmail.com"
+                    android:text="Merci de rapporter les bugs que vous trouvez sur le serveur suivant : discord.gg/h6HVJfkZ9t"
                     android:textColor="#FFFFFF"
+                    android:textIsSelectable="true"
                     app:layout_constraintBottom_toTopOf="@+id/textView9"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />

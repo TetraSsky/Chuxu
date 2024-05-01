@@ -43,8 +43,6 @@ class Activity5 : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.recherche)
 
-        enableEdgeToEdge()
-
         rootView = findViewById(R.id.root_layout)
         defaultview = layoutInflater.inflate(R.layout.default_research_screen, null)
         rootView.addView(defaultview)
