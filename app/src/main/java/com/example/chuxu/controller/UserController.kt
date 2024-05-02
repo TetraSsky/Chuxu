@@ -1,6 +1,7 @@
 package com.example.chuxu.controller
 
 import com.example.chuxu.DatabaseManager
+import com.example.chuxu.view.GameReviewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.security.MessageDigest
@@ -317,10 +318,11 @@ object UserController {
      *
      * @param userId L'ID de l'utilisateur laissant la review.
      * @param gameId L'ID du jeu concerné par la review.
-     * @param review Le contenu de la review.
+     * @param message Le contenu de la review.
+     * @param appName le nom du jeu.
      * @return [true] si l'insertion a réussi, [false] sinon.
      */
-    suspend fun createReview(userID: Int, gameID: Int, message: String): Boolean {
+    suspend fun createReview(userID: Int, gameID: Int, message: String, appName: String?): Boolean {
         return withContext(Dispatchers.IO) {
             var connection = DatabaseManager.getConnection()
             try {
@@ -335,11 +337,12 @@ object UserController {
                     checkExistingReviewStatement.close()
 
                     if (existingReviewCount == 0) {
-                        val insertReviewQuery = "INSERT INTO Avis (UtilisateurID, GameID, Message) VALUES (?, ?, ?)"
+                        val insertReviewQuery = "INSERT INTO Avis (UtilisateurID, GameID, Message, GameName) VALUES (?, ?, ?, ?)"
                         val insertReviewStatement = connection.prepareStatement(insertReviewQuery)
                         insertReviewStatement.setInt(1, userID)
                         insertReviewStatement.setInt(2, gameID)
                         insertReviewStatement.setString(3, message)
+                        insertReviewStatement.setString(4, appName)
                         val isReviewInserted = insertReviewStatement.executeUpdate()
                         insertReviewStatement.close()
                         return@withContext isReviewInserted > 0
@@ -360,6 +363,39 @@ object UserController {
                 connection?.close()
             }
             false
+        }
+    }
+
+    /**
+     * Récupère les avis des utilisateurs pour un jeu spécifique depuis la base de données.
+     *
+     * @param appId L'ID du jeu pour lequel récupérer les avis.
+     * @return Une liste d'objets GameReviewModel représentant les avis des utilisateurs sur le jeu.
+     */
+    suspend fun fetchGameReviews(appId: Int): List<GameReviewModel> {
+        return withContext(Dispatchers.IO) {
+            val reviews = mutableListOf<GameReviewModel>()
+            try {
+                val connection = DatabaseManager.getConnection()
+                if (connection != null) {
+                    val query = "SELECT Utilisateur.Nickname, Avis.Message, Avis.GameName FROM Avis INNER JOIN Utilisateur ON Avis.UtilisateurID = Utilisateur.UtilisateurID WHERE Avis.GameID = ?"
+                    val statement = connection.prepareStatement(query)
+                    statement.setInt(1, appId)
+                    val resultSet = statement.executeQuery()
+
+                    while (resultSet.next()) {
+                        val userName = resultSet.getString("Nickname")
+                        val reviewMessage = resultSet.getString("Message")
+                        val gameName = resultSet.getString("GameName")
+                        val gameReview = GameReviewModel(userName, gameName, reviewMessage)
+                        reviews.add(gameReview)
+                    }
+                    statement.close()
+                }
+            } catch (e: SQLException) {
+                e.printStackTrace()
+            }
+            reviews
         }
     }
 }

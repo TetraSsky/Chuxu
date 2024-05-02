@@ -50,11 +50,6 @@ class Activity6 : AppCompatActivity() {
         appNameTextView.text = "$appName"
         userNicknameTextView.text = "Laissez un avis sur ce jeu, $userNickname !"
 
-        println(appId)
-        println(appName)
-        println(userNickname)
-        println(userID)
-
         sendReviewButton.isEnabled = true
         sendReviewButton.setOnClickListener {
             showLoadingView("Publication en cours...","Veuillez patienter...")
@@ -67,14 +62,10 @@ class Activity6 : AppCompatActivity() {
                     delay(4000)
                     sendReviewButton.isEnabled = true
                 } else {
-                    val result = UserController.createReview(userID, appId, userReview)
+                    val result = UserController.createReview(userID, appId, userReview, appName)
                     if (result) {
                         hideLoadingView()
-
                         Toast.makeText(this@Activity6, "Votre avis a été ajouté avec succès.", Toast.LENGTH_SHORT).show()
-
-                        val intent = Intent(this@Activity6, Activity5::class.java)
-                        startActivity(intent)
                         finish()
                     } else {
                         hideLoadingView()

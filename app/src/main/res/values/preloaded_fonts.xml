@@ -2,6 +2,9 @@
 <resources>
     <array name="preloaded_fonts" translatable="false">
         <item>@font/aldrich</item>
+        <item>@font/baloo</item>
+        <item>@font/baloo_bhai_2_medium</item>
+        <item>@font/baloo_bhai_2_semibold</item>
         <item>@font/coda</item>
         <item>@font/coda_extrabold</item>
         <item>@font/dm_mono_light</item>
