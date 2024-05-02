@@ -153,6 +153,7 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
             for (game in games) {
                 gameViewModels.add(
                     GameViewModel(
+                        game.appId,
                         game.name,
                         game.type,
                         game.priceOverview?.price ?: "N/A",
@@ -160,6 +161,7 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
                         game.headerImage
                     )
                 )
+                println(game.appId)
             }
             hideLoadingView()
             adapter.setData(gameViewModels)

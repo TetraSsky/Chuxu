@@ -71,11 +71,13 @@ class GameViewModelAdapter : RecyclerView.Adapter<GameViewModelAdapter.GameViewH
         private val gameTypeTextView: TextView = itemView.findViewById(R.id.gameType)
         private val gamePrixTextView: TextView = itemView.findViewById(R.id.gamePrix)
         private val gameDescTextView: TextView = itemView.findViewById(R.id.gameDesc)
+        private val gameIdTextView: TextView = itemView.findViewById(R.id.gameId)
         private val gameImgImageView: ImageView = itemView.findViewById(R.id.gameImg)
         val leaveReviewButton: Button = itemView.findViewById(R.id.leaveReview)
         val viewReviewButton: Button = itemView.findViewById(R.id.viewReviews)
 
         fun bind(gameViewModel: GameViewModel) {
+            gameIdTextView.text = gameViewModel.getGameIdTextView().toString()
             gameNameTextView.text = gameViewModel.getGameNameTextView()
             gameTypeTextView.text = gameViewModel.getGameTypeTextView()
             gamePrixTextView.text = gameViewModel.getGamePrixTextView()

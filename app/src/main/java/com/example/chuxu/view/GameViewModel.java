@@ -12,22 +12,22 @@ public class GameViewModel {
     private String gamePrixTextView;
     private String gameDescTextView;
     private String gameImgImageView;
+    private Integer gameIdTextView;
 
-    public GameViewModel(String gameNameTextView, String gameTypeTextView, String gamePrixTextView, String gameDescTextView, String gameImgImageView) {
+    public GameViewModel(Integer gameIdTextView, String gameNameTextView, String gameTypeTextView, String gamePrixTextView, String gameDescTextView, String gameImgImageView) {
         this.gameNameTextView = gameNameTextView;
         this.gameTypeTextView = gameTypeTextView;
         this.gamePrixTextView = gamePrixTextView;
         this.gameDescTextView = gameDescTextView;
         this.gameImgImageView = gameImgImageView;
+        this.gameIdTextView = gameIdTextView;
     }
 
     public String getGameNameTextView() {
         return gameNameTextView;
     }
 
-    public String getGameTypeTextView() {
-        return gameTypeTextView;
-    }
+    public String getGameTypeTextView() { return gameTypeTextView;}
 
     public String getGamePrixTextView() {
         return gamePrixTextView;
@@ -40,4 +40,6 @@ public class GameViewModel {
     public String getGameImgImageView() {
         return gameImgImageView;
     }
+
+    public Integer getGameIdTextView() { return gameIdTextView; }
 }

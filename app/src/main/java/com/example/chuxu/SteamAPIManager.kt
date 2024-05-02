@@ -73,6 +73,8 @@ data class GameDetails(
  * Données d'un jeu Steam.
  */
 data class GameData(
+    @SerializedName("appid")
+    val appId: Int,
     @SerializedName("name")
     val name: String,
     @SerializedName("header_image")
@@ -161,7 +163,7 @@ object SteamAPIManager {
                             responseBody?.let { body ->
                                 val details = body[app.appId.toString()]?.data
                                 details?.let {
-                                    games.add(it)
+                                    games.add(it.copy(appId = app.appId))
                                 }
                             }
                         } else if (detailsResponse.code() == 429) {
@@ -171,7 +173,8 @@ object SteamAPIManager {
                             responseBody?.let { body ->
                                 val details = body[app.appId.toString()]?.data
                                 details?.let {
-                                    games.add(it)
+                                    games.add(it.copy(appId = app.appId))
+
                                 }
                             }
                         }
