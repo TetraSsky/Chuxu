@@ -3,6 +3,7 @@ package com.example.chuxu.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +20,8 @@ Lie les données de la liste (donc ici, une liste de GameViewModel) avec les vue
 class GameViewModelAdapter : RecyclerView.Adapter<GameViewModelAdapter.GameViewHolder>() {
 
     private var gameViewModels: List<GameViewModel> = ArrayList()
+    private var leaveReviewClickListener: OnLeaveReviewClickListener? = null
+    private var viewReviewsClickListener: OnViewReviewsClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.constraint_view_row, parent, false)
@@ -28,6 +31,14 @@ class GameViewModelAdapter : RecyclerView.Adapter<GameViewModelAdapter.GameViewH
     override fun onBindViewHolder(holder: GameViewHolder, position: Int) {
         val currentGame = gameViewModels[position]
         holder.bind(currentGame)
+
+        holder.leaveReviewButton.setOnClickListener {
+            leaveReviewClickListener?.onLeaveReviewClicked(currentGame)
+        }
+
+        holder.viewReviewButton.setOnClickListener {
+            viewReviewsClickListener?.onViewReviewsClicked(currentGame)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -39,12 +50,30 @@ class GameViewModelAdapter : RecyclerView.Adapter<GameViewModelAdapter.GameViewH
         notifyDataSetChanged()
     }
 
+    fun setLeaveReviewClickListener(listener: OnLeaveReviewClickListener) {
+        this.leaveReviewClickListener = listener
+    }
+
+    fun setViewReviewsClickListener(listener: OnViewReviewsClickListener) {
+        this.viewReviewsClickListener = listener
+    }
+
+    interface OnLeaveReviewClickListener {
+        fun onLeaveReviewClicked(gameViewModel: GameViewModel)
+    }
+
+    interface OnViewReviewsClickListener {
+        fun onViewReviewsClicked(gameViewModel: GameViewModel)
+    }
+
     inner class GameViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val gameNameTextView: TextView = itemView.findViewById(R.id.gameName)
         private val gameTypeTextView: TextView = itemView.findViewById(R.id.gameType)
         private val gamePrixTextView: TextView = itemView.findViewById(R.id.gamePrix)
         private val gameDescTextView: TextView = itemView.findViewById(R.id.gameDesc)
         private val gameImgImageView: ImageView = itemView.findViewById(R.id.gameImg)
+        val leaveReviewButton: Button = itemView.findViewById(R.id.leaveReview)
+        val viewReviewButton: Button = itemView.findViewById(R.id.viewReviews)
 
         fun bind(gameViewModel: GameViewModel) {
             gameNameTextView.text = gameViewModel.getGameNameTextView()

@@ -39,6 +39,9 @@
         <activity android:name=".view.Activity5"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
+        <activity android:name=".view.Activity6"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FullScreen" />
 
         <meta-data
             android:name="preloaded_fonts"

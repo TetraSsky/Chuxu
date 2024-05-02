@@ -29,6 +29,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var loadingView: View
     private lateinit var loadingTextView1: TextView
     private lateinit var loadingTextView2: TextView
+    private lateinit var connectButton: Button
+    private lateinit var createAccountButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,8 +40,8 @@ class MainActivity : AppCompatActivity() {
 
         emailEditText = findViewById(R.id.Email)
         passwordEditText = findViewById(R.id.PasswordVerif)
-        val connectButton = findViewById<Button>(R.id.Connect)
-        val createAccountButton = findViewById<Button>(R.id.Inscrip)
+        connectButton = findViewById(R.id.Connect)
+        createAccountButton = findViewById(R.id.Inscrip)
 
         createAccountButton.setOnClickListener {
             val intent = Intent(this, Activity3::class.java)

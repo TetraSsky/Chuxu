@@ -83,12 +83,12 @@
                 android:text="Aucune description"
                 android:textAlignment="center"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/button2"
+                app:layout_constraintBottom_toTopOf="@+id/leaveReview"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/viewReviews"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -97,12 +97,12 @@
                 android:text="Voir les avis"
                 android:textColor="#FFFFFF"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/button2"
+                app:layout_constraintEnd_toStartOf="@+id/leaveReview"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/leaveReview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"

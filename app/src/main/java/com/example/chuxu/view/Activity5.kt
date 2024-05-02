@@ -7,9 +7,9 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 /**
  * Activité tierciaire de l'application, permet à l'utilisateur d'effectuer des recherches en lien avec l'API de Steam
  */
-class Activity5 : AppCompatActivity() {
+class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickListener, GameViewModelAdapter.OnViewReviewsClickListener {
 
     private lateinit var toggle : ActionBarDrawerToggle
     private lateinit var recyclerView: RecyclerView
@@ -51,6 +51,8 @@ class Activity5 : AppCompatActivity() {
         adapter = GameViewModelAdapter()
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
+        adapter.setLeaveReviewClickListener(this)
+        adapter.setViewReviewsClickListener(this)
         val drawerLayout : DrawerLayout = findViewById(R.id.MenuBurger)
         val navView : NavigationView = findViewById(R.id.nav_view)
         val sharedPref = getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)
@@ -162,5 +164,14 @@ class Activity5 : AppCompatActivity() {
             hideLoadingView()
             adapter.setData(gameViewModels)
         }
+    }
+
+    override fun onLeaveReviewClicked(gameViewModel: GameViewModel) {
+        val intent = Intent(this, Activity6::class.java)
+        startActivity(intent)
+    }
+
+    override fun onViewReviewsClicked(gameViewModel: GameViewModel) {
+
     }
 }
