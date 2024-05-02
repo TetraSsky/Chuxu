@@ -6,11 +6,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.chuxu.R
-import com.example.chuxu.view.GameReviewModel
 
 /**
- * Adapter pour le RecyclerView des avis d'utilisateurs sur un jeu spécifique.
- * Lie les données des avis avec les vues dans chaque élément de la liste.
+ * Adapter pour le RecyclerView des avis d'utilisateurs sur un jeu spécifique
+ * Lie les données des avis avec les vues dans chaque élément de la liste
  */
 class GameReviewModelAdapter : RecyclerView.Adapter<GameReviewModelAdapter.GameReviewViewHolder>() {
 
