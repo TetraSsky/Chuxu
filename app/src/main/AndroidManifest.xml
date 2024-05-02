@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/iconchuxu"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Chuxu"
+        android:theme="@style/AppTheme.FullScreen"
         tools:targetApi="31">
 
         <activity
@@ -28,20 +28,16 @@
 
         <!-- Liste d'activités ici | Pour éviter des crashs  -->
         <activity android:name=".view.Activity2"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"/>
+            android:screenOrientation="portrait" />
         <activity android:name=".view.Activity3"
             android:screenOrientation="portrait"
             android:theme="@style/ConnexionTheme.FullScreen" />
         <activity android:name=".view.Activity4"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen" />
+            android:screenOrientation="portrait" />
         <activity android:name=".view.Activity5"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen" />
+            android:screenOrientation="portrait" />
         <activity android:name=".view.Activity6"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen" />
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="preloaded_fonts"

@@ -43,6 +43,13 @@ class Activity4 : AppCompatActivity() {
         "BlancoSupremacista", "Racista", "Esclavitud", "Nazi", "Hitler", "Fascista", "Colonialista", "Segregación",
         "Terrorista", "Pornografía", "Automutilación", "Suicidio",
     )
+    private lateinit var NouvEmailButton: Button
+    private lateinit var NouvMDPButton: Button
+    private lateinit var NouvNicknameButton: Button
+    private lateinit var DeleteAccountButton: Button
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navView: NavigationView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,12 +61,12 @@ class Activity4 : AppCompatActivity() {
         passwordEditText = findViewById(R.id.Password)
         passwordVerifEditText = findViewById(R.id.PasswordVerif)
         nicknameEditText = findViewById(R.id.Nickname)
-        val NouvEmailButton = findViewById<Button>(R.id.NouvEmail)
-        val NouvMDPButton = findViewById<Button>(R.id.NouvMDP)
-        val NouvNicknameButton = findViewById<Button>(R.id.NouvNickname)
-        val DeleteAccountButton = findViewById<Button>(R.id.DeleteAccount)
-        val drawerLayout : DrawerLayout = findViewById(R.id.MenuBurger)
-        val navView : NavigationView = findViewById(R.id.nav_view)
+        NouvEmailButton = findViewById(R.id.NouvEmail)
+        NouvMDPButton = findViewById(R.id.NouvMDP)
+        NouvNicknameButton = findViewById(R.id.NouvNickname)
+        DeleteAccountButton = findViewById(R.id.DeleteAccount)
+        drawerLayout = findViewById(R.id.MenuBurger)
+        navView = findViewById(R.id.nav_view)
         val sharedPref = getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)
         val userID = sharedPref.getInt("userID", 0)
 

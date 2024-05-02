@@ -311,4 +311,55 @@ object UserController {
             false
         }
     }
+
+    /**
+     * Insère une nouvelle review dans la base de données.
+     *
+     * @param userId L'ID de l'utilisateur laissant la review.
+     * @param gameId L'ID du jeu concerné par la review.
+     * @param review Le contenu de la review.
+     * @return [true] si l'insertion a réussi, [false] sinon.
+     */
+    suspend fun createReview(userID: Int, gameID: Int, message: String): Boolean {
+        return withContext(Dispatchers.IO) {
+            var connection = DatabaseManager.getConnection()
+            try {
+                if (connection != null) {
+                    val checkExistingReviewQuery = "SELECT COUNT(*) FROM Avis WHERE UtilisateurID = ? AND GameID = ?"
+                    val checkExistingReviewStatement = connection.prepareStatement(checkExistingReviewQuery)
+                    checkExistingReviewStatement.setInt(1, userID)
+                    checkExistingReviewStatement.setInt(2, gameID)
+                    val existingReviewResult = checkExistingReviewStatement.executeQuery()
+                    existingReviewResult.next()
+                    val existingReviewCount = existingReviewResult.getInt(1)
+                    checkExistingReviewStatement.close()
+
+                    if (existingReviewCount == 0) {
+                        val insertReviewQuery = "INSERT INTO Avis (UtilisateurID, GameID, Message) VALUES (?, ?, ?)"
+                        val insertReviewStatement = connection.prepareStatement(insertReviewQuery)
+                        insertReviewStatement.setInt(1, userID)
+                        insertReviewStatement.setInt(2, gameID)
+                        insertReviewStatement.setString(3, message)
+                        val isReviewInserted = insertReviewStatement.executeUpdate()
+                        insertReviewStatement.close()
+                        return@withContext isReviewInserted > 0
+                    } else {
+                        val updateReviewQuery = "UPDATE Avis SET Message = ? WHERE UtilisateurID = ? AND GameID = ?"
+                        val updateReviewStatement = connection.prepareStatement(updateReviewQuery)
+                        updateReviewStatement.setString(1, message)
+                        updateReviewStatement.setInt(2, userID)
+                        updateReviewStatement.setInt(3, gameID)
+                        val isReviewUpdated = updateReviewStatement.executeUpdate()
+                        updateReviewStatement.close()
+                        return@withContext isReviewUpdated > 0
+                    }
+                }
+            } catch (e: SQLException) {
+                e.printStackTrace()
+            } finally {
+                connection?.close()
+            }
+            false
+        }
+    }
 }

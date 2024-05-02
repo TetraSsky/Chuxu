@@ -174,7 +174,6 @@ object SteamAPIManager {
                                 val details = body[app.appId.toString()]?.data
                                 details?.let {
                                     games.add(it.copy(appId = app.appId))
-
                                 }
                             }
                         }

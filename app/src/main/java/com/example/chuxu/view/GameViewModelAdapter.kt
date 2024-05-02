@@ -11,12 +11,11 @@ import com.example.chuxu.R
 import com.squareup.picasso.Picasso
 
 /**
-Cette classe est un adaptateur pour le RecyclerView de "recherche.xml"
-Lie les données de la liste (donc ici, une liste de GameViewModel) avec les vues dans chaque élément de la liste
-- Crée les vues pour chaque élément de la liste et les remplit avec les données appropriées en utilisant les instances de GameViewModel
-- Gère la création des vues (onCreateViewHolder), le remplissage (onBindViewHolder) et le calcul total d'éléments (getItemCount)
+ * Cette classe est un adaptateur pour le RecyclerView de "recherche.xml".
+ * Lie les données de la liste (ici, une liste de GameViewModel) avec les vues dans chaque élément de la liste.
+ * - Crée les vues pour chaque élément de la liste et les remplit avec les données appropriées en utilisant les instances de GameViewModel.
+ * - Gère la création des vues (onCreateViewHolder), le remplissage (onBindViewHolder) et le calcul total d'éléments (getItemCount).
  */
-
 class GameViewModelAdapter : RecyclerView.Adapter<GameViewModelAdapter.GameViewHolder>() {
 
     private var gameViewModels: List<GameViewModel> = ArrayList()
@@ -33,11 +32,11 @@ class GameViewModelAdapter : RecyclerView.Adapter<GameViewModelAdapter.GameViewH
         holder.bind(currentGame)
 
         holder.leaveReviewButton.setOnClickListener {
-            leaveReviewClickListener?.onLeaveReviewClicked(currentGame)
+            leaveReviewClickListener?.onLeaveReviewClicked(currentGame.gameIdTextView, currentGame.gameNameTextView)
         }
 
         holder.viewReviewButton.setOnClickListener {
-            viewReviewsClickListener?.onViewReviewsClicked(currentGame)
+            viewReviewsClickListener?.onViewReviewsClicked(currentGame.gameIdTextView, currentGame.gameNameTextView)
         }
     }
 
@@ -59,11 +58,11 @@ class GameViewModelAdapter : RecyclerView.Adapter<GameViewModelAdapter.GameViewH
     }
 
     interface OnLeaveReviewClickListener {
-        fun onLeaveReviewClicked(gameViewModel: GameViewModel)
+        fun onLeaveReviewClicked(appId: Int, appName: String)
     }
 
     interface OnViewReviewsClickListener {
-        fun onViewReviewsClicked(gameViewModel: GameViewModel)
+        fun onViewReviewsClicked(appId: Int, appName: String)
     }
 
     inner class GameViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

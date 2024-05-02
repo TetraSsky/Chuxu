@@ -161,19 +161,35 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
                         game.headerImage
                     )
                 )
-                println(game.appId)
             }
             hideLoadingView()
             adapter.setData(gameViewModels)
         }
     }
 
-    override fun onLeaveReviewClicked(gameViewModel: GameViewModel) {
+    override fun onLeaveReviewClicked(appId: Int, appName: String) {
         val intent = Intent(this, Activity6::class.java)
+        val sharedPref = getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)
+        val userNickname = sharedPref.getString("userNickname", "")
+        val userID = sharedPref.getInt("userID", 0)
+        intent.putExtra("appId", appId)
+        intent.putExtra("appName", appName)
+        intent.putExtra("userNickname", userNickname)
+        intent.putExtra("userID", userID)
+        println(appId)
+        println(appName)
+        println(userNickname)
+        println(userID)
         startActivity(intent)
     }
 
-    override fun onViewReviewsClicked(gameViewModel: GameViewModel) {
-
+    override fun onViewReviewsClicked(appId: Int, appName: String) {
+/*        val intent = Intent(this, Activity6::class.java)
+        val sharedPref = getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)
+        val userNickname = sharedPref.getString("userNickname", "")
+        intent.putExtra("appId", appId)
+        intent.putExtra("appName", appName)
+        intent.putExtra("userNickname", userNickname)
+        startActivity(intent)*/
     }
 }
