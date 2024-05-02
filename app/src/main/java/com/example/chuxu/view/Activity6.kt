@@ -1,6 +1,5 @@
 package com.example.chuxu.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +8,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.chuxu.R
 import com.example.chuxu.controller.UserController
@@ -52,13 +52,18 @@ class Activity6 : AppCompatActivity() {
 
         sendReviewButton.isEnabled = true
         sendReviewButton.setOnClickListener {
-            showLoadingView("Publication en cours...","Veuillez patienter...")
+            showLoadingView("Publication en cours...", "Veuillez patienter...")
             sendReviewButton.isEnabled = false
             val userReview = userReviewEditTextView.text.toString()
             CoroutineScope(Dispatchers.Main).launch {
                 if (userReview.isEmpty()) {
                     hideLoadingView()
                     Toast.makeText(this@Activity6, "Veuillez saisir votre avis.", Toast.LENGTH_SHORT).show()
+                    delay(4000)
+                    sendReviewButton.isEnabled = true
+                } else if (userReview.length < 50) {
+                    hideLoadingView()
+                    Toast.makeText(this@Activity6, "Votre avis doit contenir au moins 50 caractères.", Toast.LENGTH_SHORT).show()
                     delay(4000)
                     sendReviewButton.isEnabled = true
                 } else {

@@ -2,6 +2,7 @@ package com.example.chuxu.view
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class Activity7 : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.reviews)
@@ -39,10 +41,6 @@ class Activity7 : AppCompatActivity() {
         adapter.setData(reviews)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
-    }
-
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }
 

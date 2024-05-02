@@ -37,7 +37,7 @@
         <activity android:name=".view.Activity5"
             android:screenOrientation="portrait" />
         <activity android:name=".view.Activity6"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity android:name=".view.Activity7"
             android:screenOrientation="portrait" />
 

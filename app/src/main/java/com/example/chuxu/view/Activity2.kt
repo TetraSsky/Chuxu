@@ -38,6 +38,7 @@ class Activity2 : AppCompatActivity() {
         researchButton.setOnClickListener {
             val intent = Intent(this, Activity5::class.java)
             startActivity(intent)
+            finish()
         }
 
         toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
