@@ -408,7 +408,7 @@ object UserController {
      * Récupère les avis des utilisateurs pour un jeu spécifique depuis la base de données.
      *
      * @param appId L'ID du jeu pour lequel récupérer les avis.
-     * @return Une liste d'objets GameReviewModel représentant les avis des utilisateurs sur le jeu.
+     * @return [reviews] Une liste d'objets GameReviewModel représentant les avis des utilisateurs sur le jeu.
      */
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun fetchGameReviews(appId: Int): List<GameReviewModel> {
