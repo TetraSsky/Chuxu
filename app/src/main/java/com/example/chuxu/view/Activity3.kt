@@ -4,8 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
-import android.text.Html
-import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -16,7 +15,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.example.chuxu.R
 import java.util.regex.Pattern
 import com.example.chuxu.controller.UserController
@@ -47,8 +45,9 @@ class Activity3 : AppCompatActivity() {
     private lateinit var loadingView: View
     private lateinit var loadingTextView1: TextView
     private lateinit var loadingTextView2: TextView
-    private var passwordInfoPopup: PopupWindow? = null
-    private var passwordVerifInfoPopup: PopupWindow? = null
+    private lateinit var popupTextView1: TextView
+    private lateinit var popupTextView2: TextView
+    private var isPopupShowing = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,13 +62,15 @@ class Activity3 : AppCompatActivity() {
         val inscripButton = findViewById<Button>(R.id.Inscrip)
         val passwordInfo = findViewById<ImageView>(R.id.passwordInfo)
         val passwordVerifInfo = findViewById<ImageView>(R.id.passwordVerifInfo)
+        val passwordInfoPopup = PopupWindow(this)
+        val passwordVerifInfoPopup = PopupWindow(this)
 
         passwordInfo.setOnClickListener {
-            showInfoPopup(passwordInfo, "Le mot de passe doit contenir au moins 8 caractères, un chiffre, une majuscule, une minuscule et un caractère spécial")
+            showInfoPopup(passwordInfo, passwordInfoPopup, "Le mot de passe doit contenir au moins :", "- 8 caractères\n- Un chiffre\n- Une majuscule\n- Une minuscule\n- Un caractère spécial")
         }
 
         passwordVerifInfo.setOnClickListener {
-            showInfoPopup(passwordVerifInfo, "Les mots de passe doivent être les mêmes !")
+            showInfoPopup(passwordVerifInfo, passwordVerifInfoPopup, "Les mots de passe", "doivent correspondre !")
         }
 
         inscripButton.isEnabled = true
@@ -182,22 +183,25 @@ class Activity3 : AppCompatActivity() {
         }
     }
 
-    private fun showInfoPopup(anchorView: ImageView, message: String) {
-        val textView = TextView(this)
-        textView.text = Html.fromHtml("<p>$message</p>")
-        textView.textSize = 14f
+    private fun showInfoPopup(anchorView: ImageView, popupWindow: PopupWindow, text1: String, text2: String) {
+        if (!isPopupShowing) {
+            val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            val popupView = inflater.inflate(R.layout.popup_window, null)
+            popupTextView1 = popupView.findViewById(R.id.text1)
+            popupTextView2 = popupView.findViewById(R.id.text2)
+            popupTextView1.text = text1
+            popupTextView2.text = text2
+            popupWindow.contentView = popupView
+            popupWindow.width = ViewGroup.LayoutParams.WRAP_CONTENT
+            popupWindow.height = ViewGroup.LayoutParams.WRAP_CONTENT
+            popupWindow.isOutsideTouchable = true
 
-        val width = resources.getDimensionPixelSize(R.dimen.popup_width)
-        val height = resources.getDimensionPixelSize(R.dimen.popup_height)
-        val popupView = PopupWindow(textView, width, height, true)
-        popupView.contentView = textView
-        popupView.showAsDropDown(anchorView, 0, 0, Gravity.END)
-    }
-
-    override fun onDestroy() {
-        passwordInfoPopup?.dismiss()
-        passwordVerifInfoPopup?.dismiss()
-        super.onDestroy()
+            popupWindow.showAsDropDown(anchorView)
+            isPopupShowing = true
+        } else {
+            popupWindow.dismiss()
+            isPopupShowing = false
+        }
     }
 
     private fun showLoadingView(text1: String, text2: String) {
