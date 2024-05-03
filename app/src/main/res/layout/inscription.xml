@@ -80,6 +80,15 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
+                <ImageView
+                    android:id="@+id/NicknameInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_info"
+                    app:layout_constraintBottom_toBottomOf="@+id/Nickname"
+                    app:layout_constraintStart_toEndOf="@id/Nickname"
+                    app:layout_constraintTop_toTopOf="@id/Nickname" />
+
                 <TextView
                     android:id="@+id/textView6"
                     android:layout_width="wrap_content"
@@ -130,8 +139,8 @@
                     android:id="@+id/passwordInfo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
                     android:src="@drawable/ic_info"
+                    app:layout_constraintBottom_toBottomOf="@+id/Password"
                     app:layout_constraintStart_toEndOf="@id/Password"
                     app:layout_constraintTop_toTopOf="@id/Password" />
 
@@ -156,8 +165,8 @@
                     android:id="@+id/passwordVerifInfo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
                     android:src="@drawable/ic_info"
+                    app:layout_constraintBottom_toBottomOf="@+id/PasswordVerif"
                     app:layout_constraintStart_toEndOf="@id/PasswordVerif"
                     app:layout_constraintTop_toTopOf="@id/PasswordVerif" />
 

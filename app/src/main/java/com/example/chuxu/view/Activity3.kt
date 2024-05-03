@@ -45,8 +45,14 @@ class Activity3 : AppCompatActivity() {
     private lateinit var loadingView: View
     private lateinit var loadingTextView1: TextView
     private lateinit var loadingTextView2: TextView
+    private lateinit var inscripButton: Button
     private lateinit var popupTextView1: TextView
     private lateinit var popupTextView2: TextView
+    private lateinit var passwordInfo: ImageView
+    private lateinit var passwordVerifInfo: ImageView
+    private lateinit var NicknameInfo: ImageView
+    private lateinit var passwordInfoPopup: PopupWindow
+    private lateinit var passwordVerifInfoPopup: PopupWindow
     private var isPopupShowing = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,18 +65,23 @@ class Activity3 : AppCompatActivity() {
         passwordEditText = findViewById(R.id.Password)
         passwordVerifEditText = findViewById(R.id.PasswordVerif)
         nicknameEditText = findViewById(R.id.Nickname)
-        val inscripButton = findViewById<Button>(R.id.Inscrip)
-        val passwordInfo = findViewById<ImageView>(R.id.passwordInfo)
-        val passwordVerifInfo = findViewById<ImageView>(R.id.passwordVerifInfo)
-        val passwordInfoPopup = PopupWindow(this)
-        val passwordVerifInfoPopup = PopupWindow(this)
+        inscripButton = findViewById(R.id.Inscrip)
+        passwordInfo = findViewById(R.id.passwordInfo)
+        passwordVerifInfo = findViewById(R.id.passwordVerifInfo)
+        NicknameInfo = findViewById(R.id.NicknameInfo)
+        passwordInfoPopup = PopupWindow(this)
+        passwordVerifInfoPopup = PopupWindow(this)
 
         passwordInfo.setOnClickListener {
-            showInfoPopup(passwordInfo, passwordInfoPopup, "Le mot de passe doit contenir au moins :", "- 8 caractères\n- Un chiffre\n- Une majuscule\n- Une minuscule\n- Un caractère spécial")
+            showInfoPopup(passwordInfo, passwordInfoPopup, "Le mot de passe doit contenir au moins :", "- 8 caractères.\n- Un chiffre.\n- Une majuscule.\n- Une minuscule.\n- Un caractère spécial.")
         }
 
         passwordVerifInfo.setOnClickListener {
             showInfoPopup(passwordVerifInfo, passwordVerifInfoPopup, "Les mots de passe", "doivent correspondre !")
+        }
+
+        NicknameInfo.setOnClickListener {
+            showInfoPopup(passwordVerifInfo, passwordVerifInfoPopup, "Le pseudonyme doit :", "- Contenir au moins 5 caractères.\n- Ne peut pas être que des chiffres.\n- Ne pas contenir de termes bannis/sensibles.\n- Pas plus long que 30 caractères.\n- Etre en alphanumérique uniquement.")
         }
 
         inscripButton.isEnabled = true
