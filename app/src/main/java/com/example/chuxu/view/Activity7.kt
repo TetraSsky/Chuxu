@@ -1,7 +1,9 @@
 package com.example.chuxu.view
 
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +16,7 @@ import kotlinx.coroutines.launch
 
 class Activity7 : AppCompatActivity() {
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.reviews)
@@ -23,6 +26,7 @@ class Activity7 : AppCompatActivity() {
         fetchGameReviews(appId)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun fetchGameReviews(appId: Int) {
         CoroutineScope(Dispatchers.Main).launch {
             val reviews = UserController.fetchGameReviews(appId)
