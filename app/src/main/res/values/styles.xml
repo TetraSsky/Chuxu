@@ -19,4 +19,10 @@
         <item name="fontFamily">@font/dotgothic16</item>
         <item name="android:textColor">@color/white</item>
     </style>
+
+    <style name="PopupStyle">
+        <item name="android:windowBackground">@color/gray</item>
+        <item name="fontFamily">@font/dotgothic16</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
 </resources>

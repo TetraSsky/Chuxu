@@ -4,9 +4,14 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.text.Html
+import android.view.Gravity
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.PopupWindow
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -49,6 +54,9 @@ class Activity4 : AppCompatActivity() {
     private lateinit var DeleteAccountButton: Button
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navView: NavigationView
+    private var passwordInfoPopup: PopupWindow? = null
+    private var passwordVerifInfoPopup: PopupWindow? = null
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,6 +77,17 @@ class Activity4 : AppCompatActivity() {
         navView = findViewById(R.id.nav_view)
         val sharedPref = getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)
         val userID = sharedPref.getInt("userID", 0)
+        val passwordInfo = findViewById<ImageView>(R.id.passwordInfo)
+        val passwordVerifInfo = findViewById<ImageView>(R.id.passwordVerifInfo)
+
+        passwordInfo.setOnClickListener {
+            showInfoPopup(passwordInfo, "Le mot de passe doit contenir au moins 8 caractères, un chiffre, une majuscule, une minuscule et un caractère spécial")
+        }
+
+        passwordVerifInfo.setOnClickListener {
+            showInfoPopup(passwordVerifInfo, "Les mots de passe doivent être les mêmes !")
+        }
+
 
         NouvEmailButton.isEnabled = true
         NouvEmailButton.setOnClickListener {
@@ -266,6 +285,24 @@ class Activity4 : AppCompatActivity() {
             }
             true
         }
+    }
+
+    private fun showInfoPopup(anchorView: ImageView, message: String) {
+        val textView = TextView(this)
+        textView.text = Html.fromHtml("<p>$message</p>")
+        textView.textSize = 14f
+
+        val width = resources.getDimensionPixelSize(R.dimen.popup_width)
+        val height = resources.getDimensionPixelSize(R.dimen.popup_height)
+        val popupView = PopupWindow(textView, width, height, true)
+        popupView.contentView = textView
+        popupView.showAsDropDown(anchorView, 0, 0, Gravity.END)
+    }
+
+    override fun onDestroy() {
+        passwordInfoPopup?.dismiss()
+        passwordVerifInfoPopup?.dismiss()
+        super.onDestroy()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

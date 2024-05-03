@@ -4,21 +4,22 @@ import android.content.Context
 import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
-import android.view.MenuItem
+import android.text.Html
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.drawerlayout.widget.DrawerLayout
-import com.example.chuxu.DatabaseManager
+import androidx.core.content.ContextCompat
 import com.example.chuxu.R
 import java.util.regex.Pattern
 import com.example.chuxu.controller.UserController
-import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -46,6 +47,8 @@ class Activity3 : AppCompatActivity() {
     private lateinit var loadingView: View
     private lateinit var loadingTextView1: TextView
     private lateinit var loadingTextView2: TextView
+    private var passwordInfoPopup: PopupWindow? = null
+    private var passwordVerifInfoPopup: PopupWindow? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +61,16 @@ class Activity3 : AppCompatActivity() {
         passwordVerifEditText = findViewById(R.id.PasswordVerif)
         nicknameEditText = findViewById(R.id.Nickname)
         val inscripButton = findViewById<Button>(R.id.Inscrip)
+        val passwordInfo = findViewById<ImageView>(R.id.passwordInfo)
+        val passwordVerifInfo = findViewById<ImageView>(R.id.passwordVerifInfo)
+
+        passwordInfo.setOnClickListener {
+            showInfoPopup(passwordInfo, "Le mot de passe doit contenir au moins 8 caractères, un chiffre, une majuscule, une minuscule et un caractère spécial")
+        }
+
+        passwordVerifInfo.setOnClickListener {
+            showInfoPopup(passwordVerifInfo, "Les mots de passe doivent être les mêmes !")
+        }
 
         inscripButton.isEnabled = true
         inscripButton.setOnClickListener {
@@ -167,6 +180,24 @@ class Activity3 : AppCompatActivity() {
                 Toast.makeText(applicationContext, "Erreur lors de l'inscription", Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    private fun showInfoPopup(anchorView: ImageView, message: String) {
+        val textView = TextView(this)
+        textView.text = Html.fromHtml("<p>$message</p>")
+        textView.textSize = 14f
+
+        val width = resources.getDimensionPixelSize(R.dimen.popup_width)
+        val height = resources.getDimensionPixelSize(R.dimen.popup_height)
+        val popupView = PopupWindow(textView, width, height, true)
+        popupView.contentView = textView
+        popupView.showAsDropDown(anchorView, 0, 0, Gravity.END)
+    }
+
+    override fun onDestroy() {
+        passwordInfoPopup?.dismiss()
+        passwordVerifInfoPopup?.dismiss()
+        super.onDestroy()
     }
 
     private fun showLoadingView(text1: String, text2: String) {
