@@ -65,7 +65,7 @@ class Activity6 : AppCompatActivity() {
                     Toast.makeText(this@Activity6, "Veuillez saisir votre avis.", Toast.LENGTH_SHORT).show()
                     delay(4000)
                     sendReviewButton.isEnabled = true
-                } else if (userReview.length < 50) {
+                } else if (userReview.length < 5) {
                     hideLoadingView()
                     Toast.makeText(this@Activity6, "Votre avis doit contenir au moins 50 caractères.", Toast.LENGTH_SHORT).show()
                     delay(4000)
