@@ -51,6 +51,13 @@ class Activity6 : AppCompatActivity() {
         appNameTextView.text = "$appName"
         userNicknameTextView.text = "Laissez un avis sur ce jeu, $userNickname !"
 
+        CoroutineScope(Dispatchers.Main).launch {
+            val userReview = UserController.getUserReview(userID, appId)
+            userReview?.let {
+                userReviewEditTextView.setText(it)
+            }
+        }
+
         sendReviewButton.isEnabled = true
         sendReviewButton.setOnClickListener {
             showLoadingView("Publication en cours...", "Veuillez patienter...")

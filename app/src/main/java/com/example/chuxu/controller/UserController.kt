@@ -319,6 +319,37 @@ object UserController {
     }
 
     /**
+     * Vérifie si l'utilisateur possède déjà une review sur un jeu précis
+     *
+     * @param userId L'ID de l'utilisateur laissant la review
+     * @param gameId L'ID du jeu concerné par la review
+     * @return Le message de sa review si il en possède une pour X jeu, null sinon
+     */
+    suspend fun getUserReview(userID: Int, gameID: Int): String? {
+        return withContext(Dispatchers.IO) {
+            var connection = DatabaseManager.getConnection()
+            try {
+                connection = DatabaseManager.getConnection()
+                if (connection != null) {
+                    val query = "SELECT Message FROM Avis WHERE UtilisateurID = ? AND GameID = ?"
+                    val statement = connection.prepareStatement(query)
+                    statement.setInt(1, userID)
+                    statement.setInt(2, gameID)
+                    val resultSet = statement.executeQuery()
+                    if (resultSet.next()) {
+                        return@withContext resultSet.getString("Message")
+                    }
+                }
+            } catch (e: SQLException) {
+                e.printStackTrace()
+            } finally {
+                connection?.close()
+            }
+            return@withContext null
+        }
+    }
+
+    /**
      * Insère une nouvelle review dans la base de données.
      *
      * @param userId L'ID de l'utilisateur laissant la review.
