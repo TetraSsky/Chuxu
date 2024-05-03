@@ -68,11 +68,13 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
                     val intent = Intent(this, Activity2::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                     startActivity(intent)
+                    finish()
                 }
                 R.id.Compte -> {
                     val intent = Intent(this, Activity4::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                     startActivity(intent)
+                    finish()
                 }
                 R.id.Deconnect -> {
                     DatabaseManager.closeConnection()
@@ -84,6 +86,7 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
                     val intent = Intent(this, MainActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                     startActivity(intent)
+                    finish()
                 }
             }
             true
