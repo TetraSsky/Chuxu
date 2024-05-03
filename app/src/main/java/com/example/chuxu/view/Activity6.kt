@@ -8,11 +8,12 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.chuxu.R
 import com.example.chuxu.controller.UserController
 import kotlinx.coroutines.*
+import java.text.SimpleDateFormat
+import java.util.Date
 
 /**
  * Activité tierciaire de l'application, permet à l'utilisateur de laisser une review à un jeu
@@ -53,6 +54,9 @@ class Activity6 : AppCompatActivity() {
         sendReviewButton.isEnabled = true
         sendReviewButton.setOnClickListener {
             showLoadingView("Publication en cours...", "Veuillez patienter...")
+            val currentDate = Date()
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            val time = dateFormat.format(currentDate)
             sendReviewButton.isEnabled = false
             val userReview = userReviewEditTextView.text.toString()
             CoroutineScope(Dispatchers.Main).launch {
@@ -67,7 +71,7 @@ class Activity6 : AppCompatActivity() {
                     delay(4000)
                     sendReviewButton.isEnabled = true
                 } else {
-                    val result = UserController.createReview(userID, appId, userReview, appName)
+                    val result = UserController.createReview(userID, appId, userReview, appName, time)
                     if (result) {
                         hideLoadingView()
                         Toast.makeText(this@Activity6, "Votre avis a été ajouté avec succès.", Toast.LENGTH_SHORT).show()

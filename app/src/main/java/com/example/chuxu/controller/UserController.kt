@@ -322,7 +322,7 @@ object UserController {
      * @param appName le nom du jeu.
      * @return [true] si l'insertion a réussi, [false] sinon.
      */
-    suspend fun createReview(userID: Int, gameID: Int, message: String, appName: String?): Boolean {
+    suspend fun createReview(userID: Int, gameID: Int, message: String, appName: String?, time: String): Boolean {
         return withContext(Dispatchers.IO) {
             var connection = DatabaseManager.getConnection()
             try {
@@ -337,21 +337,23 @@ object UserController {
                     checkExistingReviewStatement.close()
 
                     if (existingReviewCount == 0) {
-                        val insertReviewQuery = "INSERT INTO Avis (UtilisateurID, GameID, Message, GameName) VALUES (?, ?, ?, ?)"
+                        val insertReviewQuery = "INSERT INTO Avis (UtilisateurID, GameID, Message, GameName, AvisTime) VALUES (?, ?, ?, ?, ?)"
                         val insertReviewStatement = connection.prepareStatement(insertReviewQuery)
                         insertReviewStatement.setInt(1, userID)
                         insertReviewStatement.setInt(2, gameID)
                         insertReviewStatement.setString(3, message)
                         insertReviewStatement.setString(4, appName)
+                        insertReviewStatement.setString(5, time)
                         val isReviewInserted = insertReviewStatement.executeUpdate()
                         insertReviewStatement.close()
                         return@withContext isReviewInserted > 0
                     } else {
-                        val updateReviewQuery = "UPDATE Avis SET Message = ? WHERE UtilisateurID = ? AND GameID = ?"
+                        val updateReviewQuery = "UPDATE Avis SET Message = ?, AvisTime = ? WHERE UtilisateurID = ? AND GameID = ?"
                         val updateReviewStatement = connection.prepareStatement(updateReviewQuery)
                         updateReviewStatement.setString(1, message)
-                        updateReviewStatement.setInt(2, userID)
-                        updateReviewStatement.setInt(3, gameID)
+                        updateReviewStatement.setString(2, time)
+                        updateReviewStatement.setInt(3, userID)
+                        updateReviewStatement.setInt(4, gameID)
                         val isReviewUpdated = updateReviewStatement.executeUpdate()
                         updateReviewStatement.close()
                         return@withContext isReviewUpdated > 0
@@ -378,7 +380,7 @@ object UserController {
             try {
                 val connection = DatabaseManager.getConnection()
                 if (connection != null) {
-                    val query = "SELECT Utilisateur.Nickname, Avis.Message, Avis.GameName FROM Avis INNER JOIN Utilisateur ON Avis.UtilisateurID = Utilisateur.UtilisateurID WHERE Avis.GameID = ?"
+                    val query = "SELECT Utilisateur.Nickname, Avis.Message, Avis.GameName FROM Avis INNER JOIN Utilisateur ON Avis.UtilisateurID = Utilisateur.UtilisateurID WHERE Avis.GameID = ? ORDER BY AvisTime DESC"
                     val statement = connection.prepareStatement(query)
                     statement.setInt(1, appId)
                     val resultSet = statement.executeQuery()
