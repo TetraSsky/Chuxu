@@ -88,6 +88,10 @@ class Activity3 : AppCompatActivity() {
                     Toast.makeText(this@Activity3, "Pseudo invalide.", Toast.LENGTH_SHORT).show()
                     delay(4000)
                     inscripButton.isEnabled = true
+                } else if (nickname.length < 30) {
+                    Toast.makeText(this@Activity3, "Les pseudos sont limités à 30 caractères !", Toast.LENGTH_SHORT).show()
+                    delay(4000)
+                    inscripButton.isEnabled = true
                 } else {
                     showLoadingView("Inscription...", "Veuillez patienter...")
                     val encryptedPassword = UserController.encryptPassword(password)

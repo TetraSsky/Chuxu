@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
         createAccountButton.setOnClickListener {
             val intent = Intent(this, Activity3::class.java)
             startActivity(intent)
+            finish()
         }
 
         connectButton.isEnabled = true

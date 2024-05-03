@@ -1,5 +1,7 @@
 package com.example.chuxu.controller
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.example.chuxu.DatabaseManager
 import com.example.chuxu.view.GameReviewModel
 import kotlinx.coroutines.Dispatchers
@@ -9,6 +11,9 @@ import java.security.NoSuchAlgorithmException
 import java.sql.SQLException
 import kotlin.experimental.and
 import kotlinx.coroutines.*
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 /**
  * Contrôleur pour gérer les opérations liées aux utilisateurs.
@@ -374,13 +379,14 @@ object UserController {
      * @param appId L'ID du jeu pour lequel récupérer les avis.
      * @return Une liste d'objets GameReviewModel représentant les avis des utilisateurs sur le jeu.
      */
+    @RequiresApi(Build.VERSION_CODES.O)
     suspend fun fetchGameReviews(appId: Int): List<GameReviewModel> {
         return withContext(Dispatchers.IO) {
             val reviews = mutableListOf<GameReviewModel>()
             try {
                 val connection = DatabaseManager.getConnection()
                 if (connection != null) {
-                    val query = "SELECT Utilisateur.Nickname, Avis.Message, Avis.GameName FROM Avis INNER JOIN Utilisateur ON Avis.UtilisateurID = Utilisateur.UtilisateurID WHERE Avis.GameID = ? ORDER BY AvisTime DESC"
+                    val query = "SELECT Utilisateur.Nickname, Avis.Message, Avis.GameName, Avis.AvisTime FROM Avis INNER JOIN Utilisateur ON Avis.UtilisateurID = Utilisateur.UtilisateurID WHERE Avis.GameID = ? ORDER BY AvisTime DESC"
                     val statement = connection.prepareStatement(query)
                     statement.setInt(1, appId)
                     val resultSet = statement.executeQuery()
@@ -389,7 +395,10 @@ object UserController {
                         val userName = resultSet.getString("Nickname")
                         val reviewMessage = resultSet.getString("Message")
                         val gameName = resultSet.getString("GameName")
-                        val gameReview = GameReviewModel(userName, gameName, reviewMessage)
+                        val reviewDateStr = resultSet.getString("AvisTime")
+                        val dateOnly = LocalDateTime.parse(reviewDateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S"))
+                        val reviewDate = dateOnly.toLocalDate()
+                        val gameReview = GameReviewModel(userName, gameName, reviewMessage, reviewDate)
                         reviews.add(gameReview)
                     }
                     statement.close()

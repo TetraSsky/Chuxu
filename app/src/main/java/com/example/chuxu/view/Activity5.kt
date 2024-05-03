@@ -146,9 +146,10 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
     }
 
     private fun performSearch(query: String) {
+        val trimmedQuery = query.trim()
         CoroutineScope(Dispatchers.Main).launch {
             showLoadingView("Recherche en cours...", "Veuillez patienter...")
-            val games = SteamAPIManager.searchGames(query)
+            val games = SteamAPIManager.searchGames(trimmedQuery)
             val gameViewModels = ArrayList<GameViewModel>()
             for (game in games) {
                 gameViewModels.add(
@@ -166,6 +167,7 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
             adapter.setData(gameViewModels)
         }
     }
+
 
     override fun onLeaveReviewClicked(appId: Int, appName: String) {
         val intent = Intent(this, Activity6::class.java)

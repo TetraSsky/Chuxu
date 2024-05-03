@@ -38,11 +38,13 @@ class GameReviewModelAdapter : RecyclerView.Adapter<GameReviewModelAdapter.GameR
         private val userNameTextView: TextView = itemView.findViewById(R.id.userName)
         private val gameNameTextView: TextView = itemView.findViewById(R.id.gameName)
         private val reviewMessageTextView: TextView = itemView.findViewById(R.id.reviewMessage)
+        private val reviewDateTextView: TextView = itemView.findViewById(R.id.reviewDate)
 
         fun bind(review: GameReviewModel) {
             userNameTextView.text = review.userName
             gameNameTextView.text = review.gameName
             reviewMessageTextView.text = review.reviewMessage
+            reviewDateTextView.text = "Publié le : " + review.reviewDate
         }
     }
 }

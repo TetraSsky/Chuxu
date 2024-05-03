@@ -168,6 +168,10 @@ class Activity4 : AppCompatActivity() {
                     Toast.makeText(this@Activity4, "Pseudo invalide.", Toast.LENGTH_SHORT).show()
                     delay(4000)
                     NouvNicknameButton.isEnabled = true
+                } else if (nickname.length < 30) {
+                    Toast.makeText(this@Activity4, "Les pseudos sont limités à 30 caractères !", Toast.LENGTH_SHORT).show()
+                    delay(4000)
+                    NouvNicknameButton.isEnabled = true
                 } else {
 
                     val nouvNickname = nicknameEditText.text.toString().trim()
