@@ -142,8 +142,8 @@ class Activity4 : AppCompatActivity() {
         NouvMDPButton.setOnClickListener {
             NouvMDPButton.isEnabled = false
             CoroutineScope(Dispatchers.Main).launch {
-                val password = passwordEditText.text.toString()
-                val passwordVerif = passwordVerifEditText.text.toString()
+                val password = passwordEditText.text.toString().trim()
+                val passwordVerif = passwordVerifEditText.text.toString().trim()
 
                 if (password.isEmpty() || passwordVerif.isEmpty()) {
                     Toast.makeText(this@Activity4, "Veuillez remplir les champs !", Toast.LENGTH_SHORT).show()

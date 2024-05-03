@@ -89,8 +89,8 @@ class Activity3 : AppCompatActivity() {
             inscripButton.isEnabled = false
             CoroutineScope(Dispatchers.Main).launch {
                 val email = emailEditText.text.toString().trim()
-                val password = passwordEditText.text.toString()
-                val passwordVerif = passwordVerifEditText.text.toString()
+                val password = passwordEditText.text.toString().trim()
+                val passwordVerif = passwordVerifEditText.text.toString().trim()
                 val nickname = nicknameEditText.text.toString().trim()
 
                 if (email.isEmpty() || password.isEmpty() || passwordVerif.isEmpty() || nickname.isEmpty()) {
@@ -113,7 +113,7 @@ class Activity3 : AppCompatActivity() {
                     Toast.makeText(this@Activity3, "Pseudo invalide.", Toast.LENGTH_SHORT).show()
                     delay(4000)
                     inscripButton.isEnabled = true
-                } else if (nickname.length < 30) {
+                } else if (nickname.length > 30) {
                     Toast.makeText(this@Activity3, "Les pseudos sont limités à 30 caractères !", Toast.LENGTH_SHORT).show()
                     delay(4000)
                     inscripButton.isEnabled = true
