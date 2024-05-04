@@ -22,6 +22,7 @@ import com.example.chuxu.SteamAPIManager
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
@@ -127,31 +128,6 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
         return true
     }
 
-    private fun showLoadingView(text1: String, text2: String) {
-        if (!isShowingLoadingView) {
-            rootView.removeView(defaultview)
-            isShowingLoadingView = true
-            loadingView = layoutInflater.inflate(R.layout.loading_screen, null)
-            loadingTextView1 = loadingView.findViewById(R.id.loadingtextView1)
-            loadingTextView2 = loadingView.findViewById(R.id.loadingtextView2)
-            loadingTextView1.text = text1
-            loadingTextView2.text = text2
-            rootView.addView(loadingView)
-        } else {
-            updateLoadingView(text1, text2)
-        }
-    }
-
-    private fun updateLoadingView(text1: String, text2: String) {
-        loadingTextView1.text = text1
-        loadingTextView2.text = text2
-    }
-
-    private fun hideLoadingView() {
-        isShowingLoadingView = false
-        rootView.removeView(loadingView)
-    }
-
     private fun performSearch(query: String) {
         val trimmedQuery = query.trim()
         CoroutineScope(Dispatchers.Main).launch {
@@ -175,7 +151,6 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
         }
     }
 
-
     override fun onLeaveReviewClicked(appId: Int, appName: String) {
         val intent = Intent(this, Activity6::class.java)
         intent.putExtra("appId", appId)
@@ -187,5 +162,53 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
         val intent = Intent(this, Activity7::class.java)
         intent.putExtra("appId", appId)
         startActivity(intent)
+    }
+
+    private fun showLoadingView(text1: String, text2: String) {
+        if (!isShowingLoadingView) {
+            rootView.removeView(defaultview)
+            isShowingLoadingView = true
+            loadingView = layoutInflater.inflate(R.layout.loading_screen, null)
+            loadingTextView1 = loadingView.findViewById(R.id.loadingtextView1)
+            loadingTextView2 = loadingView.findViewById(R.id.loadingtextView2)
+            loadingTextView1.text = text1
+            loadingTextView2.text = text2
+            rootView.addView(loadingView)
+
+            CoroutineScope(Dispatchers.Main).launch {
+                while (isShowingLoadingView) {
+                    delay(78000)
+                    val messages = listOf(
+                        Pair("Cela va prendre un moment...", "Conseil : Prenez un café !"),
+                        Pair("Allô ? Y'a-t-il quelqu'un ?", "Si oui, patientez sâgement !"),
+                        Pair("01000011 01101000 01100001 01110010 01100111 01100101 01101101 01100101 01101110 01110100", "(Ça veut dire \"Chargement\" en binaire)"),
+                        Pair("\"Chúxù\" en Chinois Traditionnel (儲蓄)", "Veut dire \"Économies\" en Français !"),
+                        Pair("Vous attendez ?", "Super, car nous aussi !"),
+                        Pair("(╯°□°)╯︵ ┻━┻", "POURQUOI C'EST SI LONG ?!"),
+                        Pair("UwU ou UxU ?", "Telle est la question..."),
+                        Pair("", "OÙ EST LE TEXTE DU HAUT ?!"),
+                        Pair("OÙ EST LE TEXTE DU BAS ?!", ""),
+                        Pair("Toujours pas fini ?!", "Eh oui ! Et nous en sommes désolés..."),
+                        Pair("Qu'est-ce qui tourne, est blanc et ne s'arrête pas ?", "(Réponse : Cet écran de chargement)"),
+                        Pair("Recherche en cours...", "Veuillez patienter..."),
+                    )
+                    val loadingMessage = messages.random()
+                    loadingTextView1.text = loadingMessage.first
+                    loadingTextView2.text = loadingMessage.second
+                }
+            }
+        } else {
+            updateLoadingView(text1, text2)
+        }
+    }
+
+    private fun updateLoadingView(text1: String, text2: String) {
+        loadingTextView1.text = text1
+        loadingTextView2.text = text2
+    }
+
+    private fun hideLoadingView() {
+        isShowingLoadingView = false
+        rootView.removeView(loadingView)
     }
 }
