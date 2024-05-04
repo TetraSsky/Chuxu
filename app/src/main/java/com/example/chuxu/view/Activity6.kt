@@ -1,5 +1,6 @@
 package com.example.chuxu.view
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -44,8 +45,9 @@ class Activity6 : AppCompatActivity() {
 
         val appId = intent.getIntExtra("appId", 0)
         val appName = intent.getStringExtra("appName")
-        val userNickname = intent.getStringExtra("userNickname")
-        val userID = intent.getIntExtra("userID", 0)
+        val sharedPref = getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)
+        val userNickname = sharedPref.getString("userNickname", "")
+        val userID = sharedPref.getInt("userID", 0)
 
         appIdTextView.text = "$appId"
         appNameTextView.text = "$appName"

@@ -174,25 +174,14 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
 
     override fun onLeaveReviewClicked(appId: Int, appName: String) {
         val intent = Intent(this, Activity6::class.java)
-        val sharedPref = getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)
-        val userNickname = sharedPref.getString("userNickname", "")
-        val userID = sharedPref.getInt("userID", 0)
         intent.putExtra("appId", appId)
         intent.putExtra("appName", appName)
-        intent.putExtra("userNickname", userNickname)
-        intent.putExtra("userID", userID)
         startActivity(intent)
     }
 
     override fun onViewReviewsClicked(appId: Int, appName: String) {
         val intent = Intent(this, Activity7::class.java)
-        val sharedPref = getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)
-        val userNickname = sharedPref.getString("userNickname", "")
-        val userID = sharedPref.getInt("userID", 0)
         intent.putExtra("appId", appId)
-        intent.putExtra("appName", appName)
-        intent.putExtra("userNickname", userNickname)
-        intent.putExtra("userID", userID)
         startActivity(intent)
     }
 }
