@@ -1,5 +1,6 @@
 package com.example.chuxu.view
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -16,7 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class Activity7 : AppCompatActivity() {
+class Activity8 : AppCompatActivity() {
 
     private var isShowingLoadingView = false
     private lateinit var loadingView: View
@@ -28,18 +29,20 @@ class Activity7 : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.reviews)
 
-        val appId = intent.getIntExtra("appId", 0)
-        showLoadingView("Nous récupérons les avis...","Un instant...")
-        fetchGameReviews(appId)
+        val sharedPref = getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)
+        val userID = sharedPref.getInt("userID", 0)
+        println(userID)
+        showLoadingView("Nous récupérons vos avis...","Un instant...")
+        fetchUserGameReviews(userID)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun fetchGameReviews(appId: Int) {
+    private fun fetchUserGameReviews(userID: Int) {
         CoroutineScope(Dispatchers.Main).launch {
-            val reviews = UserController.fetchGameReviews(appId)
+            val reviews = UserController.fetchUserGameReviews(userID)
             if (reviews.isEmpty()) {
                 hideLoadingView()
-                Toast.makeText(this@Activity7, "Aucun avis disponible pour ce jeu.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@Activity8, "Vous n'avez déposé aucun avis.", Toast.LENGTH_SHORT).show()
                 finish()
             } else {
                 hideLoadingView()
@@ -80,4 +83,3 @@ class Activity7 : AppCompatActivity() {
         loadingTextView2.text = text2
     }
 }
-

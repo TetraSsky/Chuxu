@@ -16,16 +16,16 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 /**
- * Contrôleur pour gérer les opérations liées aux utilisateurs.
+ * Contrôleur pour gérer les opérations liées aux utilisateurs
  */
 object UserController {
 
     /**
-     * Connecte un utilisateur avec son email et mot de passe.
+     * Connecte un utilisateur avec son email et mot de passe
      *
-     * @param email L'adresse email de l'utilisateur.
-     * @param password Le mot de passe de l'utilisateur.
-     * @return Une paire indiquant si l'utilisateur est connecté avec succès et son pseudo associé.
+     * @param email L'adresse email de l'utilisateur
+     * @param password Le mot de passe de l'utilisateur
+     * @return Une paire indiquant si l'utilisateur est connecté avec succès et son pseudo associé
      */
     suspend fun loginUser(email: String, password: String): Pair<Boolean, String> {
         return withContext(Dispatchers.IO) {
@@ -56,10 +56,10 @@ object UserController {
     }
 
     /**
-     * Crypte un mot de passe en utilisant l'algorithme SHA-256.
+     * Crypte un mot de passe en utilisant l'algorithme SHA-256
      *
-     * @param password Le mot de passe à crypter.
-     * @return Le mot de passe crypté.
+     * @param password Le mot de passe à crypter
+     * @return Le mot de passe crypté
      */
     fun encryptPassword(password: String): String {
         val md: MessageDigest
@@ -82,10 +82,10 @@ object UserController {
     }
 
     /**
-     * Récupère l'ID de l'utilisateur associé à l'adresse email donnée.
+     * Récupère l'ID de l'utilisateur associé à l'adresse email donnée
      *
-     * @param email L'adresse email de l'utilisateur.
-     * @return L'ID de l'utilisateur.
+     * @param email L'adresse email de l'utilisateur
+     * @return L'ID de l'utilisateur
      */
     suspend fun getUserID(email: String): Int {
         return withContext(Dispatchers.IO) {
@@ -111,10 +111,10 @@ object UserController {
     }
 
     /**
-     * Récupère le pseudo de l'utilisateur associé à l'ID donné.
+     * Récupère le pseudo de l'utilisateur associé à l'ID donné
      *
-     * @param userID L'ID de l'utilisateur.
-     * @return Le pseudo de l'utilisateur.
+     * @param userID L'ID de l'utilisateur
+     * @return Le pseudo de l'utilisateur
      */
     suspend fun getUserNickname(userID: Int): String {
         return withContext(Dispatchers.IO) {
@@ -140,11 +140,11 @@ object UserController {
     }
 
     /**
-     * Modifie l'adresse email de l'utilisateur.
+     * Modifie l'adresse email de l'utilisateur
      *
-     * @param email La nouvelle adresse email.
-     * @param userID L'ID de l'utilisateur.
-     * @return [true] si l'opération a réussi, [false] sinon.
+     * @param email La nouvelle adresse email
+     * @param userID L'ID de l'utilisateur
+     * @return [true] si l'opération a réussi, [false] sinon
      */
     suspend fun newUserEmail(email: String, userID: Int): Boolean {
         return withContext(Dispatchers.IO) {
@@ -180,11 +180,11 @@ object UserController {
     }
 
     /**
-     * Modifie le mot de passe de l'utilisateur.
+     * Modifie le mot de passe de l'utilisateur
      *
-     * @param password Le nouveau mot de passe.
-     * @param userID L'ID de l'utilisateur.
-     * @return [true] si l'opération a réussi, [false] sinon.
+     * @param password Le nouveau mot de passe
+     * @param userID L'ID de l'utilisateur
+     * @return [true] si l'opération a réussi, [false] sinon
      */
     suspend fun newUserPassword(password: String, userID: Int): Boolean {
         return withContext(Dispatchers.IO) {
@@ -210,11 +210,11 @@ object UserController {
     }
 
     /**
-     * Modifie le pseudo de l'utilisateur.
+     * Modifie le pseudo de l'utilisateur
      *
-     * @param nickname Le nouveau pseudo.
-     * @param userID L'ID de l'utilisateur.
-     * @return [true] si l'opération a réussi, [false] sinon.
+     * @param nickname Le nouveau pseudo
+     * @param userID L'ID de l'utilisateur
+     * @return [true] si l'opération a réussi, [false] sinon
      */
     suspend fun newUserNickname(nickname: String, userID: Int): Boolean {
         return withContext(Dispatchers.IO) {
@@ -240,12 +240,12 @@ object UserController {
     }
 
     /**
-     * Enregistre un nouvel utilisateur dans la base de données.
+     * Enregistre un nouvel utilisateur dans la base de données
      *
-     * @param email L'adresse email du nouvel utilisateur.
-     * @param password Le mot de passe du nouvel utilisateur.
-     * @param nickname Le pseudo du nouvel utilisateur.
-     * @return [true] si l'enregistrement a réussi, [false] sinon.
+     * @param email L'adresse email du nouvel utilisateur
+     * @param password Le mot de passe du nouvel utilisateur
+     * @param nickname Le pseudo du nouvel utilisateur
+     * @return [true] si l'enregistrement a réussi, [false] sinon
      */
     fun registerUser(email: String, password: String, nickname: String): Boolean {
         var connection = DatabaseManager.getConnection()
@@ -290,10 +290,10 @@ object UserController {
     }
 
     /**
-     * Supprime définitivement le compte d'un utilisateur.
+     * Supprime définitivement le compte d'un utilisateur
      *
-     * @param userID L'ID de l'utilisateur à supprimer.
-     * @return [true] si la suppression a réussi, [false] sinon.
+     * @param userID L'ID de l'utilisateur à supprimer
+     * @return [true] si la suppression a réussi, [false] sinon
      */
     suspend fun deleteUserAccount(userID: Int): Boolean {
         return withContext(Dispatchers.IO) {
@@ -350,13 +350,13 @@ object UserController {
     }
 
     /**
-     * Insère une nouvelle review dans la base de données.
+     * Insère une nouvelle review dans la base de données
      *
-     * @param userId L'ID de l'utilisateur laissant la review.
-     * @param gameId L'ID du jeu concerné par la review.
-     * @param message Le contenu de la review.
-     * @param appName le nom du jeu.
-     * @return [true] si l'insertion a réussi, [false] sinon.
+     * @param userId L'ID de l'utilisateur laissant la review
+     * @param gameId L'ID du jeu concerné par la review
+     * @param message Le contenu de la review
+     * @param appName le nom du jeu
+     * @return [true] si l'insertion a réussi, [false] sinon
      */
     suspend fun createReview(userID: Int, gameID: Int, message: String, appName: String?, time: String): Boolean {
         return withContext(Dispatchers.IO) {
@@ -405,10 +405,10 @@ object UserController {
     }
 
     /**
-     * Récupère les avis des utilisateurs pour un jeu spécifique depuis la base de données.
+     * Récupère les avis des utilisateurs pour un jeu spécifique depuis la base de données
      *
-     * @param appId L'ID du jeu pour lequel récupérer les avis.
-     * @return [reviews] Une liste d'objets GameReviewModel représentant les avis des utilisateurs sur le jeu.
+     * @param appId L'ID du jeu pour lequel récupérer les avis
+     * @return [reviews] Une liste d'objets GameReviewModel représentant les avis des utilisateurs sur le jeu
      */
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun fetchGameReviews(appId: Int): List<GameReviewModel> {
@@ -420,6 +420,43 @@ object UserController {
                     val query = "SELECT Utilisateur.Nickname, Avis.Message, Avis.GameName, Avis.AvisTime FROM Avis INNER JOIN Utilisateur ON Avis.UtilisateurID = Utilisateur.UtilisateurID WHERE Avis.GameID = ? ORDER BY AvisTime DESC"
                     val statement = connection.prepareStatement(query)
                     statement.setInt(1, appId)
+                    val resultSet = statement.executeQuery()
+
+                    while (resultSet.next()) {
+                        val userName = resultSet.getString("Nickname")
+                        val reviewMessage = resultSet.getString("Message")
+                        val gameName = resultSet.getString("GameName")
+                        val reviewDateStr = resultSet.getString("AvisTime")
+                        val dateOnly = LocalDateTime.parse(reviewDateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S"))
+                        val reviewDate = dateOnly.toLocalDate()
+                        val gameReview = GameReviewModel(userName, gameName, reviewMessage, reviewDate)
+                        reviews.add(gameReview)
+                    }
+                    statement.close()
+                }
+            } catch (e: SQLException) {
+                e.printStackTrace()
+            }
+            reviews
+        }
+    }
+
+    /**
+     * Récupère les avis des utilisateurs pour un jeu spécifique depuis la base de données
+     *
+     * @param userID L'ID de l'utilisateur pour lequel récupérer les avis
+     * @return [reviews] Une liste d'objets GameReviewModel représentant les avis des utilisateurs sur le jeu
+     */
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun fetchUserGameReviews(userID: Int): List<GameReviewModel> {
+        return withContext(Dispatchers.IO) {
+            val reviews = mutableListOf<GameReviewModel>()
+            try {
+                val connection = DatabaseManager.getConnection()
+                if (connection != null) {
+                    val query = "SELECT Utilisateur.Nickname, Avis.Message, Avis.GameName, Avis.AvisTime FROM Avis INNER JOIN Utilisateur ON Avis.UtilisateurID = Utilisateur.UtilisateurID WHERE Utilisateur.UtilisateurID = ? ORDER BY AvisTime DESC"
+                    val statement = connection.prepareStatement(query)
+                    statement.setInt(1, userID)
                     val resultSet = statement.executeQuery()
 
                     while (resultSet.next()) {

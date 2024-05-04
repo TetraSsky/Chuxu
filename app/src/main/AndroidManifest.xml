@@ -40,6 +40,8 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".view.Activity7"
             android:screenOrientation="portrait" />
+        <activity android:name=".view.Activity8"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="preloaded_fonts"
