@@ -131,7 +131,7 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
     private fun performSearch(query: String) {
         val trimmedQuery = query.trim()
         CoroutineScope(Dispatchers.Main).launch {
-            showLoadingView("Recherche en cours...", "Veuillez patienter...")
+            showLoadingView("Recherche en cours...", "Veuillez patienter...", trimmedQuery)
             val games = SteamAPIManager.searchGames(trimmedQuery)
             val gameViewModels = ArrayList<GameViewModel>()
             for (game in games) {
@@ -164,7 +164,7 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
         startActivity(intent)
     }
 
-    private fun showLoadingView(text1: String, text2: String) {
+    private fun showLoadingView(text1: String, text2: String, trimmedQuery: String) {
         if (!isShowingLoadingView) {
             rootView.removeView(defaultview)
             isShowingLoadingView = true
@@ -177,20 +177,28 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
 
             CoroutineScope(Dispatchers.Main).launch {
                 while (isShowingLoadingView) {
-                    delay(78000)
+                    delay(6000)
                     val messages = listOf(
-                        Pair("Cela va prendre un moment...", "Conseil : Prenez un café !"),
+                        Pair("Cela va prendre un moment...", "Conseil : Prenez un café ☕ !"),
                         Pair("Allô ? Y'a-t-il quelqu'un ?", "Si oui, patientez sâgement !"),
                         Pair("01000011 01101000 01100001 01110010 01100111 01100101 01101101 01100101 01101110 01110100", "(Ça veut dire \"Chargement\" en binaire)"),
                         Pair("\"Chúxù\" en Chinois Traditionnel (儲蓄)", "Veut dire \"Économies\" en Français !"),
                         Pair("Vous attendez ?", "Super, car nous aussi !"),
                         Pair("(╯°□°)╯︵ ┻━┻", "POURQUOI C'EST SI LONG ?!"),
-                        Pair("UwU ou UxU ?", "Telle est la question..."),
+                        Pair("Charger ou ne pas charger ?", "Telle est la question..."),
                         Pair("", "OÙ EST LE TEXTE DU HAUT ?!"),
                         Pair("OÙ EST LE TEXTE DU BAS ?!", ""),
-                        Pair("Toujours pas fini ?!", "Eh oui ! Et nous en sommes désolés..."),
+                        Pair("Laissez-moi deviner", "Vous avez recherché \"$trimmedQuery\" ?"),
+                        Pair("Rappel : Ça charge encore", "Au moins maintenant, vous savez !"),
+                        Pair("Pour être franc, mon créateur code un peu mal...", "(Veuillez l'en excuser \uD83D\uDE4F)"),
+                        Pair("Si vous êtes en H+ avec votre SIM", "Nous espérons au moins que vous aimez cet écran..."),
+                        Pair("\uD83E\uDD38\uD83D\uDCA5\uD83E\uDDBD\uD83C\uDFCC\uFE0F", "Hole in one !"),
+                        Pair("Toujours pas fini ?!", "Eh oui ! Et nous en sommes désolés \uD83D\uDE4F"),
                         Pair("Qu'est-ce qui tourne, est blanc et ne s'arrête pas ?", "(Réponse : Cet écran de chargement)"),
                         Pair("Recherche en cours...", "Veuillez patienter..."),
+                        Pair("Connexion en co-", "OUPS ! Mauvais message \uD83D\uDE05"),
+                        Pair("Vous voulez une blague ?", "Je n'ai pas fini de charger ! ... Voilà..."),
+
                     )
                     val loadingMessage = messages.random()
                     loadingTextView1.text = loadingMessage.first
