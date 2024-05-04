@@ -281,6 +281,10 @@ class Activity4 : AppCompatActivity() {
                 }
                 R.id.Compte -> {
                 }
+                R.id.Avis -> {
+                    val intent = Intent(this, Activity8::class.java)
+                    startActivity(intent)
+                }
                 R.id.Deconnect -> {
                     DatabaseManager.closeConnection()
 

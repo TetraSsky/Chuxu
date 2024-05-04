@@ -76,6 +76,10 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
                     startActivity(intent)
                     finish()
                 }
+                R.id.Avis -> {
+                    val intent = Intent(this, Activity8::class.java)
+                    startActivity(intent)
+                }
                 R.id.Deconnect -> {
                     DatabaseManager.closeConnection()
 
