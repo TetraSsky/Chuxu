@@ -171,7 +171,7 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
         if (!isShowingLoadingView) {
             rootView.removeView(defaultview)
             isShowingLoadingView = true
-            loadingView = layoutInflater.inflate(R.layout.loading_screen, null)
+            loadingView = layoutInflater.inflate(R.layout.research_loading_screen, null)
             loadingTextView1 = loadingView.findViewById(R.id.loadingtextView1)
             loadingTextView2 = loadingView.findViewById(R.id.loadingtextView2)
             loadingTextView1.text = text1
