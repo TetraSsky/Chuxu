@@ -14,6 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 import java.lang.System.currentTimeMillis
+import android.widget.ProgressBar
 
 /**
  * Service pour accéder aux fonctionnalités de l'API Steam.
@@ -145,17 +146,20 @@ object SteamAPIManager {
      * Recherche des jeux sur Steam correspondant à un certain terme de recherche.
      *
      * @param query Terme de recherche pour trouver des jeux.
+     * @param progressBar Aide à l'initialisation de la barre de chargement dans le fichier
      * @return Liste des détails des jeux correspondant à la recherche.
      */
-    suspend fun searchGames(query: String): List<GameData> {
+    suspend fun searchGames(query: String, progressBar: ProgressBar): List<GameData> {
         return withContext(Dispatchers.IO) {
             try {
                 val response = steamService.getAppList()
                 val games = mutableListOf<GameData>()
+                val totalApps = response.appList.apps.filter { it.name.contains(query, ignoreCase = true) }.map { it.appId }.size
+                val progressIncrement = (100.toDouble() / totalApps).let { "%.2f".format(it).replace(',', '.').toDouble() } * 100
+                progressBar.max = 10000
 
                 response.appList.apps.forEach { app ->
                     if (app.name.contains(query, ignoreCase = true)) {
-
                         val detailsResponse = steamService.getAppDetails(app.appId)
 
                         if (detailsResponse.isSuccessful) {
@@ -177,6 +181,8 @@ object SteamAPIManager {
                                 }
                             }
                         }
+                        progressBar.progress += (progressIncrement).toInt()
+                        println(progressBar.progress)
                         delay(CALL_INTERVAL)
                     }
                 }

@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -39,6 +40,7 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
     private lateinit var loadingTextView2: TextView
     private lateinit var defaultview: View
     private lateinit var rootView: ViewGroup
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -132,7 +134,8 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
         val trimmedQuery = query.trim()
         CoroutineScope(Dispatchers.Main).launch {
             showLoadingView("Recherche en cours...", "Veuillez patienter...", trimmedQuery)
-            val games = SteamAPIManager.searchGames(trimmedQuery)
+            progressBar = findViewById(R.id.progressBar2)
+            val games = SteamAPIManager.searchGames(trimmedQuery, progressBar)
             val gameViewModels = ArrayList<GameViewModel>()
             for (game in games) {
                 gameViewModels.add(
