@@ -3,6 +3,7 @@ package com.example.chuxu.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.chuxu.R
@@ -14,6 +15,8 @@ import com.example.chuxu.R
 class GameReviewModelAdapter : RecyclerView.Adapter<GameReviewModelAdapter.GameReviewViewHolder>() {
 
     private var reviews: List<GameReviewModel> = ArrayList()
+    private var deleteReviewClickListener: OnDeleteReviewClickListener? = null
+    private var modifyReviewClickListener: OnModifyReviewClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameReviewViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.constraint_review_row, parent, false)
@@ -23,6 +26,14 @@ class GameReviewModelAdapter : RecyclerView.Adapter<GameReviewModelAdapter.GameR
     override fun onBindViewHolder(holder: GameReviewViewHolder, position: Int) {
         val currentReview = reviews[position]
         holder.bind(currentReview)
+
+        holder.deleteReviewButton.setOnClickListener {
+            deleteReviewClickListener?.onLeaveReviewClicked(currentGame.gameIdTextView, currentGame.gameNameTextView)
+        }
+
+        holder.modifyReviewButton.setOnClickListener {
+            modifyReviewClickListener?.onViewReviewsClicked(currentGame.gameIdTextView, currentGame.gameNameTextView)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -39,6 +50,8 @@ class GameReviewModelAdapter : RecyclerView.Adapter<GameReviewModelAdapter.GameR
         private val gameNameTextView: TextView = itemView.findViewById(R.id.gameName)
         private val reviewMessageTextView: TextView = itemView.findViewById(R.id.reviewMessage)
         private val reviewDateTextView: TextView = itemView.findViewById(R.id.reviewDate)
+        val deleteReviewButton: ImageView = itemView.findViewById(R.id.delete)
+        val modifyReviewButton: ImageView = itemView.findViewById(R.id.modify)
 
         fun bind(review: GameReviewModel) {
             userNameTextView.text = review.userName
