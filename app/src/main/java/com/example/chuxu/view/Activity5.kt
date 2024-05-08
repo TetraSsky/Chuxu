@@ -180,7 +180,7 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
 
             CoroutineScope(Dispatchers.Main).launch {
                 while (isShowingLoadingView) {
-                    delay(6000)
+                    delay(78000)
                     val messages = listOf(
                         Pair("Cela va prendre un moment...", "Conseil : Prenez un café ☕ !"),
                         Pair("Allô ? Y'a-t-il quelqu'un ?", "Si oui, patientez sâgement !"),
