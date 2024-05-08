@@ -131,7 +131,7 @@
                 android:id="@+id/gameId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:cursorVisible="true"
+                android:cursorVisible="false"
                 android:text="Gameid"
                 android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"

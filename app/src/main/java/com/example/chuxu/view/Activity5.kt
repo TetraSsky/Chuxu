@@ -7,7 +7,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -167,6 +166,7 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
         startActivity(intent)
     }
 
+
     private fun showLoadingView(text1: String, text2: String, trimmedQuery: String) {
         if (!isShowingLoadingView) {
             rootView.removeView(defaultview)
@@ -191,7 +191,7 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
                         Pair("Charger ou ne pas charger ?", "Telle est la question..."),
                         Pair("", "OÙ EST LE TEXTE DU HAUT ?!"),
                         Pair("OÙ EST LE TEXTE DU BAS ?!", ""),
-                        Pair("Laissez-moi deviner", "Vous avez recherché \"$trimmedQuery\" ?"),
+                        Pair("Laissez-moi deviner...", "Vous avez recherché \"$trimmedQuery\" ?"),
                         Pair("Rappel : Ça charge encore", "Au moins maintenant, vous savez !"),
                         Pair("Pour être franc, mon créateur code un peu mal...", "(Veuillez l'en excuser \uD83D\uDE4F)"),
                         Pair("Si vous êtes en H+ avec votre SIM", "Nous espérons au moins que vous aimez cet écran..."),

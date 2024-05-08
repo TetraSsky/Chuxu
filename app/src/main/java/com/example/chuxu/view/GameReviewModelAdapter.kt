@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.chuxu.R
@@ -15,7 +15,7 @@ import com.example.chuxu.R
  */
 class GameReviewModelAdapter : RecyclerView.Adapter<GameReviewModelAdapter.GameReviewViewHolder>() {
 
-    private var reviews: List<GameReviewModel> = ArrayList()
+    private var gameReviewModel: List<GameReviewModel> = ArrayList()
     private var deleteReviewClickListener: OnDeleteReviewClickListener? = null
     private var modifyReviewClickListener: OnModifyReviewClickListener? = null
 
@@ -25,25 +25,41 @@ class GameReviewModelAdapter : RecyclerView.Adapter<GameReviewModelAdapter.GameR
     }
 
     override fun onBindViewHolder(holder: GameReviewViewHolder, position: Int) {
-        val currentReview = reviews[position]
+        val currentReview = gameReviewModel[position]
         holder.bind(currentReview)
 
         holder.deleteReviewButton.setOnClickListener {
-            deleteReviewClickListener?.onLeaveReviewClicked(currentGame.gameIdTextView, currentGame.gameNameTextView)
+            deleteReviewClickListener?.onDeleteReviewClicked(currentReview.userID, currentReview.reviewID)
         }
 
         holder.modifyReviewButton.setOnClickListener {
-            modifyReviewClickListener?.onViewReviewsClicked(currentGame.gameIdTextView, currentGame.gameNameTextView)
+            modifyReviewClickListener?.onModifyReviewsClicked(currentReview.userID, currentReview.reviewID)
         }
     }
 
     override fun getItemCount(): Int {
-        return reviews.size
+        return gameReviewModel.size
     }
 
     fun setData(data: List<GameReviewModel>) {
-        this.reviews = data
+        this.gameReviewModel = data
         notifyDataSetChanged()
+    }
+
+    fun setDeleteReviewClickListener(listener: OnDeleteReviewClickListener) {
+        this.deleteReviewClickListener = listener
+    }
+
+    fun setModifyReviewClickListener(listener: OnModifyReviewClickListener) {
+        this.modifyReviewClickListener = listener
+    }
+
+    interface OnDeleteReviewClickListener {
+        fun onDeleteReviewClicked(userID: Int, reviewID: Int)
+    }
+
+    interface OnModifyReviewClickListener {
+        fun onModifyReviewsClicked(userID: Int, reviewID: Int)
     }
 
     inner class GameReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -51,14 +67,16 @@ class GameReviewModelAdapter : RecyclerView.Adapter<GameReviewModelAdapter.GameR
         private val gameNameTextView: TextView = itemView.findViewById(R.id.gameName)
         private val reviewMessageTextView: TextView = itemView.findViewById(R.id.reviewMessage)
         private val reviewDateTextView: TextView = itemView.findViewById(R.id.reviewDate)
-        val deleteReviewButton: ImageView = itemView.findViewById(R.id.delete)
-        val modifyReviewButton: ImageView = itemView.findViewById(R.id.modify)
+        private val reviewIDTextView: TextView = itemView.findViewById(R.id.reviewID)
+        val deleteReviewButton: ImageButton = itemView.findViewById(R.id.delete)
+        val modifyReviewButton: ImageButton = itemView.findViewById(R.id.modify)
 
-        fun bind(review: GameReviewModel) {
-            userNameTextView.text = review.userName
-            gameNameTextView.text = review.gameName
-            reviewMessageTextView.text = review.reviewMessage
-            reviewDateTextView.text = "Publié le : " + review.reviewDate
+        fun bind(gameReviewModel: GameReviewModel) {
+            userNameTextView.text = gameReviewModel.userName
+            gameNameTextView.text = gameReviewModel.gameName
+            reviewMessageTextView.text = gameReviewModel.reviewMessage
+            reviewDateTextView.text = "Publié le : " + gameReviewModel.reviewDate
+            reviewIDTextView.text = gameReviewModel.reviewID.toString()
         }
     }
 }

@@ -1,5 +1,8 @@
 package com.example.chuxu.view
 
+import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -7,9 +10,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.chuxu.DatabaseManager
 import com.example.chuxu.R
 import com.example.chuxu.controller.UserController
 import kotlinx.coroutines.CoroutineScope
@@ -55,6 +61,7 @@ class Activity7 : AppCompatActivity() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
+
 
     private fun showLoadingView(text1: String, text2: String) {
         if (!isShowingLoadingView) {

@@ -11,7 +11,6 @@ import java.security.NoSuchAlgorithmException
 import java.sql.SQLException
 import kotlin.experimental.and
 import kotlinx.coroutines.*
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -350,6 +349,39 @@ object UserController {
     }
 
     /**
+     * Vérifie si l'utilisateur possède déjà une review sur un jeu précis
+     *
+     * @param userId L'ID de l'utilisateur auquel appartient la review
+     * @param reviewID L'ID de la review à modifier
+     * @return Une paire contenant l'ID et le nom du jeu concerné par la review, null si aucune review n'est trouvée
+     */
+    suspend fun modifyUserReview(userID: Int, reviewID: Int): Pair<Int, String>? {
+        return withContext(Dispatchers.IO) {
+            var connection = DatabaseManager.getConnection()
+            try {
+                connection = DatabaseManager.getConnection()
+                if (connection != null) {
+                    val query = "SELECT GameID, GameName FROM Avis WHERE UtilisateurID = ? AND AvisID = ?"
+                    val statement = connection.prepareStatement(query)
+                    statement.setInt(1, userID)
+                    statement.setInt(2, reviewID)
+                    val resultSet = statement.executeQuery()
+                    if (resultSet.next()) {
+                        val GameID = resultSet.getInt("GameID")
+                        val GameName = resultSet.getString("GameName")
+                        return@withContext Pair(GameID, GameName)
+                    }
+                }
+            } catch (e: SQLException) {
+                e.printStackTrace()
+            } finally {
+                connection?.close()
+            }
+            return@withContext null
+        }
+    }
+
+    /**
      * Insère une nouvelle review dans la base de données
      *
      * @param userId L'ID de l'utilisateur laissant la review
@@ -417,19 +449,21 @@ object UserController {
             try {
                 val connection = DatabaseManager.getConnection()
                 if (connection != null) {
-                    val query = "SELECT Utilisateur.Nickname, Avis.Message, Avis.GameName, Avis.AvisTime FROM Avis INNER JOIN Utilisateur ON Avis.UtilisateurID = Utilisateur.UtilisateurID WHERE Avis.GameID = ? ORDER BY AvisTime DESC"
+                    val query = "SELECT Utilisateur.UtilisateurID, Utilisateur.Nickname, Avis.Message, Avis.GameName, Avis.AvisTime, Avis.AvisID FROM Avis INNER JOIN Utilisateur ON Avis.UtilisateurID = Utilisateur.UtilisateurID WHERE Avis.GameID = ? ORDER BY AvisTime DESC"
                     val statement = connection.prepareStatement(query)
                     statement.setInt(1, appId)
                     val resultSet = statement.executeQuery()
 
                     while (resultSet.next()) {
+                        val userID = resultSet.getInt("UtilisateurID")
                         val userName = resultSet.getString("Nickname")
                         val reviewMessage = resultSet.getString("Message")
                         val gameName = resultSet.getString("GameName")
                         val reviewDateStr = resultSet.getString("AvisTime")
                         val dateOnly = LocalDateTime.parse(reviewDateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S"))
                         val reviewDate = dateOnly.toLocalDate()
-                        val gameReview = GameReviewModel(userName, gameName, reviewMessage, reviewDate)
+                        val reviewID = resultSet.getInt("AvisID")
+                        val gameReview = GameReviewModel(userID, userName, gameName, reviewMessage, reviewDate, reviewID)
                         reviews.add(gameReview)
                     }
                     statement.close()
@@ -454,7 +488,7 @@ object UserController {
             try {
                 val connection = DatabaseManager.getConnection()
                 if (connection != null) {
-                    val query = "SELECT Utilisateur.Nickname, Avis.Message, Avis.GameName, Avis.AvisTime FROM Avis INNER JOIN Utilisateur ON Avis.UtilisateurID = Utilisateur.UtilisateurID WHERE Utilisateur.UtilisateurID = ? ORDER BY AvisTime DESC"
+                    val query = "SELECT Utilisateur.Nickname, Avis.Message, Avis.GameName, Avis.AvisTime, Avis.AvisID FROM Avis INNER JOIN Utilisateur ON Avis.UtilisateurID = Utilisateur.UtilisateurID WHERE Utilisateur.UtilisateurID = ? ORDER BY AvisTime DESC"
                     val statement = connection.prepareStatement(query)
                     statement.setInt(1, userID)
                     val resultSet = statement.executeQuery()
@@ -466,7 +500,8 @@ object UserController {
                         val reviewDateStr = resultSet.getString("AvisTime")
                         val dateOnly = LocalDateTime.parse(reviewDateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S"))
                         val reviewDate = dateOnly.toLocalDate()
-                        val gameReview = GameReviewModel(userName, gameName, reviewMessage, reviewDate)
+                        val reviewID = resultSet.getInt("AvisID")
+                        val gameReview = GameReviewModel(userID, userName, gameName, reviewMessage, reviewDate, reviewID)
                         reviews.add(gameReview)
                     }
                     statement.close()
@@ -475,6 +510,36 @@ object UserController {
                 e.printStackTrace()
             }
             reviews
+        }
+    }
+
+    /**
+     * Supprime définitivement l'avis d'un utilisateur
+     *
+     * @param userID L'ID de l'utilisateur ayquel l'avis appartient
+     * @return [true] si la suppression a réussi, [false] sinon
+     */
+    suspend fun deleteUserReview(userID: Int, AvisID: Int): Boolean {
+        return withContext(Dispatchers.IO) {
+            var connection = DatabaseManager.getConnection()
+            try {
+                if (connection != null) {
+                    val deleteReviewQuery = "DELETE FROM Avis WHERE UtilisateurID = ? AND AvisID = ?"
+                    val deleteReviewStatement = connection.prepareStatement(deleteReviewQuery)
+                    deleteReviewStatement.setInt(1, userID)
+                    deleteReviewStatement.setInt(2, AvisID)
+                    val isReviewDeleted = deleteReviewStatement.executeUpdate()
+                    if (isReviewDeleted > 0) {
+                        return@withContext true
+                    }
+                    deleteReviewStatement.close()
+                }
+            } catch (e: SQLException) {
+                e.printStackTrace()
+            } finally {
+                connection?.close()
+            }
+            false
         }
     }
 }

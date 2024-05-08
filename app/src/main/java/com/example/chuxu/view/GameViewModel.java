@@ -23,9 +23,7 @@ public class GameViewModel {
         this.gameIdTextView = gameIdTextView;
     }
 
-    public String getGameNameTextView() {
-        return gameNameTextView;
-    }
+    public String getGameNameTextView() { return gameNameTextView; }
 
     public String getGameTypeTextView() { return gameTypeTextView;}
 
