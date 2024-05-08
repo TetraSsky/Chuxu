@@ -103,12 +103,12 @@
                 android:textAlignment="center"
                 android:textSize="18sp"
                 android:textStyle="normal"
-                app:layout_constraintBottom_toTopOf="@+id/bas"
+                app:layout_constraintBottom_toTopOf="@+id/Bas"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/bas"
+                android:id="@+id/Bas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"

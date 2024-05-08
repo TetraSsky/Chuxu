@@ -1,5 +1,6 @@
 package com.example.chuxu.view
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +29,18 @@ class GameReviewModelAdapter : RecyclerView.Adapter<GameReviewModelAdapter.GameR
         val currentReview = gameReviewModel[position]
         holder.bind(currentReview)
 
+        val sharedPref = holder.itemView.context.getSharedPreferences("MY_APP_PREF", Context.MODE_PRIVATE)
+        val loggedInUserId = sharedPref.getInt("userID", 0)
+        val isCurrentUserReview = currentReview.userID == loggedInUserId
+
+        if (isCurrentUserReview) {
+            holder.deleteReviewButton.visibility = View.VISIBLE
+            holder.modifyReviewButton.visibility = View.VISIBLE
+        } else {
+            holder.deleteReviewButton.visibility = View.GONE
+            holder.modifyReviewButton.visibility = View.GONE
+        }
+
         holder.deleteReviewButton.setOnClickListener {
             deleteReviewClickListener?.onDeleteReviewClicked(currentReview.userID, currentReview.reviewID)
         }
@@ -36,6 +49,7 @@ class GameReviewModelAdapter : RecyclerView.Adapter<GameReviewModelAdapter.GameR
             modifyReviewClickListener?.onModifyReviewsClicked(currentReview.userID, currentReview.reviewID)
         }
     }
+
 
     override fun getItemCount(): Int {
         return gameReviewModel.size
