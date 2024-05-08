@@ -180,7 +180,7 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
 
             CoroutineScope(Dispatchers.Main).launch {
                 while (isShowingLoadingView) {
-                    delay(78000)
+                    delay(6000)
                     val messages = listOf(
                         Pair("Cela va prendre un moment...", "Conseil : Prenez un café ☕ !"),
                         Pair("Allô ? Y'a-t-il quelqu'un ?", "Si oui, patientez sâgement !"),
@@ -197,11 +197,12 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
                         Pair("Si vous êtes en H+ avec votre SIM", "Nous espérons au moins que vous aimez cet écran..."),
                         Pair("\uD83E\uDD38\uD83D\uDCA5\uD83E\uDDBD\uD83C\uDFCC\uFE0F", "Hole in one !"),
                         Pair("Toujours pas fini ?!", "Eh oui ! Et nous en sommes désolés \uD83D\uDE4F"),
-                        Pair("Qu'est-ce qui tourne, est blanc et ne s'arrête pas ?", "(Réponse : Cet écran de chargement)"),
+                        Pair("Qu'est-ce qui avance, est blanc et ne s'arrête pas ?", "(Réponse : Cet écran de chargement)"),
                         Pair("Recherche en cours...", "Veuillez patienter..."),
                         Pair("Connexion en co-", "OUPS ! Mauvais message \uD83D\uDE05"),
                         Pair("Vous voulez une blague ?", "Je n'ai pas fini de charger ! ... Voilà..."),
-
+                        Pair("Une envie pressante ?", "Lance un jet de sauvegarde."),
+                        Pair("\uD83C\uDF0E\uD83D\uDD25","POUR LA SUPER TERRE !"),
                     )
                     val loadingMessage = messages.random()
                     loadingTextView1.text = loadingMessage.first
