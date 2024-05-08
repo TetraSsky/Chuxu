@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.chuxu.R
+import com.example.chuxu.controller.ReviewsController
 import com.example.chuxu.controller.UserController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,7 +43,7 @@ class Activity7 : AppCompatActivity(), GameReviewModelAdapter.OnDeleteReviewClic
         showLoadingView("Nous récupérons les avis...","Un instant...")
 
         CoroutineScope(Dispatchers.Main).launch {
-            val reviews = UserController.fetchGameReviews(appId)
+            val reviews = ReviewsController.fetchGameReviews(appId)
             if (reviews.isEmpty()) {
                 hideLoadingView()
                 Toast.makeText(this@Activity7, "Aucun avis disponible pour ce jeu.", Toast.LENGTH_SHORT).show()
@@ -64,7 +65,7 @@ class Activity7 : AppCompatActivity(), GameReviewModelAdapter.OnDeleteReviewClic
             setMessage("Êtes-vous sûr de vouloir supprimer votre avis ?")
             setPositiveButton("Oui") { _, _ ->
                 CoroutineScope(Dispatchers.Main).launch {
-                    val success = UserController.deleteUserReview(userID, reviewID)
+                    val success = ReviewsController.deleteUserReview(userID, reviewID)
                     if (success) {
                         Toast.makeText(this@Activity7, "Votre avis a bien été effacé !", Toast.LENGTH_LONG).show()
                         finish()
@@ -85,7 +86,7 @@ class Activity7 : AppCompatActivity(), GameReviewModelAdapter.OnDeleteReviewClic
 
     override fun onModifyReviewsClicked(userID: Int, reviewID: Int){
         CoroutineScope(Dispatchers.Main).launch {
-            val gameInfo = UserController.modifyUserReview(userID, reviewID)
+            val gameInfo = ReviewsController.modifyUserReview(userID, reviewID)
             if (gameInfo != null) {
                 val intent = Intent(this@Activity7, Activity6::class.java)
                 intent.putExtra("appId", gameInfo.first)
