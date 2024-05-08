@@ -11,7 +11,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.chuxu.R
-import com.example.chuxu.controller.UserController
+import com.example.chuxu.controller.ReviewsController
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -54,7 +54,7 @@ class Activity6 : AppCompatActivity() {
         userNicknameTextView.text = "Laissez un avis sur ce jeu, $userNickname !"
 
         CoroutineScope(Dispatchers.Main).launch {
-            val userReview = UserController.getUserReview(userID, appId)
+            val userReview = ReviewsController.getUserReview(userID, appId)
             userReview?.let {
                 userReviewEditTextView.setText(it)
             }
@@ -80,7 +80,7 @@ class Activity6 : AppCompatActivity() {
                     delay(4000)
                     sendReviewButton.isEnabled = true
                 } else {
-                    val result = UserController.createReview(userID, appId, userReview, appName, time)
+                    val result = ReviewsController.createReview(userID, appId, userReview, appName, time)
                     if (result) {
                         hideLoadingView()
                         Toast.makeText(this@Activity6, "Votre avis a été ajouté avec succès.", Toast.LENGTH_SHORT).show()

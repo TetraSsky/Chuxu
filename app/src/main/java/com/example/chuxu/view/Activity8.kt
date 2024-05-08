@@ -16,8 +16,8 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.chuxu.R
-import com.example.chuxu.controller.UserController
-import com.example.chuxu.controller.UserController.fetchUserGameReviews
+import com.example.chuxu.controller.ReviewsController
+import com.example.chuxu.controller.ReviewsController.fetchUserGameReviews
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -68,7 +68,7 @@ class Activity8 : AppCompatActivity(), GameReviewModelAdapter.OnDeleteReviewClic
             setMessage("Êtes-vous sûr de vouloir supprimer votre avis ?")
             setPositiveButton("Oui") { _, _ ->
                 CoroutineScope(Dispatchers.Main).launch {
-                    val success = UserController.deleteUserReview(userID, reviewID)
+                    val success = ReviewsController.deleteUserReview(userID, reviewID)
                     if (success) {
                         Toast.makeText(this@Activity8, "Votre avis a bien été effacé !", Toast.LENGTH_LONG).show()
                         finish()
@@ -89,7 +89,7 @@ class Activity8 : AppCompatActivity(), GameReviewModelAdapter.OnDeleteReviewClic
 
     override fun onModifyReviewsClicked(userID: Int, reviewID: Int){
         CoroutineScope(Dispatchers.Main).launch {
-            val gameInfo = UserController.modifyUserReview(userID, reviewID)
+            val gameInfo = ReviewsController.modifyUserReview(userID, reviewID)
             if (gameInfo != null) {
                 val intent = Intent(this@Activity8, Activity6::class.java)
                 intent.putExtra("appId", gameInfo.first)
