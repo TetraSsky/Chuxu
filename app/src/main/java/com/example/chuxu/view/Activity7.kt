@@ -36,6 +36,9 @@ class Activity7 : AppCompatActivity(), GameReviewModelAdapter.OnDeleteReviewClic
         setContentView(R.layout.reviews)
 
         adapter = GameReviewModelAdapter()
+        recyclerView = findViewById(R.id.myReviewRecyclerView)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
         adapter.setDeleteReviewClickListener(this)
         adapter.setModifyReviewClickListener(this)
 
@@ -50,9 +53,6 @@ class Activity7 : AppCompatActivity(), GameReviewModelAdapter.OnDeleteReviewClic
                 finish()
             } else {
                 hideLoadingView()
-                recyclerView = findViewById(R.id.myReviewRecyclerView)
-                recyclerView.adapter = adapter
-                recyclerView.layoutManager = LinearLayoutManager(this@Activity7)
                 adapter.setData(reviews)
             }
         }
