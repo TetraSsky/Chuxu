@@ -115,7 +115,27 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (!query.isNullOrBlank()) {
-                    performSearch(query)
+                    val trimmedQuery = query.trim()
+                    CoroutineScope(Dispatchers.Main).launch {
+                        showLoadingView("Recherche en cours...", "Veuillez patienter...", trimmedQuery)
+                        progressBar = findViewById(R.id.progressBar2)
+                        val games = SteamAPIManager.searchGames(trimmedQuery, progressBar)
+                        val gameViewModels = ArrayList<GameViewModel>()
+                        for (game in games) {
+                            gameViewModels.add(
+                                GameViewModel(
+                                    game.appId,
+                                    game.name,
+                                    game.type,
+                                    game.priceOverview?.price ?: "N/A",
+                                    game.description,
+                                    game.headerImage
+                                )
+                            )
+                        }
+                        hideLoadingView()
+                        adapter.setData(gameViewModels)
+                    }
                 } else {
                     Toast.makeText(this@Activity5, "Veuillez entrer quelque chose dans la barre de recherche", Toast.LENGTH_SHORT).show()
                 }
@@ -127,30 +147,6 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
             }
         })
         return true
-    }
-
-    private fun performSearch(query: String) {
-        val trimmedQuery = query.trim()
-        CoroutineScope(Dispatchers.Main).launch {
-            showLoadingView("Recherche en cours...", "Veuillez patienter...", trimmedQuery)
-            progressBar = findViewById(R.id.progressBar2)
-            val games = SteamAPIManager.searchGames(trimmedQuery, progressBar)
-            val gameViewModels = ArrayList<GameViewModel>()
-            for (game in games) {
-                gameViewModels.add(
-                    GameViewModel(
-                        game.appId,
-                        game.name,
-                        game.type,
-                        game.priceOverview?.price ?: "N/A",
-                        game.description,
-                        game.headerImage
-                    )
-                )
-            }
-            hideLoadingView()
-            adapter.setData(gameViewModels)
-        }
     }
 
     override fun onLeaveReviewClicked(appId: Int, appName: String) {
