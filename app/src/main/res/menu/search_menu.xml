@@ -12,14 +12,21 @@
     <item
         android:id="@+id/action_sort"
         android:title="Trier"
-        android:icon="@android:drawable/ic_menu_sort_by_size"
         app:showAsAction="never">
 
         <menu>
-            <item android:id="@+id/sort_name_asc" android:title="Trier par nom (A à Z)" />
-            <item android:id="@+id/sort_name_desc" android:title="Trier par nom (Z à A)" />
-            <item android:id="@+id/sort_price_asc" android:title="Prix les - chers" />
-            <item android:id="@+id/sort_price_desc" android:title="Prix les + chers" />
+            <item android:id="@+id/sort_name_asc"
+                android:icon="@drawable/ic_expand"
+                android:title="Trier par nom (A à Z)" />
+            <item android:id="@+id/sort_name_desc"
+                android:icon="@drawable/ic_expand_less"
+                android:title="Trier par nom (Z à A)" />
+            <item android:id="@+id/sort_price_asc"
+                android:icon="@drawable/baseline_attach_money_24"
+                android:title="Prix les - chers" />
+            <item android:id="@+id/sort_price_desc"
+                android:icon="@drawable/baseline_attach_money_24"
+                android:title="Prix les + chers" />
 
             <item
                 android:id="@+id/sort_type"
@@ -27,15 +34,24 @@
                 app:showAsAction="never">
                 <menu>
                     <group android:checkableBehavior="single">
-                        <item android:id="@+id/sort_type_game" android:title="Jeux" />
-                        <item android:id="@+id/sort_type_dlc" android:title="DLC" />
-                        <item android:id="@+id/sort_type_demo" android:title="Démos" />
-                        <item android:id="@+id/sort_type_music" android:title="Musique" />
+                        <item android:id="@+id/sort_type_game"
+                            android:icon="@drawable/baseline_category_24"
+                            android:title="Jeux" />
+                        <item android:id="@+id/sort_type_dlc"
+                            android:icon="@drawable/baseline_attach_money_24"
+                            android:title="DLC" />
+                        <item android:id="@+id/sort_type_demo"
+                            android:icon="@drawable/baseline_build_24"
+                            android:title="Démos" />
+                        <item android:id="@+id/sort_type_music"
+                            android:icon="@drawable/baseline_audiotrack_24"
+                            android:title="Musique" />
                     </group>
                 </menu>
             </item>
-
-            <item android:id="@+id/reset_filter" android:title="Réinitialiser les filtres" />
+            <item android:id="@+id/reset_filter"
+                android:icon="@drawable/baseline_cached_24"
+                android:title="Réinitialiser les filtres" />
         </menu>
     </item>
 </menu>
