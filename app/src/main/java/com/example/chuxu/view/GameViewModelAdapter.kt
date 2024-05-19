@@ -8,17 +8,22 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.chuxu.R
+import com.example.chuxu.util.SortOption
 import com.squareup.picasso.Picasso
 
 /**
- * Cette classe est un adaptateur pour le RecyclerView de "recherche.xml".
- * Lie les données de la liste (ici, une liste de GameViewModel) avec les vues dans chaque élément de la liste.
- * - Crée les vues pour chaque élément de la liste et les remplit avec les données appropriées en utilisant les instances de GameViewModel.
- * - Gère la création des vues (onCreateViewHolder), le remplissage (onBindViewHolder) et le calcul total d'éléments (getItemCount).
+ * Cette classe est un adaptateur pour le RecyclerView de "recherche.xml"
+ * Lie les données de la liste (ici, une liste de GameViewModel) avec les vues dans chaque élément de la liste
+ * - Crée les vues pour chaque élément de la liste et les remplit avec les données appropriées en utilisant les instances de GameViewModel
+ * - Gère la création des vues (onCreateViewHolder), le remplissage (onBindViewHolder) et le calcul total d'éléments (getItemCount)
+ * - Fournit des fonctions pour trier les données par différents critères (nom, prix, type)
+ * - Convertit les prix en double pour permettre un tri numérique correct
+ * - Permet de filtrer les données par type (jeu, DLC, démo, musique) et de réinitialiser les filtres
  */
 class GameViewModelAdapter : RecyclerView.Adapter<GameViewModelAdapter.GameViewHolder>() {
 
     private var gameViewModels: List<GameViewModel> = ArrayList()
+    private var originalGameViewModels: List<GameViewModel> = ArrayList()
     private var leaveReviewClickListener: OnLeaveReviewClickListener? = null
     private var viewReviewsClickListener: OnViewReviewsClickListener? = null
 
@@ -32,11 +37,11 @@ class GameViewModelAdapter : RecyclerView.Adapter<GameViewModelAdapter.GameViewH
         holder.bind(currentGame)
 
         holder.leaveReviewButton.setOnClickListener {
-            leaveReviewClickListener?.onLeaveReviewClicked(currentGame.gameIdTextView, currentGame.gameNameTextView)
+            leaveReviewClickListener?.onLeaveReviewClicked(currentGame.getGameIdTextView(), currentGame.getGameNameTextView())
         }
 
         holder.viewReviewButton.setOnClickListener {
-            viewReviewsClickListener?.onViewReviewsClicked(currentGame.gameIdTextView, currentGame.gameNameTextView)
+            viewReviewsClickListener?.onViewReviewsClicked(currentGame.getGameIdTextView(), currentGame.getGameNameTextView())
         }
     }
 
@@ -46,6 +51,7 @@ class GameViewModelAdapter : RecyclerView.Adapter<GameViewModelAdapter.GameViewH
 
     fun setData(data: List<GameViewModel>) {
         this.gameViewModels = data
+        this.originalGameViewModels = data.toList()
         notifyDataSetChanged()
     }
 
@@ -57,12 +63,30 @@ class GameViewModelAdapter : RecyclerView.Adapter<GameViewModelAdapter.GameViewH
         this.viewReviewsClickListener = listener
     }
 
-    interface OnLeaveReviewClickListener {
-        fun onLeaveReviewClicked(appId: Int, appName: String)
+    fun sortData(sortOption: SortOption) {
+        gameViewModels = when (sortOption) {
+            SortOption.NAME_ASC -> gameViewModels.sortedBy { it.getGameNameTextView() }
+            SortOption.NAME_DESC -> gameViewModels.sortedByDescending { it.getGameNameTextView() }
+            SortOption.PRICE_ASC -> gameViewModels.filter { it.getGamePrixTextView() != "N/A" }
+                .sortedBy { parsePrice(it.getGamePrixTextView()) } +
+                    gameViewModels.filter { it.getGamePrixTextView() == "N/A" }
+            SortOption.PRICE_DESC -> gameViewModels.filter { it.getGamePrixTextView() != "N/A" }
+                .sortedByDescending { parsePrice(it.getGamePrixTextView()) } +
+                    gameViewModels.filter { it.getGamePrixTextView() == "N/A" }
+            SortOption.TYPE -> gameViewModels.sortedBy { it.getGameTypeTextView() }
+            SortOption.GAME -> originalGameViewModels.filter { it.getGameTypeTextView() == "game" }
+            SortOption.DLC -> originalGameViewModels.filter { it.getGameTypeTextView() == "dlc" }
+            SortOption.DEMO -> originalGameViewModels.filter { it.getGameTypeTextView() == "demo" }
+            SortOption.MUSIC -> originalGameViewModels.filter { it.getGameTypeTextView() == "music" }
+            SortOption.RESET -> originalGameViewModels.toList()
+        }
+        notifyDataSetChanged()
     }
 
-    interface OnViewReviewsClickListener {
-        fun onViewReviewsClicked(appId: Int, appName: String)
+    private fun parsePrice(priceString: String): Double {
+        val cleanedString = priceString.replace("[^\\d,\\.]".toRegex(), "")
+        val normalizedString = cleanedString.replace(",", ".")
+        return normalizedString.toDoubleOrNull() ?: Double.MAX_VALUE
     }
 
     inner class GameViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -83,5 +107,13 @@ class GameViewModelAdapter : RecyclerView.Adapter<GameViewModelAdapter.GameViewH
             gameDescTextView.text = gameViewModel.getGameDescTextView()
             Picasso.get().load(gameViewModel.getGameImgImageView()).into(gameImgImageView)
         }
+    }
+
+    interface OnLeaveReviewClickListener {
+        fun onLeaveReviewClicked(appId: Int, appName: String)
+    }
+
+    interface OnViewReviewsClickListener {
+        fun onViewReviewsClicked(appId: Int, appName: String)
     }
 }

@@ -1,11 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item
         android:id="@+id/action_search"
         android:title="Search"
         android:icon="@android:drawable/ic_menu_search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="ifRoom|collapseActionView"/>
+
+    <item
+        android:id="@+id/action_sort"
+        android:title="Trier"
+        android:icon="@android:drawable/ic_menu_sort_by_size"
+        app:showAsAction="never">
+
+        <menu>
+            <item android:id="@+id/sort_name_asc" android:title="Trier par nom (A à Z)" />
+            <item android:id="@+id/sort_name_desc" android:title="Trier par nom (Z à A)" />
+            <item android:id="@+id/sort_price_asc" android:title="Prix les - chers" />
+            <item android:id="@+id/sort_price_desc" android:title="Prix les + chers" />
+
+            <item
+                android:id="@+id/sort_type"
+                android:title="Trier par type"
+                app:showAsAction="never">
+                <menu>
+                    <group android:checkableBehavior="single">
+                        <item android:id="@+id/sort_type_game" android:title="Jeux" />
+                        <item android:id="@+id/sort_type_dlc" android:title="DLC" />
+                        <item android:id="@+id/sort_type_demo" android:title="Démos" />
+                        <item android:id="@+id/sort_type_music" android:title="Musique" />
+                    </group>
+                </menu>
+            </item>
+
+            <item android:id="@+id/reset_filter" android:title="Réinitialiser les filtres" />
+        </menu>
+    </item>
 </menu>

@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.chuxu.DatabaseManager
 import com.example.chuxu.R
 import com.example.chuxu.SteamAPIManager
+import com.example.chuxu.util.SortOption
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -99,13 +100,6 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (toggle.onOptionsItemSelected(item)) {
-            return true
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.search_menu, menu)
         val searchItem = menu.findItem(R.id.action_search)
@@ -149,6 +143,25 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
         return true
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true
+        }
+        when (item.itemId) {
+            R.id.sort_name_asc -> adapter.sortData(SortOption.NAME_ASC)
+            R.id.sort_name_desc -> adapter.sortData(SortOption.NAME_DESC)
+            R.id.sort_price_asc -> adapter.sortData(SortOption.PRICE_ASC)
+            R.id.sort_price_desc -> adapter.sortData(SortOption.PRICE_DESC)
+            R.id.sort_type_game -> adapter.sortData(SortOption.GAME)
+            R.id.sort_type_dlc -> adapter.sortData(SortOption.DLC)
+            R.id.sort_type_demo -> adapter.sortData(SortOption.DEMO)
+            R.id.sort_type_music -> adapter.sortData(SortOption.MUSIC)
+            R.id.reset_filter -> adapter.sortData(SortOption.RESET)
+            else -> return super.onOptionsItemSelected(item)
+        }
+        return true
+    }
+
     override fun onLeaveReviewClicked(appId: Int, appName: String) {
         val intent = Intent(this, Activity6::class.java)
         intent.putExtra("appId", appId)
@@ -161,7 +174,6 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
         intent.putExtra("appId", appId)
         startActivity(intent)
     }
-
 
     private fun showLoadingView(text1: String, text2: String, trimmedQuery: String) {
         if (!isShowingLoadingView) {
