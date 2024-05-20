@@ -89,6 +89,13 @@ class GameViewModelAdapter : RecyclerView.Adapter<GameViewModelAdapter.GameViewH
         return normalizedString.toDoubleOrNull() ?: Double.MAX_VALUE
     }
 
+    fun searchWithinResults(query: String) {
+        gameViewModels = originalGameViewModels.filter {
+            it.getGameNameTextView().contains(query, ignoreCase = true)
+        }
+        notifyDataSetChanged()
+    }
+
     inner class GameViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val gameNameTextView: TextView = itemView.findViewById(R.id.gameName)
         private val gameTypeTextView: TextView = itemView.findViewById(R.id.gameType)

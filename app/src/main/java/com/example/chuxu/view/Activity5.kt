@@ -157,6 +157,21 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
             R.id.sort_type_demo -> adapter.sortData(SortOption.DEMO)
             R.id.sort_type_music -> adapter.sortData(SortOption.MUSIC)
             R.id.reset_filter -> adapter.sortData(SortOption.RESET)
+            R.id.action_filter_search -> {
+                val searchView = item.actionView as SearchView
+                searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        if (query != null) {
+                            adapter.searchWithinResults(query)
+                        }
+                        return false
+                    }
+
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        return false
+                    }
+                })
+            }
             else -> return super.onOptionsItemSelected(item)
         }
         return true
