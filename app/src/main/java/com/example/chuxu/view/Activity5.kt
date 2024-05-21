@@ -102,9 +102,26 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.search_menu, menu)
+
         val searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as SearchView
         searchView.queryHint = "Rechercher un jeu..."
+
+        val filterSearchItem = menu.findItem(R.id.action_filter_search)
+        val filterSearchView = filterSearchItem.actionView as SearchView
+        filterSearchView.queryHint = "Rechercher dans les résultats..."
+
+        searchView.setOnSearchClickListener {
+            if (!filterSearchView.isIconified) {
+                filterSearchView.onActionViewCollapsed()
+            }
+        }
+
+        filterSearchView.setOnSearchClickListener {
+            if (!searchView.isIconified) {
+                searchView.onActionViewCollapsed()
+            }
+        }
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -140,6 +157,20 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
                 return true
             }
         })
+
+        filterSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (!query.isNullOrBlank()) {
+                    adapter.searchWithinResults(query.trim())
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return true
+            }
+        })
+
         return true
     }
 
@@ -158,17 +189,17 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
             R.id.sort_type_music -> adapter.sortData(SortOption.MUSIC)
             R.id.reset_filter -> adapter.sortData(SortOption.RESET)
             R.id.action_filter_search -> {
-                val searchView = item.actionView as SearchView
-                searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                val filterSearchView = item.actionView as SearchView
+                filterSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(query: String?): Boolean {
-                        if (query != null) {
-                            adapter.searchWithinResults(query)
+                        if (!query.isNullOrBlank()) {
+                            adapter.searchWithinResults(query.trim())
                         }
-                        return false
+                        return true
                     }
 
                     override fun onQueryTextChange(newText: String?): Boolean {
-                        return false
+                        return true
                     }
                 })
             }
@@ -203,7 +234,7 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
 
             CoroutineScope(Dispatchers.Main).launch {
                 while (isShowingLoadingView) {
-                    delay(78000)
+                    delay(82000)
                     val messages = listOf(
                         Pair("Cela va prendre un moment...", "Conseil : Prenez un café ☕ !"),
                         Pair("Allô ? Y'a-t-il quelqu'un ?", "Si oui, patientez sâgement !"),
