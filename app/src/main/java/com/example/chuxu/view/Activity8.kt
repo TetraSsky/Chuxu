@@ -22,6 +22,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+/**
+ * Activité tierciaire de l'application, permet à l'utilisateur de consulter tous ses avis sur différents jeux
+ */
 class Activity8 : AppCompatActivity(), GameReviewModelAdapter.OnDeleteReviewClickListener, GameReviewModelAdapter.OnModifyReviewClickListener {
 
     private var isShowingLoadingView = false

@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var loadingTextView2: TextView
     private lateinit var connectButton: Button
     private lateinit var createAccountButton: Button
+    private lateinit var passwordForgorButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,9 +43,16 @@ class MainActivity : AppCompatActivity() {
         passwordEditText = findViewById(R.id.PasswordVerif)
         connectButton = findViewById(R.id.Connect)
         createAccountButton = findViewById(R.id.Inscrip)
+        passwordForgorButton = findViewById(R.id.Forgor)
 
         createAccountButton.setOnClickListener {
             val intent = Intent(this, Activity3::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        passwordForgorButton.setOnClickListener {
+            val intent = Intent(this, Activity9::class.java)
             startActivity(intent)
             finish()
         }

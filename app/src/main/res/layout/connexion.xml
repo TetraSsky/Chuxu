@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/connexion"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -44,7 +43,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.496"
                 app:layout_constraintStart_toStartOf="parent">
-
 
                 <TextView
                     android:id="@+id/TextView"
@@ -155,6 +153,21 @@
                     android:gravity="center"
                     android:text="Créer un compte"
                     android:textColor="#FFFFFF"
+                    app:layout_constraintBottom_toTopOf="@+id/Forgor"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <Button
+                    android:id="@+id/Forgor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:backgroundTint="#252525"
+                    android:fontFamily="@font/press_start_2p"
+                    android:gravity="center"
+                    android:text="Mot de passe oublié"
+                    android:textColor="#FFFFFF"
+                    android:textSize="10sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />

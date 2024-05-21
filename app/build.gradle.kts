@@ -1,3 +1,4 @@
+import com.android.build.api.dsl.Packaging
 import com.android.tools.r8.internal.id
 import java.util.regex.Pattern.compile
 
@@ -40,6 +41,21 @@ android {
     viewBinding {
         enable = true
     }
+
+    packaging {
+        resources {
+            excludes += "/META-INF/DEPENDENCIES"
+            excludes += "/META-INF/LICENSE"
+            excludes += "/META-INF/LICENSE.txt"
+            excludes += "/META-INF/license.txt"
+            excludes += "/META-INF/NOTICE.md"
+            excludes += "/META-INF/NOTICE.txt"
+            excludes += "/META-INF/notice.txt"
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/*.kotlin_module"
+            excludes += "META-INF/LICENSE.md"
+        }
+    }
 }
 
 dependencies {
@@ -59,4 +75,6 @@ dependencies {
     implementation ("com.squareup.retrofit2:retrofit:(2.11.0)")
     implementation ("com.squareup.retrofit2:converter-gson:2.11.0")
     implementation ("com.squareup.picasso:picasso:2.8")
+    implementation ("com.sun.mail:android-mail:1.6.7")
+    implementation ("com.sun.mail:android-activation:1.6.7")
 }
