@@ -25,7 +25,7 @@
             <item
                 android:id="@+id/Deconnect"
                 android:title="Se Déconnecter"
-                android:icon="@drawable/baseline_logout_24"/>
+                android:icon="@drawable/logout_icon"/>
         </menu>
     </item>
     <item android:title="Mises à jour">
