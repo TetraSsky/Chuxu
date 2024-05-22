@@ -22,6 +22,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.example.chuxu.DatabaseManager
 import com.example.chuxu.R
 import com.example.chuxu.controller.UserController
+import com.example.chuxu.util.UpdateUtil
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -61,6 +62,7 @@ class Activity4 : AppCompatActivity() {
     private lateinit var NicknameInfo: ImageView
     private lateinit var passwordInfoPopup: PopupWindow
     private lateinit var passwordVerifInfoPopup: PopupWindow
+    private lateinit var nicknameInfoPopup: PopupWindow
     private var isPopupShowing = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,6 +88,7 @@ class Activity4 : AppCompatActivity() {
         NicknameInfo = findViewById(R.id.NicknameInfo)
         passwordInfoPopup = PopupWindow(this)
         passwordVerifInfoPopup = PopupWindow(this)
+        nicknameInfoPopup = PopupWindow(this)
 
         passwordInfo.setOnClickListener {
             showInfoPopup(passwordInfo, passwordInfoPopup, "Le mot de passe doit contenir au moins :", "- 8 caractères\n- Un chiffre\n- Une majuscule\n- Une minuscule\n- Un caractère spécial")
@@ -96,7 +99,7 @@ class Activity4 : AppCompatActivity() {
         }
 
         NicknameInfo.setOnClickListener {
-            showInfoPopup(passwordVerifInfo, passwordVerifInfoPopup, "Le pseudonyme doit :", "- Contenir au moins 5 caractères.\n- Ne peut pas être que des chiffres.\n- Ne pas contenir de termes bannis/sensibles.\n- Pas plus long que 30 caractères.\n- Etre en alphanumérique uniquement.")
+            showInfoPopup(NicknameInfo, nicknameInfoPopup, "Le pseudonyme doit :", "- Contenir au moins 5 caractères.\n- Ne peut pas être que des chiffres.\n- Ne pas contenir de termes bannis/sensibles.\n- Pas plus long que 30 caractères.\n- Etre en alphanumérique uniquement.")
         }
 
         NouvEmailButton.isEnabled = true
@@ -295,6 +298,9 @@ class Activity4 : AppCompatActivity() {
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                     finish()
+                }
+                R.id.Update -> {
+                    UpdateUtil.checkForUpdate(this)
                 }
             }
             true

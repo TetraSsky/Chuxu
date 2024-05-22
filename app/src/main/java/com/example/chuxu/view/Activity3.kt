@@ -51,6 +51,7 @@ class Activity3 : AppCompatActivity() {
     private lateinit var passwordInfo: ImageView
     private lateinit var passwordVerifInfo: ImageView
     private lateinit var NicknameInfo: ImageView
+    private lateinit var nicknameInfoPopup: PopupWindow
     private lateinit var passwordInfoPopup: PopupWindow
     private lateinit var passwordVerifInfoPopup: PopupWindow
     private var isPopupShowing = false
@@ -69,6 +70,7 @@ class Activity3 : AppCompatActivity() {
         passwordInfo = findViewById(R.id.passwordInfo)
         passwordVerifInfo = findViewById(R.id.passwordVerifInfo)
         NicknameInfo = findViewById(R.id.NicknameInfo)
+        nicknameInfoPopup = PopupWindow(this)
         passwordInfoPopup = PopupWindow(this)
         passwordVerifInfoPopup = PopupWindow(this)
 
@@ -81,7 +83,7 @@ class Activity3 : AppCompatActivity() {
         }
 
         NicknameInfo.setOnClickListener {
-            showInfoPopup(passwordVerifInfo, passwordVerifInfoPopup, "Le pseudonyme doit :", "- Contenir au moins 5 caractères.\n- Ne peut pas être que des chiffres.\n- Ne pas contenir de termes bannis/sensibles.\n- Pas plus long que 30 caractères.\n- Etre en alphanumérique uniquement.")
+            showInfoPopup(NicknameInfo, nicknameInfoPopup, "Le pseudonyme doit :", "- Contenir au moins 5 caractères.\n- Ne peut pas être que des chiffres.\n- Ne pas contenir de termes bannis/sensibles.\n- Pas plus long que 30 caractères.\n- Etre en alphanumérique uniquement.")
         }
 
         inscripButton.isEnabled = true

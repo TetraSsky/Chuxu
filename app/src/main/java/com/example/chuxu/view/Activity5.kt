@@ -20,6 +20,7 @@ import com.example.chuxu.DatabaseManager
 import com.example.chuxu.R
 import com.example.chuxu.SteamAPIManager
 import com.example.chuxu.util.SortOption
+import com.example.chuxu.util.UpdateUtil
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -94,6 +95,9 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                     startActivity(intent)
                     finish()
+                }
+                R.id.Update -> {
+                    UpdateUtil.checkForUpdate(this)
                 }
             }
             true
@@ -254,7 +258,7 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
                         Pair("Qu'est-ce qui avance, est blanc et ne s'arrête pas ?", "(Réponse : Cet écran de chargement)"),
                         Pair("Recherche en cours...", "Veuillez patienter..."),
                         Pair("Connexion en co-", "OUPS ! Mauvais message \uD83D\uDE05"),
-                        Pair("Vous voulez une blague ?", "Je n'ai pas fini de charger ! ... Voilà..."),
+                        Pair("Vous voulez une blague ?", "Je n'ai pas fini de charger !\nVoilà..."),
                         Pair("Une envie pressante ?", "Lance un jet de sauvegarde."),
                         Pair("\uD83C\uDF0E\uD83D\uDD25","POUR LA SUPER TERRE !"),
                     )

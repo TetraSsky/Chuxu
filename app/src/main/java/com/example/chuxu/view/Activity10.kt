@@ -73,7 +73,7 @@ class Activity10 : AppCompatActivity() {
 
                     Toast.makeText(this@Activity10, "Mot de passe invalide ou trop peu sécurisé.", Toast.LENGTH_SHORT).show()
                     delay(4000)
-                    newPasswordEditText.isEnabled = true
+                    confirmNewPasswordButton.isEnabled = true
                 } else {
                     val nouvPassword = UserController.encryptPassword(newPassword)
 
@@ -86,7 +86,7 @@ class Activity10 : AppCompatActivity() {
 
                             hideLoadingView()
 
-                            Toast.makeText(this@Activity10, "Mot de passe modifié avec succès ! Essayez de vous reconnecter.", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@Activity10, "Mot de passe modifié avec succès !\nEssayez de vous reconnecter.", Toast.LENGTH_LONG).show()
                             val intent = Intent(this@Activity10, MainActivity::class.java)
                             startActivity(intent)
                             finish()
@@ -96,7 +96,7 @@ class Activity10 : AppCompatActivity() {
 
                             Toast.makeText(this@Activity10, "Échec de la modification du mot de passe.", Toast.LENGTH_LONG).show()
                             delay(4000)
-                            newPasswordEditText.isEnabled = true
+                            confirmNewPasswordButton.isEnabled = true
                         }
                     } else {
 
@@ -104,7 +104,7 @@ class Activity10 : AppCompatActivity() {
 
                         Toast.makeText(this@Activity10, "Une erreur est survenue.", Toast.LENGTH_LONG).show()
                         delay(4000)
-                        newPasswordEditText.isEnabled = true
+                        confirmNewPasswordButton.isEnabled = true
                     }
                 }
             }

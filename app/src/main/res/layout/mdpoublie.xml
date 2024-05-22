@@ -72,6 +72,15 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
+            <ImageView
+                android:id="@+id/CodeInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_info"
+                app:layout_constraintBottom_toBottomOf="@+id/EmailVerif"
+                app:layout_constraintStart_toEndOf="@id/EmailVerif"
+                app:layout_constraintTop_toTopOf="@id/EmailVerif" />
+
             <TextView
                 android:id="@+id/CodeConfirmation"
                 android:layout_width="wrap_content"

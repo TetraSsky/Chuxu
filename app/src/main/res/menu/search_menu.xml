@@ -5,7 +5,7 @@
     <item
         android:id="@+id/action_search"
         android:title="Rechercher un jeu"
-        android:icon="@android:drawable/ic_menu_search"
+        android:icon="@drawable/ic_search_menu"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="ifRoom|collapseActionView" />
 
@@ -18,7 +18,7 @@
             <item
                 android:id="@+id/action_filter_search"
                 android:title="Rechercher dans les résultats"
-                android:icon="@android:drawable/ic_menu_search"
+                android:icon="@drawable/ic_search_menu"
                 app:actionViewClass="androidx.appcompat.widget.SearchView"
                 app:showAsAction="collapseActionView" />
 
@@ -31,11 +31,11 @@
                 android:title="Trier par nom (Z à A)" />
 
             <item android:id="@+id/sort_price_asc"
-                android:icon="@drawable/baseline_attach_money_24"
+                android:icon="@drawable/euro_minus"
                 android:title="Prix les - chers" />
 
             <item android:id="@+id/sort_price_desc"
-                android:icon="@drawable/baseline_attach_money_24"
+                android:icon="@drawable/euro_plus"
                 android:title="Prix les + chers" />
 
             <item
@@ -46,15 +46,15 @@
                 <menu>
                     <group android:checkableBehavior="single">
                         <item android:id="@+id/sort_type_game"
-                            android:icon="@drawable/baseline_category_24"
+                            android:icon="@drawable/game_icon"
                             android:title="Jeux" />
 
                         <item android:id="@+id/sort_type_dlc"
-                            android:icon="@drawable/baseline_attach_money_24"
+                            android:icon="@drawable/dlc_icon"
                             android:title="DLC" />
 
                         <item android:id="@+id/sort_type_demo"
-                            android:icon="@drawable/baseline_build_24"
+                            android:icon="@drawable/demo_icon"
                             android:title="Démos" />
 
                         <item android:id="@+id/sort_type_music"
