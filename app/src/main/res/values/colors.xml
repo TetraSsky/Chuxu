@@ -8,4 +8,5 @@
     <color name="loading">#CD000000</color>
     <color name="navbar">#D8000000</color>
     <color name="red">#FF0000</color>
+    <color name="green">#11FF00</color>
 </resources>

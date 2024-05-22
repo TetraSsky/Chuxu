@@ -22,6 +22,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.example.chuxu.DatabaseManager
 import com.example.chuxu.R
 import com.example.chuxu.controller.UserController
+import com.example.chuxu.util.UpdateUtil
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -295,6 +296,9 @@ class Activity4 : AppCompatActivity() {
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                     finish()
+                }
+                R.id.Update -> {
+                    UpdateUtil.checkForUpdate(this)
                 }
             }
             true

@@ -1,6 +1,5 @@
 package com.example.chuxu
 
-import android.animation.ObjectAnimator
 import com.example.chuxu.SteamAPIManager.RateLimitInterceptor.CALL_INTERVAL
 import com.example.chuxu.SteamAPIManager.RateLimitInterceptor.REQUEST_INTERVAL
 import com.google.gson.annotations.SerializedName

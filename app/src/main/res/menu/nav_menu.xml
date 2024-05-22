@@ -28,4 +28,12 @@
                 android:icon="@drawable/baseline_logout_24"/>
         </menu>
     </item>
+    <item android:title="Mises à jour">
+        <menu>
+            <item
+                android:id="@+id/Update"
+                android:title="Vérifier la version Chúxù"
+                android:icon="@drawable/github_icon_2"/>
+        </menu>
+    </item>
 </menu>
