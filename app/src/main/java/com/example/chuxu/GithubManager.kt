@@ -40,7 +40,6 @@ object GitHubManager {
     private const val BASE_URL = "https://api.github.com/"
 
     private val okHttpClient = OkHttpClient.Builder()
-        .addInterceptor(LoggingInterceptor())
         .addInterceptor(SteamAPIManager.RateLimitInterceptor)
         .build()
 
@@ -51,17 +50,4 @@ object GitHubManager {
         .build()
 
     val githubService: GitHubService = retrofit.create(GitHubService::class.java)
-
-    /**
-     * Intercepteur pour journaliser les requêtes et les réponses
-     */
-    class LoggingInterceptor : Interceptor {
-        override fun intercept(chain: Interceptor.Chain): Response {
-            val request: Request = chain.request()
-            Log.d("GitHubManager", "Sending request: ${request.url}")
-            val response: Response = chain.proceed(request)
-            Log.d("GitHubManager", "Received response: ${response.code}")
-            return response
-        }
-    }
 }
