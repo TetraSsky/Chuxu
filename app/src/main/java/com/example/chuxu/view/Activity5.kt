@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import android.widget.VideoView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -26,6 +27,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import android.net.Uri
 
 /**
  * Activité tierciaire de l'application, permet à l'utilisateur d'effectuer des recherches en lien avec l'API de Steam
@@ -42,6 +44,7 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
     private lateinit var defaultview: View
     private lateinit var rootView: ViewGroup
     private lateinit var progressBar: ProgressBar
+    private lateinit var videoView: VideoView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +67,9 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
         toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
+
+        videoView = findViewById(R.id.loadingVideoView)
+        videoView.visibility = View.INVISIBLE
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         navView.setNavigationItemSelectedListener { menuItem ->
@@ -133,6 +139,16 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
                     val trimmedQuery = query.trim()
                     CoroutineScope(Dispatchers.Main).launch {
                         showLoadingView("Recherche en cours...", "Veuillez patienter...", trimmedQuery)
+
+                        val videoView = findViewById<VideoView>(R.id.loadingVideoView)
+                        val videoUri = Uri.parse("android.resource://" + packageName + "/" + R.raw.backgroundanim)
+                        videoView.setVideoURI(videoUri)
+                        videoView.setOnPreparedListener { mp ->
+                            mp.isLooping = true
+                        }
+                        videoView.visibility = View.VISIBLE
+                        videoView.start()
+
                         progressBar = findViewById(R.id.progressBar2)
                         val games = SteamAPIManager.searchGames(trimmedQuery, progressBar)
                         val gameViewModels = ArrayList<GameViewModel>()
@@ -149,6 +165,10 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
                             )
                         }
                         hideLoadingView()
+
+                        videoView.stopPlayback()
+                        videoView.visibility = View.GONE
+
                         adapter.setData(gameViewModels)
                     }
                 } else {

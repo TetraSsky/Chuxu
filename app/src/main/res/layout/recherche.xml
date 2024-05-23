@@ -21,6 +21,16 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/background">
 
+                <VideoView
+                    android:id="@+id/loadingVideoView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    app:layout_constraintBottom_toBottomOf="@+id/myRecyclerView"
+                    app:layout_constraintEnd_toEndOf="@+id/myRecyclerView"
+                    app:layout_constraintStart_toStartOf="@+id/myRecyclerView"
+                    app:layout_constraintTop_toTopOf="@+id/myRecyclerView" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/myRecyclerView"
                     android:layout_width="match_parent"
