@@ -100,9 +100,11 @@
                 android:layout_marginBottom="24dp"
                 android:background="#B3393838"
                 android:fontFamily="@font/dotgothic16"
+                android:gravity="center"
                 android:inputType="text"
                 android:textColor="#FFFFFF"
-                android:textSize="12sp"
+                android:textSize="24sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/Confirm"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
