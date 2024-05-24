@@ -64,7 +64,7 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
 
         easterEggImageView.setOnClickListener {
             val random = Random()
-            val randomValue = random.nextInt(150)
+            val randomValue = random.nextInt(50)
 
             val spinAnimation = AnimationUtils.loadAnimation(this, R.anim.bounce)
             easterEggImageView.startAnimation(spinAnimation)
