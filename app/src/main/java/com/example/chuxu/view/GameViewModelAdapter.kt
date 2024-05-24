@@ -106,7 +106,7 @@ class GameViewModelAdapter : RecyclerView.Adapter<GameViewModelAdapter.GameViewH
         private val gamePrixTextView: TextView = itemView.findViewById(R.id.gamePrix)
         private val gameDescTextView: TextView = itemView.findViewById(R.id.gameDesc)
         private val gameIdTextView: TextView = itemView.findViewById(R.id.gameId)
-        private val gameImgImageView: ImageButton = itemView.findViewById(R.id.gameImg)
+        private val gameImgImageView: ImageView = itemView.findViewById(R.id.gameImg)
         val leaveReviewButton: Button = itemView.findViewById(R.id.leaveReview)
         val viewReviewButton: Button = itemView.findViewById(R.id.viewReviews)
         init {
@@ -127,11 +127,7 @@ class GameViewModelAdapter : RecyclerView.Adapter<GameViewModelAdapter.GameViewH
             gameTypeTextView.text = gameViewModel.getGameTypeTextView()
             gamePrixTextView.text = gameViewModel.getGamePrixTextView()
             gameDescTextView.text = gameViewModel.getGameDescTextView()
-            Picasso.get()
-                .load(gameViewModel.getGameImgImageView())
-                .fit()
-                .centerCrop()
-                .into(gameImgImageView)
+            Picasso.get().load(gameViewModel.getGameImgImageView()).into(gameImgImageView)
         }
     }
 
