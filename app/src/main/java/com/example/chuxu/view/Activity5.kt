@@ -2,6 +2,7 @@ package com.example.chuxu.view
 
 import android.content.Context
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -28,6 +29,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import android.net.Uri
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
+import java.util.Random
 
 /**
  * Activité tierciaire de l'application, permet à l'utilisateur d'effectuer des recherches en lien avec l'API de Steam
@@ -45,6 +49,8 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
     private lateinit var rootView: ViewGroup
     private lateinit var progressBar: ProgressBar
     private lateinit var videoView: VideoView
+    private var mediaPlayer: MediaPlayer? = null
+    private var MediaPlayer: MediaPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +59,39 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
         rootView = findViewById(R.id.root_layout)
         defaultview = layoutInflater.inflate(R.layout.default_research_screen, null)
         rootView.addView(defaultview)
+
+        val easterEggImageView: ImageView = defaultview.findViewById(R.id.EasterEgg)
+
+        easterEggImageView.setOnClickListener {
+            val random = Random()
+            val randomValue = random.nextInt(150)
+
+            val spinAnimation = AnimationUtils.loadAnimation(this, R.anim.bounce)
+            easterEggImageView.startAnimation(spinAnimation)
+
+            val soundResource = when {
+                randomValue == 1 -> {
+                    MediaPlayer?.setVolume(0.1f, 0.1f)
+                    R.raw.ibtb
+                } else -> {
+                    MediaPlayer?.setVolume(0.3f, 0.3f)
+                    when (random.nextInt(3)) {
+                        0 -> R.raw.qf
+                        1 -> R.raw.qf2
+                        else -> R.raw.qf3
+                    }
+                }
+            }
+
+            MediaPlayer?.setVolume(0.6f, 0.6f)
+
+            mediaPlayer = android.media.MediaPlayer.create(this, soundResource)
+            mediaPlayer?.start()
+
+            mediaPlayer?.setOnCompletionListener { player ->
+                player.release()
+            }
+        }
 
         recyclerView = findViewById(R.id.myRecyclerView)
         adapter = GameViewModelAdapter()

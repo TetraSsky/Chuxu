@@ -1,9 +1,13 @@
 package com.example.chuxu.view
 
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -102,9 +106,20 @@ class GameViewModelAdapter : RecyclerView.Adapter<GameViewModelAdapter.GameViewH
         private val gamePrixTextView: TextView = itemView.findViewById(R.id.gamePrix)
         private val gameDescTextView: TextView = itemView.findViewById(R.id.gameDesc)
         private val gameIdTextView: TextView = itemView.findViewById(R.id.gameId)
-        private val gameImgImageView: ImageView = itemView.findViewById(R.id.gameImg)
+        private val gameImgImageView: ImageButton = itemView.findViewById(R.id.gameImg)
         val leaveReviewButton: Button = itemView.findViewById(R.id.leaveReview)
         val viewReviewButton: Button = itemView.findViewById(R.id.viewReviews)
+        init {
+            gameImgImageView.setOnClickListener {
+                val context = itemView.context
+                val bounceAnimation = AnimationUtils.loadAnimation(context, R.anim.bounce)
+                gameImgImageView.startAnimation(bounceAnimation)
+
+                val steamAppUrl = "https://store.steampowered.com/app/${gameIdTextView.text}/"
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(steamAppUrl))
+                itemView.context.startActivity(intent)
+            }
+        }
 
         fun bind(gameViewModel: GameViewModel) {
             gameIdTextView.text = gameViewModel.getGameIdTextView().toString()
@@ -112,7 +127,11 @@ class GameViewModelAdapter : RecyclerView.Adapter<GameViewModelAdapter.GameViewH
             gameTypeTextView.text = gameViewModel.getGameTypeTextView()
             gamePrixTextView.text = gameViewModel.getGamePrixTextView()
             gameDescTextView.text = gameViewModel.getGameDescTextView()
-            Picasso.get().load(gameViewModel.getGameImgImageView()).into(gameImgImageView)
+            Picasso.get()
+                .load(gameViewModel.getGameImgImageView())
+                .fit()
+                .centerCrop()
+                .into(gameImgImageView)
         }
     }
 
