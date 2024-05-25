@@ -155,7 +155,8 @@ object SteamAPIManager {
                 val response = steamService.getAppList()
                 val games = mutableListOf<GameData>()
                 val totalApps = response.appList.apps.filter { it.name.contains(query, ignoreCase = true) }.map { it.appId }.size
-                val progressIncrement = (100.toDouble() / totalApps).let { "%.2f".format(it).replace(',', '.').toDouble() } * 100
+                val progressIncrement = (10000.toDouble() / totalApps).let { "%.2f".format(it).replace(',', '.').toDouble() }.toInt()
+                progressBar.progress = 0
                 progressBar.max = 10000
 
                 response.appList.apps.forEach { app ->
@@ -181,7 +182,7 @@ object SteamAPIManager {
                                 }
                             }
                         }
-                        progressBar.progress += (progressIncrement).toInt()
+                        progressBar.incrementProgressBy(progressIncrement)
                         delay(CALL_INTERVAL)
                     }
                 }

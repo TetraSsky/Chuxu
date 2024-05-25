@@ -31,6 +31,7 @@ import kotlinx.coroutines.launch
 import android.net.Uri
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import kotlinx.coroutines.Job
 import java.util.Random
 
 /**
@@ -51,6 +52,7 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
     private lateinit var videoView: VideoView
     private var mediaPlayer: MediaPlayer? = null
     private var MediaPlayer: MediaPlayer? = null
+    private var search: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -176,7 +178,8 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (!query.isNullOrBlank()) {
                     val trimmedQuery = query.trim()
-                    CoroutineScope(Dispatchers.Main).launch {
+                    search?.cancel()
+                    search = CoroutineScope(Dispatchers.Main).launch {
                         showLoadingView("Recherche en cours...", "Veuillez patienter...", trimmedQuery)
 
                         val videoView = findViewById<VideoView>(R.id.loadingVideoView)
@@ -189,6 +192,8 @@ class Activity5 : AppCompatActivity(), GameViewModelAdapter.OnLeaveReviewClickLi
                         videoView.start()
 
                         progressBar = findViewById(R.id.progressBar2)
+                        progressBar.progress = 0
+
                         val games = SteamAPIManager.searchGames(trimmedQuery, progressBar)
                         val gameViewModels = ArrayList<GameViewModel>()
                         for (game in games) {
