@@ -8,7 +8,7 @@
         <menu>
             <item
             android:id="@+id/Menu"
-            android:title="Acceuil"
+            android:title="Accueil"
             android:icon="@drawable/baseline_home_24"/>
         </menu>
     </item>
